@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.model;
 
+import com.gsm.chwijuntime.model.tagmapping.EmploymentAnnouncementTag;
 import com.gsm.chwijuntime.model.tagmapping.TipsStorageTag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,9 @@ public class Tag {
     // ============== 태그 매핑(연관관계 노예) =================== //
     @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
     private List<TipsStorageTag> tipsStorageTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
+    private List<EmploymentAnnouncementTag> employmentAnnouncementTags = new ArrayList<>();
 
 
 }
