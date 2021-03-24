@@ -11,8 +11,9 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public void InsertMember(MemberJoinDTO memberJoinDTO) {
-        memberRepository.save(memberJoinDTO.ToEntity());
+    public Long InsertMember(MemberJoinDTO memberJoinDTO) {
+        Long MemberIdx = memberRepository.save(memberJoinDTO.ToEntity()).getMemberIdx();
+        return MemberIdx;
     }
 
     
