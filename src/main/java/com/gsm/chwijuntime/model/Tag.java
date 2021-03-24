@@ -40,4 +40,7 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
     private List<MemberResumeTag> memberResumeTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
+    private List<EmploymentConfirmationTag> employmentConfirmationTags = new ArrayList<>();
 }
