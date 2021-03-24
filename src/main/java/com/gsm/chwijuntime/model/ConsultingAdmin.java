@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,4 +28,9 @@ public class ConsultingAdmin {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MemberIdx")
     private Member member;
+
+
+    // ================ 연관관계 노예 ===================== //
+    @OneToOne(mappedBy = "consultingAdmin", fetch = FetchType.LAZY)
+    private ConsultingUser consultingAdmins;
 }
