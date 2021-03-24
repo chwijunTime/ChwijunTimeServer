@@ -24,6 +24,7 @@ public class ApplicationEmployment {
     @Column(nullable = false)
     private String ApplicationEmploymentResumeURL;
 
+    // ================ 외래키(연관관계 주인) =================== //
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MemberIdx")
     private Member member;

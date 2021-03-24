@@ -39,6 +39,8 @@ public class EmploymentAnnouncement {
 
     private String EmploymentAnnouncementEtc;
 
+
+    // ============== 연관관계 노예 ================== //
     @OneToMany(mappedBy = "employmentAnnouncement")
     private List<ApplicationEmployment> applicationEmployments = new ArrayList<>();
 }

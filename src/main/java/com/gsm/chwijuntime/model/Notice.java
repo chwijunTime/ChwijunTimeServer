@@ -24,6 +24,7 @@ public class Notice {
 
     private LocalDateTime CreateDated;
 
+    // =================== 외래키(연관관계 주인) ================== //
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MemberIdx")
     private Member member;

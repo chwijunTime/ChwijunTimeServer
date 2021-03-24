@@ -44,6 +44,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberDelflag memberDelflag;
 
+    // ================= 연관관계 노예 ================ //
     @OneToMany(mappedBy = "member")
     private List<Notice> notices = new ArrayList<>();
 
