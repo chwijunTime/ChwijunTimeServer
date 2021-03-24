@@ -28,4 +28,8 @@ public class ApplicationEmployment {
     @JoinColumn(name = "MemberIdx")
     private Member member;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "EmploymentAnnouncementIdx")
+    private EmploymentAnnouncement employmentAnnouncement;
+
 }
