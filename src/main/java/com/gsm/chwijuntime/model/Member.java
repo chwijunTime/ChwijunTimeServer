@@ -1,6 +1,8 @@
 package com.gsm.chwijuntime.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gsm.chwijuntime.model.tagmapping.EmploymentAnnouncementTag;
+import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -71,4 +73,8 @@ public class Member {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<ConsultingAdmin> consultingAdmins = new ArrayList<>();
+
+    // ============== 태그 매핑(연관관계 노예) -=============== //
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<MemberTag> memberTags = new ArrayList<>();
 }
