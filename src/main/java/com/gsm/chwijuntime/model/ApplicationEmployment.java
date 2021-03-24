@@ -5,26 +5,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Notice {
+public class ApplicationEmployment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long NoticeIdx;
+    private Long ApplicationEmploymentIdx;
 
     @Column(nullable = false)
-    private String Title;
+    private String GitHubURL;
+
+    @Enumerated(EnumType.STRING)
+    private ApplicationEmploymentStatus applicationEmploymentStatus;
 
     @Column(nullable = false)
-    private String Content;
-
-    private LocalDateTime CreateDated;
+    private String ApplicationEmploymentResumeURL;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MemberIdx")
     private Member member;
+
 }

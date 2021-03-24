@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -47,4 +46,7 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Notice> notices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<ApplicationEmployment> applicationEmployments = new ArrayList<>();
 }
