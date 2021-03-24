@@ -1,9 +1,6 @@
 package com.gsm.chwijuntime.model;
 
-import com.gsm.chwijuntime.model.tagmapping.CompanyReviewTag;
-import com.gsm.chwijuntime.model.tagmapping.EmploymentAnnouncementTag;
-import com.gsm.chwijuntime.model.tagmapping.MemberTag;
-import com.gsm.chwijuntime.model.tagmapping.TipsStorageTag;
+import com.gsm.chwijuntime.model.tagmapping.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,4 +34,7 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
     private List<MemberTag> memberTags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
+    private List<ConsultingUserTag> consultingUserTags = new ArrayList<>();
 }
