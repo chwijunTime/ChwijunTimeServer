@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -42,4 +44,7 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     private MemberDelflag memberDelflag;
+
+    @OneToMany(mappedBy = "member")
+    private List<Notice> notices = new ArrayList<>();
 }
