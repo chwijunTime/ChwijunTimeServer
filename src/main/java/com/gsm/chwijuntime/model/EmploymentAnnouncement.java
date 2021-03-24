@@ -41,6 +41,6 @@ public class EmploymentAnnouncement {
 
 
     // ============== 연관관계 노예 ================== //
-    @OneToMany(mappedBy = "employmentAnnouncement")
+    @OneToMany(mappedBy = "employmentAnnouncement", fetch = FetchType.LAZY)
     private List<ApplicationEmployment> applicationEmployments = new ArrayList<>();
 }
