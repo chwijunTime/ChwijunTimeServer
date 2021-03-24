@@ -45,9 +45,14 @@ public class Member {
     private MemberDelflag memberDelflag;
 
     // ================= 연관관계 노예 ================ //
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Notice> notices = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ApplicationEmployment> applicationEmployments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<TipsStorage> tipsStorages = new ArrayList<>();
+
+
 }
