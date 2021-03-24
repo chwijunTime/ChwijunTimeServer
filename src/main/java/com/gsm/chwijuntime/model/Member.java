@@ -69,5 +69,6 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<ContractingCompany> contractingCompanies = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<ConsultingAdmin> consultingAdmins = new ArrayList<>();
 }
