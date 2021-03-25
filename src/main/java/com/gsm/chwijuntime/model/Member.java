@@ -26,29 +26,29 @@ import java.util.stream.Collectors;
 public class Member implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long MemberIdx;
+    private Long memberIdx;
 
     @Column(nullable = false)
-    private String MemberEmail;
+    private String memberEmail;
 
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String MemberPassword;
+    private String memberPassword;
 
     @Enumerated(EnumType.STRING)
-    private MemberGender MemberGender;
+    private MemberGender memberGender;
 
     @Column(nullable = false, length = 4)
-    private String MemberClassNumber;
+    private String memberClassNumber;
 
     @Column(nullable = false, length = 13)
-    private String MemberPhoneNumber;
+    private String memberPhoneNumber;
 
-    private String MemberHomeAddress;
+    private String memberHomeAddress;
 
-    private LocalDateTime MemberCreated;
+    private LocalDateTime memberCreated;
 
-    private LocalDateTime MemberDeleted;
+    private LocalDateTime memberDeleted;
 
     @Enumerated(EnumType.STRING)
     private MemberDelflag memberDelflag;
@@ -98,12 +98,12 @@ public class Member implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.MemberPassword;
+        return this.memberPassword;
     }
 
     @Override
     public String getUsername() {
-        return this.MemberEmail;
+        return this.memberEmail;
     }
 
     @Override
@@ -128,6 +128,6 @@ public class Member implements UserDetails {
 
     // ==================== 비즈니스 로직 ==================== //
     public void Change_Email(String email){
-        this.MemberEmail = email;
+        this.memberEmail = email;
     }
 }
