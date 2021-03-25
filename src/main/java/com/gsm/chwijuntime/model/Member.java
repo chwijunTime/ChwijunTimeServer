@@ -41,7 +41,7 @@ public class Member implements UserDetails {
     @Column(nullable = false, length = 4)
     private String memberClassNumber;
 
-    @Column(nullable = false, length = 13)
+    @Column(length = 13)
     private String memberPhoneNumber;
 
     private String memberHomeAddress;
