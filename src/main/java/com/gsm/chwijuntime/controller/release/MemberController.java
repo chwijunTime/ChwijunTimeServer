@@ -1,6 +1,8 @@
-package com.gsm.chwijuntime.controller;
+package com.gsm.chwijuntime.controller.release;
 
 import com.gsm.chwijuntime.dto.MemberJoinDTO;
+import com.gsm.chwijuntime.model.response.CommonResult;
+import com.gsm.chwijuntime.model.response.ResponseService;
 import com.gsm.chwijuntime.service.MemberService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +18,12 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final ResponseService responseService;
 
     @PostMapping("/join")
-    public void join(@RequestBody MemberJoinDTO memberJoinDTO) throws IllegalAccessException {
+    public CommonResult join(@RequestBody MemberJoinDTO memberJoinDTO) throws IllegalAccessException {
         memberService.InsertMember(memberJoinDTO);
+        return responseService.getSuccessResult();
     }
 
 
