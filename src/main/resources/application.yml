@@ -47,3 +47,7 @@ spring:
     redis:
       repositories:
         enabled: false
+
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8

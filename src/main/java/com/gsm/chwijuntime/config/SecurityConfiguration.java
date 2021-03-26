@@ -1,16 +1,22 @@
 package com.gsm.chwijuntime.config;
 
+import com.gsm.chwijuntime.handler.CustomAccessDeniedHandler;
+import com.gsm.chwijuntime.handler.CustomAuthenticationEntryPointHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -21,9 +27,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt token으로 인증할것이므로 세션필요없으므로 생성안함.
                 .and()
                 .authorizeRequests() // 다음 리퀘스트에 대한 사용권한 체크
-                .antMatchers("/*/join", "/*/exception/**").permitAll()
+                .antMatchers("/*/exception/**").permitAll()
                 .antMatchers("/*/admin/**").hasRole("ADMIN") // admin으로 시작하는 요청은 관리자만 접근 가능
-                .anyRequest().authenticated(); // 그외 나머지 요청은 인증된 사용자만 접근 가능
+                .anyRequest().authenticated() // 그외 나머지 요청은 인증된 사용자만 접근 가능
+                .and()
+                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler()) //관리자 에러
+                .and()
+                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPointHandler()) //로그인 에러
+                .and()
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // jwt token 필터를 id/password 인증 필터 전에 넣음
     }
 
     @Override // ignore check swagger, h2 database resource
