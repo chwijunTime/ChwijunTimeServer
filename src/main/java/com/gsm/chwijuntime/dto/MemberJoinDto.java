@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MemberJoinDTO {
+public class MemberJoinDto {
 
     private String memberEmail;
     private String memberPassword;

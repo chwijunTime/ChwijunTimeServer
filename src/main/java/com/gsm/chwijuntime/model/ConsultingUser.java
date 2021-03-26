@@ -29,8 +29,4 @@ public class ConsultingUser {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ConsultingIdx")
     private ConsultingAdmin consultingAdmin;
-
-    // ============== 태그 매핑(연관관계 노예) =================== //
-    @OneToMany(mappedBy = "consultingUser", fetch = FetchType.LAZY)
-    private List<ConsultingUserTag> consultingUserTags = new ArrayList<>();
 }

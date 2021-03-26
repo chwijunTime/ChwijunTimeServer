@@ -57,39 +57,6 @@ public class Member implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    // ================= 연관관계 노예 ================ //
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<Notice> notices = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<ApplicationEmployment> applicationEmployments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<TipsStorage> tipsStorages = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<CompanyReview> companyReviews = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<MemberResume> memberResumes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<EmploymentConfirmation> employmentConfirmations = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<MemberPortfolio> memberPortfolios = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<ContractingCompany> contractingCompanies = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<ConsultingAdmin> consultingAdmins = new ArrayList<>();
-
-    // ============== 태그 매핑(연관관계 노예) =============== //
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<MemberTag> memberTags = new ArrayList<>();
-
-
     // ===================== UserDetails ========================== //
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

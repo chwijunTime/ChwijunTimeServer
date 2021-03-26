@@ -1,8 +1,11 @@
 package com.gsm.chwijuntime.controller.release;
 
-import com.gsm.chwijuntime.dto.MemberJoinDTO;
+import com.gsm.chwijuntime.dto.MemberJoinDto;
+import com.gsm.chwijuntime.dto.MemberLoginDto;
+import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
+import com.gsm.chwijuntime.model.response.SingleResult;
 import com.gsm.chwijuntime.service.MemberService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +24,15 @@ public class MemberController {
     private final ResponseService responseService;
 
     @PostMapping("/join")
-    public CommonResult join(@RequestBody MemberJoinDTO memberJoinDTO) throws IllegalAccessException {
-        memberService.InsertMember(memberJoinDTO);
+    public CommonResult join(@RequestBody MemberJoinDto memberJoinDto) throws IllegalAccessException {
+        memberService.InsertMember(memberJoinDto);
         return responseService.getSuccessResult();
     }
 
+    @PostMapping("/login")
+    public Object login(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
+        Member member = memberService.findMember(memberLoginDto);
+        return member;
+    }
 
 }
