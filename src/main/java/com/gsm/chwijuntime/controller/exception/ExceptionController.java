@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/v1/exception")
+@RequestMapping(value = "/exception")
 public class ExceptionController {
 
     @GetMapping(value = "/entrypoint")

@@ -8,6 +8,8 @@ import com.gsm.chwijuntime.model.response.ResponseService;
 import com.gsm.chwijuntime.model.response.SingleResult;
 import com.gsm.chwijuntime.service.MemberService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +32,15 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public SingleResult<Member> login(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
-        Member member = memberService.findMember(memberLoginDto);
+    public SingleResult<String> login(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
+        String member = memberService.findMember(memberLoginDto);
         return responseService.getSingleResult(member);
     }
 
     @PostMapping("/logout")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     public CommonResult logout() {
         memberService.logoutMember();
         return responseService.getSuccessResult();

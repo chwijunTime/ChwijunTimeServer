@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(userEmail);
 
                 if(jwtTokenProvider.validateToken(jwtToken, userDetails)){
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
@@ -73,7 +73,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     Member member = new Member();
                     member.Change_Email(refreshUName);
                     String newToken = jwtTokenProvider.generateToken(member);
-                    redisUtil.setDataExpire(newToken, member.getUsername(), jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
+                    redisUtil.setDataExpire(member.getUsername(), newToken, jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
                 }
             }
         }catch(ExpiredJwtException e){
