@@ -1,14 +1,12 @@
 package com.gsm.chwijuntime.service;
 
 import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
+import com.gsm.chwijuntime.advice.exception.IncorrectPasswordException;
 import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
 import com.gsm.chwijuntime.dto.MemberJoinDto;
 import com.gsm.chwijuntime.dto.MemberLoginDto;
-import com.gsm.chwijuntime.handler.CustomAccessDeniedHandler;
 import com.gsm.chwijuntime.model.Member;
-import com.gsm.chwijuntime.model.MemberAuth;
 import com.gsm.chwijuntime.repository.MemberRepository;
-import com.gsm.chwijuntime.util.JwtTokenProvider;
 import com.gsm.chwijuntime.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,7 +43,7 @@ public class MemberService {
         Member member = memberRepository.findByMemberEmail(memberLoginDto.getMemberEmail()).orElseThrow(EmailNotFoundException::new);
         boolean check = passwordEncoder.matches(memberLoginDto.getMemberPasword(), member.getMemberPassword());
         if(!check) {
-            throw new Exception("비밀번호가 틀렸습니다.");
+            throw new IncorrectPasswordException();
         }
         return member;
     }
