@@ -1,6 +1,8 @@
 package com.gsm.chwijuntime.advice;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
+import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,18 @@ public class ExceptionAdvice {
     @ExceptionHandler(AccessDeniedException.class)
     public CommonResult AccessDeniedException(HttpServletRequest request, AccessDeniedException e) {
         return responseService.getFailResult(Integer.valueOf(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
+    }
+
+    //유저 중복 Exception
+    @ExceptionHandler(UserDuplicationException.class)
+    public CommonResult UserDuplicationException(HttpServletRequest request, UserDuplicationException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("UserDuplicationException.code")), getMessage("UserDuplicationException.msg"));
+    }
+
+    //유저 이메일 없음 Exception
+    @ExceptionHandler(EmailNotFoundException.class)
+    public CommonResult EmailNotFoundException(HttpServletRequest request, EmailNotFoundException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("EmailNotFoundException.code")), getMessage("EmailNotFoundException.msg"));
     }
 
 

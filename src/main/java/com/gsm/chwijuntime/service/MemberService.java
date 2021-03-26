@@ -1,7 +1,10 @@
 package com.gsm.chwijuntime.service;
 
+import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
+import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
 import com.gsm.chwijuntime.dto.MemberJoinDto;
 import com.gsm.chwijuntime.dto.MemberLoginDto;
+import com.gsm.chwijuntime.handler.CustomAccessDeniedHandler;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.MemberAuth;
 import com.gsm.chwijuntime.repository.MemberRepository;
@@ -33,13 +36,13 @@ public class MemberService {
             memberJoinDto.setMemberPassword(passwordEncoder.encode(password));
             memberRepository.save(memberJoinDto.ToEntity()).getMemberIdx();
         } else {
-            throw new IllegalAccessException("이메일 중복");
+            throw new UserDuplicationException();
         }
     }
 
 
     public Member findMember(MemberLoginDto memberLoginDto) throws Exception {
-        Member member = memberRepository.findByMemberEmail(memberLoginDto.getMemberEmail()).orElseThrow(null);
+        Member member = memberRepository.findByMemberEmail(memberLoginDto.getMemberEmail()).orElseThrow(EmailNotFoundException::new);
         boolean check = passwordEncoder.matches(memberLoginDto.getMemberPasword(), member.getMemberPassword());
         if(!check) {
             throw new Exception("비밀번호가 틀렸습니다.");

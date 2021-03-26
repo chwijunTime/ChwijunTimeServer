@@ -1,6 +1,8 @@
 package com.gsm.chwijuntime.controller.exception;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
+import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -23,5 +25,14 @@ public class ExceptionController {
         throw new AccessDeniedException("");
     }
 
+    @GetMapping(value = "/UserDuplicationException")
+    public CommonResult UserDuplicationException() {
+        throw new UserDuplicationException();
+    }
+
+    @GetMapping(value = "/EmailNotFoundException")
+    public CommonResult EmailNotFoundException() {
+        throw new EmailNotFoundException();
+    }
 
 }

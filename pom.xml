@@ -138,6 +138,11 @@
             <artifactId>yaml-resource-bundle</artifactId>
             <version>1.1</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
