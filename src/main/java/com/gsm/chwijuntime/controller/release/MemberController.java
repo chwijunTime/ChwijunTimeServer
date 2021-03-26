@@ -30,9 +30,9 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public Object login(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
+    public SingleResult<Member> login(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
         Member member = memberService.findMember(memberLoginDto);
-        return member;
+        return responseService.getSingleResult(member);
     }
 
 }

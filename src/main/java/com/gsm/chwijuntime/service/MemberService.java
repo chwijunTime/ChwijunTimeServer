@@ -34,7 +34,6 @@ public class MemberService {
 
     public Member findMember(MemberLoginDto memberLoginDto) throws Exception {
         Member member = memberRepository.findByMemberEmail(memberLoginDto.getMemberEmail()).orElseThrow(null);
-        System.out.println("member = " + member.getMemberEmail());
         boolean check = passwordEncoder.matches(memberLoginDto.getMemberPasword(), member.getMemberPassword());
         if(!check) {
             throw new Exception("비밀번호가 틀렸습니다.");
