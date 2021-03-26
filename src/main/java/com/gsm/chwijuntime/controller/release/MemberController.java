@@ -7,12 +7,19 @@ import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import com.gsm.chwijuntime.model.response.SingleResult;
 import com.gsm.chwijuntime.service.MemberService;
+import com.gsm.chwijuntime.util.JwtTokenProvider;
+import com.gsm.chwijuntime.util.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 @Api(tags = {"1. 회원"})
 @RequiredArgsConstructor
@@ -24,6 +31,8 @@ public class MemberController {
 
     private final MemberService memberService;
     private final ResponseService responseService;
+    private final RedisUtil redisUtil;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/join")
     public CommonResult join(@RequestBody MemberJoinDto memberJoinDto) throws IllegalAccessException {
@@ -32,9 +41,21 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public SingleResult<String> login(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
-        String member = memberService.findMember(memberLoginDto);
-        return responseService.getSingleResult(member);
+    public SingleResult<Map<String, String>> login(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
+        Map<String ,String> map = new HashMap<>();
+        Member member = memberService.findMember(memberLoginDto);
+
+        String accessToken = jwtTokenProvider.generateToken(member);
+        String refreshToken = jwtTokenProvider.generateRefreshToken(member);
+        Iterator<? extends GrantedAuthority> authorityIterator = member.getAuthorities().iterator();
+        String roles = authorityIterator.next().toString();
+        redisUtil.setDataExpire(member.getUsername(), refreshToken, jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
+
+        map.put("userEmail", member.getMemberEmail());
+        map.put("userClassNumber", member.getMemberClassNumber());
+        map.put("roles", roles);
+        map.put("accessToken", accessToken);
+        return responseService.getSingleResult(map);
     }
 
     @PostMapping("/logout")

@@ -3,6 +3,7 @@ package com.gsm.chwijuntime.service;
 import com.gsm.chwijuntime.dto.MemberJoinDto;
 import com.gsm.chwijuntime.dto.MemberLoginDto;
 import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.MemberAuth;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.util.JwtTokenProvider;
 import com.gsm.chwijuntime.util.RedisUtil;
@@ -23,7 +24,6 @@ public class MemberService {
     private final RedisUtil redisUtil;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
     public void InsertMember(MemberJoinDto memberJoinDto) throws IllegalAccessException {
@@ -38,16 +38,13 @@ public class MemberService {
     }
 
 
-    public String findMember(MemberLoginDto memberLoginDto) throws Exception {
+    public Member findMember(MemberLoginDto memberLoginDto) throws Exception {
         Member member = memberRepository.findByMemberEmail(memberLoginDto.getMemberEmail()).orElseThrow(null);
         boolean check = passwordEncoder.matches(memberLoginDto.getMemberPasword(), member.getMemberPassword());
         if(!check) {
             throw new Exception("비밀번호가 틀렸습니다.");
         }
-        String accessToken = jwtTokenProvider.generateToken(member);
-        String refreshToken = jwtTokenProvider.generateRefreshToken(member);
-        redisUtil.setDataExpire(member.getUsername(), refreshToken, jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
-        return accessToken;
+        return member;
     }
 
     public void logoutMember() {

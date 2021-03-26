@@ -31,12 +31,9 @@ public class Member implements UserDetails {
     @Column(nullable = false)
     private String memberEmail;
 
-    @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false, length = 100)
     private String memberPassword;
-
-    @Enumerated(EnumType.STRING)
-    private MemberGender memberGender;
 
     @Column(nullable = false, length = 4)
     private String memberClassNumber;
