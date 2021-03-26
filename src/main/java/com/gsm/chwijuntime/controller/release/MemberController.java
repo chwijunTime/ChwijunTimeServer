@@ -35,4 +35,9 @@ public class MemberController {
         return responseService.getSingleResult(member);
     }
 
+    @PostMapping("/logout")
+    public CommonResult logout() {
+        memberService.logoutMember();
+        return responseService.getSuccessResult();
+    }
 }
