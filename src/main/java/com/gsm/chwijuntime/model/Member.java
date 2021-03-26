@@ -1,8 +1,6 @@
 package com.gsm.chwijuntime.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gsm.chwijuntime.model.tagmapping.EmploymentAnnouncementTag;
-import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
