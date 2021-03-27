@@ -44,8 +44,8 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
 
     @Bean
     public Docket apiTest() {
-        version = "v2";
-        title = "JupJup API " + version;
+        version = "v1";
+        title = "ChwijunTime API" + version;
 
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)

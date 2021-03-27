@@ -12,6 +12,7 @@ import com.gsm.chwijuntime.util.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,12 +35,14 @@ public class MemberController {
     private final RedisUtil redisUtil;
     private final JwtTokenProvider jwtTokenProvider;
 
+    @ApiOperation(value = "가입", notes = "회원가입을 한다.")
     @PostMapping("/join")
     public CommonResult join(@RequestBody MemberJoinDto memberJoinDto) throws IllegalAccessException {
         memberService.InsertMember(memberJoinDto);
         return responseService.getSuccessResult();
     }
 
+    @ApiOperation(value = "로그인", notes = "이메일 회원 로그인을 한다.")
     @PostMapping("/login")
     public SingleResult<Map<String, String>> login(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
         Map<String ,String> map = new HashMap<>();
@@ -58,6 +61,7 @@ public class MemberController {
         return responseService.getSingleResult(map);
     }
 
+    @ApiOperation(value = "로그아웃", notes = "사용자가 로그아웃한다.")
     @PostMapping("/logout")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
