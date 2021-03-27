@@ -32,8 +32,4 @@ public class TipsStorage {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MemberIdx")
     private Member member;
-
-    // ============== 태그 매핑(연관관계 노예) =================== //
-    @OneToMany(mappedBy = "tipsStorage", fetch = FetchType.LAZY)
-    private List<TipsStorageTag> tipsStorageTags = new ArrayList<>();
 }

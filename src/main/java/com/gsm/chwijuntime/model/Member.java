@@ -1,82 +1,103 @@
 package com.gsm.chwijuntime.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gsm.chwijuntime.model.tagmapping.EmploymentAnnouncementTag;
-import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Member implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long MemberIdx;
+    private Long memberIdx;
 
     @Column(nullable = false)
-    private String MemberEmail;
+    private String memberEmail;
 
-    @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String MemberPassword;
-
-    @Enumerated(EnumType.STRING)
-    private MemberGender MemberGender;
+    @Column(nullable = false, length = 100)
+    private String memberPassword;
 
     @Column(nullable = false, length = 4)
-    private String MemberClassNumber;
+    private String memberClassNumber;
 
-    @Column(nullable = false, length = 13)
-    private String MemberPhoneNumber;
+    @Column(length = 13)
+    private String memberPhoneNumber;
 
-    private String MemberHomeAddress;
+    private String memberHomeAddress;
 
-    private LocalDateTime MemberCreated;
+    private LocalDateTime memberCreated;
 
-    private LocalDateTime MemberDeleted;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    private MemberDelflag memberDelflag;
+    // ===================== UserDetails ========================== //
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
 
-    // ================= 연관관계 노예 ================ //
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<Notice> notices = new ArrayList<>();
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public String getPassword() {
+        return this.memberPassword;
+    }
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<ApplicationEmployment> applicationEmployments = new ArrayList<>();
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public String getUsername() {
+        return this.memberEmail;
+    }
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<TipsStorage> tipsStorages = new ArrayList<>();
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<CompanyReview> companyReviews = new ArrayList<>();
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<MemberResume> memberResumes = new ArrayList<>();
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<EmploymentConfirmation> employmentConfirmations = new ArrayList<>();
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<MemberPortfolio> memberPortfolios = new ArrayList<>();
+    // ==================== 비즈니스 로직 ==================== //
+    public void Change_Email(String email){
+        this.memberEmail = email;
+    }
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<ContractingCompany> contractingCompanies = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<ConsultingAdmin> consultingAdmins = new ArrayList<>();
-
-    // ============== 태그 매핑(연관관계 노예) -=============== //
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<MemberTag> memberTags = new ArrayList<>();
+    public String String_Role(Member member){
+        Iterator<? extends GrantedAuthority> authorityIterator = member.getAuthorities().iterator();
+        return authorityIterator.next().toString();
+    }
 }

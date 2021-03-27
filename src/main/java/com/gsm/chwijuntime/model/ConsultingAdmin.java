@@ -28,9 +28,4 @@ public class ConsultingAdmin {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MemberIdx")
     private Member member;
-
-
-    // ================ 연관관계 노예 ===================== //
-    @OneToOne(mappedBy = "consultingAdmin", fetch = FetchType.LAZY)
-    private ConsultingUser consultingAdmins;
 }

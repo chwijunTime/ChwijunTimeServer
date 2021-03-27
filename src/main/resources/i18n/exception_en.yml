@@ -1,0 +1,15 @@
+# exception_en.yml
+unKnown:
+  code: "-9999"
+entryPointException:
+  code: "-1"
+  msg: "로그인이 필요합니다."
+accessDenied:
+  code: "-2"
+  msg: "관리자 권한이 없습니다."
+UserDuplicationException:
+  code: "-3"
+  msg: "이메일이 중복 되었습니다."
+EmailNotFoundException:
+  code: "-4"
+  msg: "이메일을 다시 입력해주세요."
