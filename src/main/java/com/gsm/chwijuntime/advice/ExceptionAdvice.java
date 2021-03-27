@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.advice;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
+import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
@@ -54,4 +55,9 @@ public class ExceptionAdvice {
     }
 
 
+    // 태그 없음
+    @ExceptionHandler(NotFoundTagException.class)
+    public CommonResult NotFoundTagException(HttpServletRequest request, NotFoundTagException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundTagException.code")), getMessage("NotFoundTagException.msg"));
+    }
 }

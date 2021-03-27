@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.controller.exception;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
+import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,11 @@ public class ExceptionController {
     @GetMapping(value = "/EmailNotFoundException")
     public CommonResult EmailNotFoundException() {
         throw new EmailNotFoundException();
+    }
+
+    @GetMapping(value = "/NotFoundTagException")
+    public CommonResult NotFoundTagException() {
+        throw new NotFoundTagException();
     }
 
 }
