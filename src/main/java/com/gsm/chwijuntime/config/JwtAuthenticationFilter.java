@@ -27,7 +27,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomUserDetailService customUserDetailService;
-    private final CookieUtil cookieUtil;
     private final RedisUtil redisUtil;
 
     @Override
