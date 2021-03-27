@@ -1,4 +1,4 @@
-package com.gsm.chwijuntime.dto;
+package com.gsm.chwijuntime.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

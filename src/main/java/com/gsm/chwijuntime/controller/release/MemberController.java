@@ -1,13 +1,13 @@
 package com.gsm.chwijuntime.controller.release;
 
-import com.gsm.chwijuntime.dto.MemberJoinDto;
-import com.gsm.chwijuntime.dto.MemberLoginDto;
-import com.gsm.chwijuntime.dto.MemberLoginResDto;
+import com.gsm.chwijuntime.dto.member.MemberJoinDto;
+import com.gsm.chwijuntime.dto.member.MemberLoginDto;
+import com.gsm.chwijuntime.dto.member.MemberLoginResDto;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import com.gsm.chwijuntime.model.response.SingleResult;
-import com.gsm.chwijuntime.service.MemberService;
+import com.gsm.chwijuntime.service.member.MemberService;
 import com.gsm.chwijuntime.util.JwtTokenProvider;
 import com.gsm.chwijuntime.util.RedisUtil;
 import io.swagger.annotations.Api;
@@ -16,12 +16,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 @Api(tags = {"1. 회원"})
 @RequiredArgsConstructor

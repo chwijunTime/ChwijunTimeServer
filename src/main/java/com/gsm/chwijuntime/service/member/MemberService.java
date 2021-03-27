@@ -1,7 +1,7 @@
-package com.gsm.chwijuntime.service;
+package com.gsm.chwijuntime.service.member;
 
-import com.gsm.chwijuntime.dto.MemberJoinDto;
-import com.gsm.chwijuntime.dto.MemberLoginDto;
+import com.gsm.chwijuntime.dto.member.MemberJoinDto;
+import com.gsm.chwijuntime.dto.member.MemberLoginDto;
 import com.gsm.chwijuntime.model.Member;
 
 public interface MemberService {

@@ -1,16 +1,15 @@
-package com.gsm.chwijuntime.service;
+package com.gsm.chwijuntime.service.member;
 
 import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
 import com.gsm.chwijuntime.advice.exception.IncorrectPasswordException;
 import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
-import com.gsm.chwijuntime.dto.MemberJoinDto;
-import com.gsm.chwijuntime.dto.MemberLoginDto;
+import com.gsm.chwijuntime.dto.member.MemberJoinDto;
+import com.gsm.chwijuntime.dto.member.MemberLoginDto;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

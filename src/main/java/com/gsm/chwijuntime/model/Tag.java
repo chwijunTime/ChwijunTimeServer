@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.model;
 
 import com.gsm.chwijuntime.model.tagmapping.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,12 +13,12 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
+@Builder
 public class Tag {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long TagIdx;
+    private Long tagIdx;
 
     @Column(nullable = false)
-    private String TagName;
+    private String tagName;
 }

@@ -3,9 +3,10 @@ package com.gsm.chwijuntime.service;
 import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
 import com.gsm.chwijuntime.advice.exception.IncorrectPasswordException;
 import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
-import com.gsm.chwijuntime.dto.MemberJoinDto;
-import com.gsm.chwijuntime.dto.MemberLoginDto;
+import com.gsm.chwijuntime.dto.member.MemberJoinDto;
+import com.gsm.chwijuntime.dto.member.MemberLoginDto;
 import com.gsm.chwijuntime.repository.MemberRepository;
+import com.gsm.chwijuntime.service.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,8 @@ import static org.junit.Assert.*;
 @Transactional
 public class memberServiceTest {
 
-    @Autowired MemberService memberService;
+    @Autowired
+    MemberService memberService;
     @Autowired MemberRepository memberRepository;
 
     @Before
