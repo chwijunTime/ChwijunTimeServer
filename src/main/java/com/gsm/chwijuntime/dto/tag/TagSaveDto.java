@@ -1,13 +1,13 @@
 package com.gsm.chwijuntime.dto.tag;
 
 import com.gsm.chwijuntime.model.Tag;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TagSaveDto {
 
     private String tagName;
