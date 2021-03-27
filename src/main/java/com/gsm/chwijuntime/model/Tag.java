@@ -19,4 +19,8 @@ public class Tag {
 
     @Column(nullable = false)
     private String tagName;
+
+    public void ChangeTagName(String tagName) {
+        this.tagName = tagName;
+    }
 }

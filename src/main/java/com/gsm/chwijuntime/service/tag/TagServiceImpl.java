@@ -34,6 +34,14 @@ public class TagServiceImpl implements TagService {
 
     @Transactional
     @Override
+    public Tag updateTag(Long tagIdx, String tagName) {
+        Tag tag = tagRepository.findById(tagIdx).orElseThrow(NotFoundTagException::new);
+        tag.ChangeTagName(tagName);
+        return tag;
+    }
+
+    @Transactional
+    @Override
     public void deleteTag(Long tagIdx) {
         Long tag = tagRepository.findById(tagIdx).orElseThrow(NotFoundTagException::new).getTagIdx();
         tagRepository.deleteById(tag);

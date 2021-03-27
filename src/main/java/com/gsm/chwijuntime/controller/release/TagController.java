@@ -67,4 +67,13 @@ public class TagController {
         return responseService.getSuccessResult();
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ApiOperation(value = "태그 이름 수정", notes = "관리자가 태그의 이름을 수정한다.")
+    @PutMapping("/tag/{tagIdx}")
+    public SingleResult<Tag> updateByTagIdx(@PathVariable Long tagIdx, @RequestBody TagSaveDto tagSaveDto){
+        Tag tag = tagService.updateTag(tagIdx, tagSaveDto.getTagName());
+        return responseService.getSingleResult(tag);
+    }
 }
