@@ -9,4 +9,5 @@ public interface MemberService {
     void InsertMember(MemberJoinDto memberJoinDto);
     Member findMember(MemberLoginDto memberLoginDto);
     void logoutMember();
+    Member UserInfo();
 }

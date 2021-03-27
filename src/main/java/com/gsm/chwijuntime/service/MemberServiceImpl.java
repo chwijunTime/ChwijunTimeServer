@@ -10,6 +10,7 @@ import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,12 @@ public class MemberServiceImpl implements MemberService {
     public void logoutMember() {
         String userEmail = GetUserEmail();
         redisUtil.deleteData(userEmail);
+    }
+
+    @Override
+    public Member UserInfo() {
+        String UserEmail = GetUserEmail();
+        return memberRepository.findByMemberEmail(UserEmail).orElseThrow(null);
     }
 
     //현재 사용자의 ID를 Return

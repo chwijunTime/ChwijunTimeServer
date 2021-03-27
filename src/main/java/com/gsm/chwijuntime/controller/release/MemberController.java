@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.controller.release;
 
 import com.gsm.chwijuntime.dto.MemberJoinDto;
 import com.gsm.chwijuntime.dto.MemberLoginDto;
+import com.gsm.chwijuntime.dto.MemberLoginResDto;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
@@ -44,21 +45,14 @@ public class MemberController {
 
     @ApiOperation(value = "로그인", notes = "이메일 회원 로그인을 한다.")
     @PostMapping("/login")
-    public SingleResult<Map<String, String>> login(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
-        Map<String ,String> map = new HashMap<>();
+    public SingleResult<MemberLoginResDto> login(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
         Member member = memberService.findMember(memberLoginDto);
-
         String accessToken = jwtTokenProvider.generateToken(member);
         String refreshToken = jwtTokenProvider.generateRefreshToken(member);
-        Iterator<? extends GrantedAuthority> authorityIterator = member.getAuthorities().iterator();
-        String roles = authorityIterator.next().toString();
+        String roles = member.String_Role(member);
         redisUtil.setDataExpire(member.getUsername(), refreshToken, jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
-
-        map.put("userEmail", member.getMemberEmail());
-        map.put("userClassNumber", member.getMemberClassNumber());
-        map.put("roles", roles);
-        map.put("accessToken", accessToken);
-        return responseService.getSingleResult(map);
+        MemberLoginResDto memberLoginResDto = MemberLoginResDto.mapping(member.getMemberEmail(), member.getMemberClassNumber(), roles, accessToken);
+        return responseService.getSingleResult(memberLoginResDto);
     }
 
     @ApiOperation(value = "로그아웃", notes = "사용자가 로그아웃한다.")
@@ -69,5 +63,15 @@ public class MemberController {
     public CommonResult logout() {
         memberService.logoutMember();
         return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value = "유저 정보", notes = "현재 로그인 된 유저 정보를 가져온다.")
+    @PostMapping("/userinfo")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    public SingleResult<Member> userinfo(){
+        Member member = memberService.UserInfo();
+        return responseService.getSingleResult(member);
     }
 }
