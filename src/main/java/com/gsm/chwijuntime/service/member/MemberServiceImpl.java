@@ -5,8 +5,13 @@ import com.gsm.chwijuntime.advice.exception.IncorrectPasswordException;
 import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
 import com.gsm.chwijuntime.dto.member.MemberJoinDto;
 import com.gsm.chwijuntime.dto.member.MemberLoginDto;
+import com.gsm.chwijuntime.dto.member.MemberProfileSaveDto;
 import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.Tag;
+import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 import com.gsm.chwijuntime.repository.MemberRepository;
+import com.gsm.chwijuntime.repository.TagRepository;
+import com.gsm.chwijuntime.repository.tag.MemberTagRepository;
 import com.gsm.chwijuntime.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +29,8 @@ public class MemberServiceImpl implements MemberService {
 
     private final RedisUtil redisUtil;
     private final MemberRepository memberRepository;
+    private final MemberTagRepository memberTagRepository;
+    private final TagRepository tagRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -33,7 +40,7 @@ public class MemberServiceImpl implements MemberService {
         if(member.isEmpty()) {
             String password = memberJoinDto.getMemberPassword();
             memberJoinDto.setMemberPassword(passwordEncoder.encode(password));
-            memberRepository.save(memberJoinDto.ToEntity()).getMemberIdx();
+            memberRepository.save(memberJoinDto.ToEntityByMember()).getMemberIdx();
         } else {
             throw new UserDuplicationException();
         }
@@ -59,6 +66,20 @@ public class MemberServiceImpl implements MemberService {
     public Member UserInfo() {
         String UserEmail = GetUserEmail();
         return memberRepository.findByMemberEmail(UserEmail).orElseThrow(null);
+    }
+
+    @Transactional
+    @Override
+    public void memberProfileSave(MemberProfileSaveDto memberProfileSaveDto) {
+        for (String i : memberProfileSaveDto.getTagName()) {
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(null);
+            String userEmail = GetUserEmail();
+            Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(null);
+            memberProfileSaveDto.MappingTag_Member(tag, member);
+            //프로필 업데이트
+            member.Change_profile(memberProfileSaveDto.getMemberPhoneNumber(), memberProfileSaveDto.getMemberETC());
+            memberTagRepository.save(memberProfileSaveDto.ToEntityByMemberTag());
+        }
     }
 
     //현재 사용자의 ID를 Return

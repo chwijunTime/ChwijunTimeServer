@@ -40,7 +40,9 @@ public class Member implements UserDetails {
     @Column(length = 13)
     private String memberPhoneNumber;
 
-    private String memberHomeAddress;
+    @Column
+    private String memberETC;
+
 
     private LocalDateTime memberCreated;
 
@@ -99,5 +101,10 @@ public class Member implements UserDetails {
     public String String_Role(Member member){
         Iterator<? extends GrantedAuthority> authorityIterator = member.getAuthorities().iterator();
         return authorityIterator.next().toString();
+    }
+
+    public void Change_profile(String memberPhoneNumber, String memberETC){
+        this.memberPhoneNumber = memberPhoneNumber;
+        this.memberETC = memberETC;
     }
 }
