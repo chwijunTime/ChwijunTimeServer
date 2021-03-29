@@ -1,9 +1,6 @@
 package com.gsm.chwijuntime.controller.release;
 
-import com.gsm.chwijuntime.dto.member.MemberJoinDto;
-import com.gsm.chwijuntime.dto.member.MemberLoginDto;
-import com.gsm.chwijuntime.dto.member.MemberLoginResDto;
-import com.gsm.chwijuntime.dto.member.MemberProfileSaveDto;
+import com.gsm.chwijuntime.dto.member.*;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
@@ -79,5 +76,15 @@ public class MemberController {
     public CommonResult profile(@RequestBody MemberProfileSaveDto memberProfileSaveDto){
         memberService.memberProfileSave(memberProfileSaveDto);
         return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value = "프로필 보기", notes = "유저가 프로필을 확인한다.")
+    @PostMapping("/view-profile")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    public SingleResult<MemberTagResDto> view_profile(){
+        MemberTagResDto viewMember = memberService.viewMember();
+        return responseService.getSingleResult(viewMember);
     }
 }

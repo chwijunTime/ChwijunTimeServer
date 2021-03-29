@@ -6,6 +6,7 @@ import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
 import com.gsm.chwijuntime.dto.member.MemberJoinDto;
 import com.gsm.chwijuntime.dto.member.MemberLoginDto;
 import com.gsm.chwijuntime.dto.member.MemberProfileSaveDto;
+import com.gsm.chwijuntime.dto.member.MemberTagResDto;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.model.tagmapping.MemberTag;
@@ -13,6 +14,7 @@ import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.repository.TagRepository;
 import com.gsm.chwijuntime.repository.tag.MemberTagRepository;
 import com.gsm.chwijuntime.util.RedisUtil;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -80,6 +83,18 @@ public class MemberServiceImpl implements MemberService {
             member.Change_profile(memberProfileSaveDto.getMemberPhoneNumber(), memberProfileSaveDto.getMemberETC());
             memberTagRepository.save(memberProfileSaveDto.ToEntityByMemberTag());
         }
+    }
+
+    @Transactional
+    @Override
+    public void updateMemberProfile(MemberProfileSaveDto memberProfileSaveDto) {
+        //나중에 생각
+    }
+
+    @Override
+    public MemberTagResDto viewMember() {
+        //fetch Join 사용하기
+        return null;
     }
 
     //현재 사용자의 ID를 Return
