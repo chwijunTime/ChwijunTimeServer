@@ -7,6 +7,8 @@ import com.gsm.chwijuntime.dto.member.MemberTagResDto;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface MemberService {
 
     void InsertMember(MemberJoinDto memberJoinDto);
