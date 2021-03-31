@@ -13,9 +13,7 @@ import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.repository.TagRepository;
 import com.gsm.chwijuntime.repository.tag.MemberTagRepository;
-import com.gsm.chwijuntime.util.JwtTokenProvider;
 import com.gsm.chwijuntime.util.RedisUtil;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +31,6 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final RedisUtil redisUtil;
-    private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
     private final MemberTagRepository memberTagRepository;
     private final TagRepository tagRepository;
@@ -104,10 +100,8 @@ public class MemberServiceImpl implements MemberService {
         for (MemberTag memberTag : findMemberTag) {
             String Name = memberTag.getTag().getTagName();
             System.out.println("Name = " + Name);
-
             Tag tag = tagRepository.findByTagName(Name);
             tags.add(tag);
-
         }
         MemberTagResDto memberTagResDto = MemberTagResDto.mapping(findMember, tags);
         return memberTagResDto;

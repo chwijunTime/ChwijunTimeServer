@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Tag {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
