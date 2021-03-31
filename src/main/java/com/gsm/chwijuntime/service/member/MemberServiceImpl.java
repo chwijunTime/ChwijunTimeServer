@@ -79,7 +79,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void memberProfileSave(MemberProfileSaveDto memberProfileSaveDto) {
         for (String i : memberProfileSaveDto.getTagName()) {
-            Tag tag = tagRepository.findByTagName(i).orElseThrow(null);
+            Tag tag = tagRepository.findByTagName(i);
             String userEmail = GetUserEmail();
             Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(null);
             memberProfileSaveDto.MappingTag_Member(tag, member);
@@ -104,6 +104,10 @@ public class MemberServiceImpl implements MemberService {
         for (MemberTag memberTag : findMemberTag) {
             String Name = memberTag.getTag().getTagName();
             System.out.println("Name = " + Name);
+
+            Tag tag = tagRepository.findByTagName(Name);
+            tags.add(tag);
+
         }
         MemberTagResDto memberTagResDto = MemberTagResDto.mapping(findMember, tags);
         return memberTagResDto;

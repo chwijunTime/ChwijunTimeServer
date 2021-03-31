@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Tag {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

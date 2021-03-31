@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Member implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

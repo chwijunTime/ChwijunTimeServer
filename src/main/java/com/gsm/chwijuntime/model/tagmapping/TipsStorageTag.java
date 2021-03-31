@@ -17,11 +17,11 @@ public class TipsStorageTag {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long TipsStorageTagIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TagIdx")
     private Tag tag;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TipsStorageIdx")
     private TipsStorage tipsStorage;
 }

@@ -21,11 +21,11 @@ public class MemberTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long MemberTagIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TagIdx")
     private Tag tag;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MemberIdx")
     private Member member;
 

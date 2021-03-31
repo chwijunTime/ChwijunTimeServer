@@ -19,11 +19,11 @@ public class ContractingCompanyTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ContractingCompanyTagIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TagIdx")
     private Tag tag;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ContractingCompanyIdx")
     private ContractingCompany contractingCompany;
 
