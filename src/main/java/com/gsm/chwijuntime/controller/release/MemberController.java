@@ -85,8 +85,8 @@ public class MemberController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    public SingleResult<MemberTagResDto> view_profile(){
-        MemberTagResDto viewMember = memberService.viewMember();
+    public Object view_profile(){
+        Object viewMember = memberService.viewMember();
         return responseService.getSingleResult(viewMember);
     }
 }

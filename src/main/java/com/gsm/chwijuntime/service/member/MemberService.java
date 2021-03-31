@@ -17,6 +17,6 @@ public interface MemberService {
     Member UserInfo();
     void memberProfileSave(MemberProfileSaveDto memberProfileSaveDto);
     void updateMemberProfile(MemberProfileSaveDto memberProfileSaveDto);
-    MemberTagResDto viewMember();
+    Object viewMember();
 
 }

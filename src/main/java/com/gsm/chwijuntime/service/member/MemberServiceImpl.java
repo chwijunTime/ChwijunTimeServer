@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,10 +95,18 @@ public class MemberServiceImpl implements MemberService {
         //나중에 생각
     }
 
+    @Transactional
     @Override
     public MemberTagResDto viewMember() {
-        //fetch Join 사용하기
-        return null;
+        List<Tag> tags = new ArrayList<>();
+        Member findMember = memberRepository.findByMemberEmail(GetUserEmail()).orElseThrow(null);
+        List<MemberTag> findMemberTag = memberTagRepository.findByMember(findMember);
+        for (MemberTag memberTag : findMemberTag) {
+            String Name = memberTag.getTag().getTagName();
+            System.out.println("Name = " + Name);
+        }
+        MemberTagResDto memberTagResDto = MemberTagResDto.mapping(findMember, tags);
+        return memberTagResDto;
     }
 
     //현재 사용자의 ID를 Return
