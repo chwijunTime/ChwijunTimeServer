@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -36,6 +37,11 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public ContractingCompanyResDto findByContractingCompanyIdx(Long idx) {
+        ContractingCompanyResDto contractingCompanyResDto = contractingCompanyRepository.findById(idx).map(m -> mapper.map(m, ContractingCompanyResDto.class)).orElseThrow(null);
+        return contractingCompanyResDto;
+    }
 
     //현재 사용자의 ID를 Return
     public String GetUserEmail() {

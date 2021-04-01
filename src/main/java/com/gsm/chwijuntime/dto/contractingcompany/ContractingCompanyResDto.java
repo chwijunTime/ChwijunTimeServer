@@ -16,5 +16,4 @@ public class ContractingCompanyResDto {
     private String contractingCompanyAboutUs;
     private String contractingCompanyAverageAnnualSalary;
 
-
 }
