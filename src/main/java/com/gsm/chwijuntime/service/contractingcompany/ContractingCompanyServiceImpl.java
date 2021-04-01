@@ -4,8 +4,11 @@ import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanyResDto;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
 import com.gsm.chwijuntime.model.ContractingCompany;
 import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.repository.ContractingCompanyRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
+import com.gsm.chwijuntime.repository.TagRepository;
+import com.gsm.chwijuntime.repository.tag.ContractingCompanyTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,13 +24,21 @@ import java.util.stream.Collectors;
 public class ContractingCompanyServiceImpl implements ContractingCompanyService {
 
     private final ContractingCompanyRepository contractingCompanyRepository;
+    private final ContractingCompanyTagRepository contractingCompanyTagRepository;
     private final MemberRepository memberRepository;
+    private final TagRepository tagRepository;
     private final ModelMapper mapper;
 
     @Override
     public void insertContractingCompany(ContractingCompanySaveDto contractingCompanySaveDto) {
         Member member = memberRepository.findByMemberEmail(GetUserEmail()).orElseThrow(null);
         contractingCompanyRepository.save(contractingCompanySaveDto.ToEntityByContractingCompany(member));
+        for (String i: contractingCompanySaveDto.getTagName()) {
+            Tag tag = tagRepository.findByTagName(i);
+            ContractingCompany contractingCompany = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
+            contractingCompanySaveDto.MappingTag_ContractingCompany(tag, contractingCompany);
+            contractingCompanyTagRepository.save(contractingCompanySaveDto.ToEntityByContractingCompanyTag());
+        }
     }
 
     @Override

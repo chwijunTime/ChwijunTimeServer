@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContractingCompanyRepository extends JpaRepository<ContractingCompany, Long> {
 
+    ContractingCompany findByContractingCompanyName(String name);
+
 }
