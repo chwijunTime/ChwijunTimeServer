@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.dto.contractingcompany;
 
+import com.gsm.chwijuntime.model.ContractingCompany;
 import lombok.*;
 
 @Getter

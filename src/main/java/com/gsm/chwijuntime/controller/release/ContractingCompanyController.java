@@ -2,7 +2,6 @@ package com.gsm.chwijuntime.controller.release;
 
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanyResDto;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
-import com.gsm.chwijuntime.model.ContractingCompany;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ListResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
@@ -59,4 +58,15 @@ public class ContractingCompanyController {
         ContractingCompanyResDto contractingCompanyResDto = contractingCompanyService.findByContractingCompanyIdx(companyidx);
         return responseService.getSingleResult(contractingCompanyResDto);
     }
+
+    @ApiOperation(value = "협약 업체 삭제", notes = "관리자가 협약 업체를 삭제한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @DeleteMapping("/contracting-company/{companyidx}")
+    public CommonResult deleteById(@PathVariable Long companyidx) {
+        contractingCompanyService.deleteContractingCompanyIdx(companyidx);
+        return responseService.getSuccessResult();
+    }
+
 }

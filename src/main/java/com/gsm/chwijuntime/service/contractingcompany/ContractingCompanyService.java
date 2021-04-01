@@ -11,7 +11,6 @@ public interface ContractingCompanyService {
     void insertContractingCompany(ContractingCompanySaveDto contractingCompanySaveDto);
     List<ContractingCompanyResDto> findAllContractingCompany();
     ContractingCompanyResDto findByContractingCompanyIdx(Long idx);
-
-
+    void deleteContractingCompanyIdx(Long idx);
 }
 

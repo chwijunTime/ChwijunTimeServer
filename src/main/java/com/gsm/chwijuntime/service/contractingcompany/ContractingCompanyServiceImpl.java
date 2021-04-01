@@ -11,9 +11,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -42,6 +42,13 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
         ContractingCompanyResDto contractingCompanyResDto = contractingCompanyRepository.findById(idx).map(m -> mapper.map(m, ContractingCompanyResDto.class)).orElseThrow(null);
         return contractingCompanyResDto;
     }
+
+    @Override
+    public void deleteContractingCompanyIdx(Long idx) {
+        ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(null);
+        contractingCompanyRepository.delete(contractingCompany);
+    }
+
 
     //현재 사용자의 ID를 Return
     public String GetUserEmail() {
