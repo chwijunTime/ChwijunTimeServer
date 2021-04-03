@@ -7,6 +7,7 @@ import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
 import com.gsm.chwijuntime.model.ContractingCompany;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
+import com.gsm.chwijuntime.model.tagmapping.ContractingCompanyTag;
 import com.gsm.chwijuntime.repository.ContractingCompanyRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.repository.TagRepository;
@@ -36,6 +37,8 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
         contractingCompanyRepository.save(contractingCompanySaveDto.ToEntityByContractingCompany(member));
         for (String i: contractingCompanySaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
+            //이름 중복
+
             ContractingCompany contractingCompany = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
             contractingCompanySaveDto.MappingTag_ContractingCompany(tag, contractingCompany);
             contractingCompanyTagRepository.save(contractingCompanySaveDto.ToEntityByContractingCompanyTag());
@@ -44,15 +47,28 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
 
     @Override
     public List<ContractingCompanyResDto> findAllContractingCompany() {
-        return contractingCompanyRepository.findAll().stream()
+        List<ContractingCompanyResDto> contractingCompanyResDtos = contractingCompanyRepository.findAll().stream()
                 .map(m -> mapper.map(m, ContractingCompanyResDto.class))
                 .collect(Collectors.toList());
+        for (ContractingCompanyResDto i : contractingCompanyResDtos) {
+            ContractingCompany contractingCompany = contractingCompanyRepository.findById(i.getContractingCompanyIdx()).orElseThrow(null);
+            List<ContractingCompanyTag> contractingCompanyTags = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
+            for (ContractingCompanyTag j : contractingCompanyTags) {
+                i.getContractingCompanyTags().add(j.getTag().getTagName());
+            }
+        }
+        return contractingCompanyResDtos;
     }
 
     @Override
     public ContractingCompanyResDto findByContractingCompanyIdx(Long idx) {
         ContractingCompanyResDto contractingCompanyResDto = contractingCompanyRepository.findById(idx)
                 .map(m -> mapper.map(m, ContractingCompanyResDto.class)).orElseThrow(NotFoundContractingCompanyException::new);
+        ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(null);
+        List<ContractingCompanyTag> allByContractingCompany = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
+        for (ContractingCompanyTag i : allByContractingCompany) {
+            contractingCompanyResDto.getContractingCompanyTags().add(i.getTag().getTagName());
+        }
         return contractingCompanyResDto;
     }
 
