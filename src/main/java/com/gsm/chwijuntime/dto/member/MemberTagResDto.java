@@ -1,11 +1,9 @@
 package com.gsm.chwijuntime.dto.member;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gsm.chwijuntime.model.Member;
-import com.gsm.chwijuntime.model.Tag;
-import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -16,12 +14,12 @@ import java.util.List;
 public class MemberTagResDto {
 
     private Member member;
-    private List<Tag> tags;
+    private List<String> memberTags = new ArrayList<>();
 
-    public static MemberTagResDto mapping(Member member, List<Tag> tags) {
+    public static MemberTagResDto mapping(Member member, List<String> tagName) {
         return MemberTagResDto.builder()
                 .member(member)
-                .tags(tags)
+                .memberTags(tagName)
                 .build();
     }
 }
