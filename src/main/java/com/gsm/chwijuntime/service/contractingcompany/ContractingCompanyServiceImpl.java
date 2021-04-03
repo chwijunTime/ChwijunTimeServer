@@ -1,5 +1,7 @@
 package com.gsm.chwijuntime.service.contractingcompany;
 
+import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.NotFoundContractingCompanyException;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanyResDto;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
 import com.gsm.chwijuntime.model.ContractingCompany;
@@ -14,7 +16,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
 
     @Override
     public void insertContractingCompany(ContractingCompanySaveDto contractingCompanySaveDto) {
-        Member member = memberRepository.findByMemberEmail(GetUserEmail()).orElseThrow(null);
+        Member member = memberRepository.findByMemberEmail(GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         contractingCompanyRepository.save(contractingCompanySaveDto.ToEntityByContractingCompany(member));
         for (String i: contractingCompanySaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
@@ -50,13 +51,14 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
 
     @Override
     public ContractingCompanyResDto findByContractingCompanyIdx(Long idx) {
-        ContractingCompanyResDto contractingCompanyResDto = contractingCompanyRepository.findById(idx).map(m -> mapper.map(m, ContractingCompanyResDto.class)).orElseThrow(null);
+        ContractingCompanyResDto contractingCompanyResDto = contractingCompanyRepository.findById(idx)
+                .map(m -> mapper.map(m, ContractingCompanyResDto.class)).orElseThrow(NotFoundContractingCompanyException::new);
         return contractingCompanyResDto;
     }
 
     @Override
     public void deleteContractingCompanyIdx(Long idx) {
-        ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(null);
+        ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(NotFoundContractingCompanyException::new);
         contractingCompanyRepository.delete(contractingCompany);
     }
 

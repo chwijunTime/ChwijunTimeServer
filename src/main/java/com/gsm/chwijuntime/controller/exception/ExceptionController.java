@@ -1,9 +1,6 @@
 package com.gsm.chwijuntime.controller.exception;
 
-import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
-import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
-import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
-import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
+import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -39,6 +36,11 @@ public class ExceptionController {
     @GetMapping(value = "/NotFoundTagException")
     public CommonResult NotFoundTagException() {
         throw new NotFoundTagException();
+    }
+
+    @GetMapping(value = "/NotFoundContractingCompanyException")
+    public CommonResult NotFoundContractingCompanyException() {
+        throw new NotFoundContractingCompanyException();
     }
 
 }

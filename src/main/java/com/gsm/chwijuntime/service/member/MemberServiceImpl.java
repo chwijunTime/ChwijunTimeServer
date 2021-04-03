@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.service.member;
 
+import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
 import com.gsm.chwijuntime.advice.exception.IncorrectPasswordException;
 import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
@@ -68,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member UserInfo() {
         String UserEmail = GetUserEmail();
-        return memberRepository.findByMemberEmail(UserEmail).orElseThrow(null);
+        return memberRepository.findByMemberEmail(UserEmail).orElseThrow(CAuthenticationEntryPointException::new);
     }
 
     @Transactional
@@ -77,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
         for (String i : memberProfileSaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
             String userEmail = GetUserEmail();
-            Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(null);
+            Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(CAuthenticationEntryPointException::new);
             memberProfileSaveDto.MappingTag_Member(tag, member);
             //프로필 업데이트
             member.Change_profile(memberProfileSaveDto.getMemberPhoneNumber(), memberProfileSaveDto.getMemberETC());
@@ -95,7 +96,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberTagResDto viewMember() {
         List<Tag> tags = new ArrayList<>();
-        Member findMember = memberRepository.findByMemberEmail(GetUserEmail()).orElseThrow(null);
+        Member findMember = memberRepository.findByMemberEmail(GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         List<MemberTag> findMemberTag = memberTagRepository.findByMember(findMember);
         for (MemberTag memberTag : findMemberTag) {
             String Name = memberTag.getTag().getTagName();

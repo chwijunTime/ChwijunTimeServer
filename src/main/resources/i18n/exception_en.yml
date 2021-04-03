@@ -16,3 +16,6 @@ EmailNotFoundException:
 NotFoundTagException:
   code: "-5"
   msg: "선택하신 태그가 없습니다."
+NotFoundContractingCompanyException:
+  code: "-6"
+  msg: "선택하신 협약 업체는 없습니다."
