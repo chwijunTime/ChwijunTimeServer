@@ -14,9 +14,10 @@ import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.repository.TagRepository;
 import com.gsm.chwijuntime.repository.tag.MemberTagRepository;
-import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import com.gsm.chwijuntime.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +36,8 @@ public class MemberServiceImpl implements MemberService {
     private final MemberTagRepository memberTagRepository;
     private final TagRepository tagRepository;
     private final PasswordEncoder passwordEncoder;
-    private final GetUserEmailUtil getUserEmailUtil;
 
+    @Transactional
     @Override
     public void InsertMember(MemberJoinDto memberJoinDto) {
         Optional<Member> member = memberRepository.findByMemberEmail(memberJoinDto.getMemberEmail());
@@ -61,12 +62,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void logoutMember() {
-        redisUtil.deleteData(getUserEmailUtil.GetUserEmail());
+        String userEmail = GetUserEmail();
+        redisUtil.deleteData(userEmail);
     }
 
     @Override
     public Member UserInfo() {
-        return memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        String UserEmail = GetUserEmail();
+        return memberRepository.findByMemberEmail(UserEmail).orElseThrow(CAuthenticationEntryPointException::new);
     }
 
     @Transactional
@@ -74,7 +77,7 @@ public class MemberServiceImpl implements MemberService {
     public void memberProfileSave(MemberProfileSaveDto memberProfileSaveDto) {
         for (String i : memberProfileSaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
-            String userEmail = getUserEmailUtil.GetUserEmail();
+            String userEmail = GetUserEmail();
             Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(CAuthenticationEntryPointException::new);
             memberProfileSaveDto.MappingTag_Member(tag, member);
             //프로필 업데이트
@@ -93,13 +96,27 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberTagResDto viewMember() {
         List<String> tags = new ArrayList<>();
-        Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        Member findMember = memberRepository.findByMemberEmail(GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         List<MemberTag> findMemberTag = memberTagRepository.findByMember(findMember);
         for (MemberTag memberTag : findMemberTag) {
-            Tag tag = tagRepository.findByTagName(memberTag.getTag().getTagName());
+            String Name = memberTag.getTag().getTagName();
+            System.out.println("Name = " + Name);
+            Tag tag = tagRepository.findByTagName(Name);
             tags.add(tag.getTagName());
         }
         MemberTagResDto memberTagResDto = MemberTagResDto.mapping(findMember, tags);
         return memberTagResDto;
+    }
+
+    //현재 사용자의 ID를 Return
+    public String GetUserEmail() {
+        String userEmail;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof UserDetails) {
+            userEmail = ((UserDetails)principal).getUsername();
+        } else {
+            userEmail = principal.toString();
+        }
+        return userEmail;
     }
 }

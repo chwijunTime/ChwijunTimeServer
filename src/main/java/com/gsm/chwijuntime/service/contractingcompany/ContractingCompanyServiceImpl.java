@@ -45,9 +45,17 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
 
     @Override
     public List<ContractingCompanyResDto> findAllContractingCompany() {
-        return contractingCompanyRepository.findAll().stream()
+        List<ContractingCompanyResDto> contractingCompanyResDtos = contractingCompanyRepository.findAll().stream()
                 .map(m -> mapper.map(m, ContractingCompanyResDto.class))
                 .collect(Collectors.toList());
+        for (ContractingCompanyResDto i : contractingCompanyResDtos) {
+            ContractingCompany contractingCompany = contractingCompanyRepository.findById(i.getContractingCompanyIdx()).orElseThrow(null);
+            List<ContractingCompanyTag> contractingCompanyTags = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
+            for (ContractingCompanyTag j : contractingCompanyTags) {
+                i.getContractingCompanyTags().add(j.getTag().getTagName());
+            }
+        }
+        return contractingCompanyResDtos;
     }
 
     @Override
