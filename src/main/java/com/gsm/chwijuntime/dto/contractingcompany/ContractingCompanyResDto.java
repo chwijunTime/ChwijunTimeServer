@@ -1,13 +1,8 @@
 package com.gsm.chwijuntime.dto.contractingcompany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gsm.chwijuntime.model.ContractingCompany;
-import com.gsm.chwijuntime.model.Member;
-import com.gsm.chwijuntime.model.Tag;
-import com.gsm.chwijuntime.model.tagmapping.ContractingCompanyTag;
-import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,5 +18,6 @@ public class ContractingCompanyResDto {
     private String contractingCompanyAddress;
     private String contractingCompanyAboutUs;
     private String contractingCompanyAverageAnnualSalary;
+    private List<String> contractingCompanyTags = new ArrayList<>();
 
 }

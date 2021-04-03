@@ -7,6 +7,7 @@ import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
 import com.gsm.chwijuntime.model.ContractingCompany;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
+import com.gsm.chwijuntime.model.tagmapping.ContractingCompanyTag;
 import com.gsm.chwijuntime.repository.ContractingCompanyRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.repository.TagRepository;
@@ -53,6 +54,11 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
     public ContractingCompanyResDto findByContractingCompanyIdx(Long idx) {
         ContractingCompanyResDto contractingCompanyResDto = contractingCompanyRepository.findById(idx)
                 .map(m -> mapper.map(m, ContractingCompanyResDto.class)).orElseThrow(NotFoundContractingCompanyException::new);
+        ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(null);
+        List<ContractingCompanyTag> allByContractingCompany = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
+        for (ContractingCompanyTag i : allByContractingCompany) {
+            contractingCompanyResDto.getContractingCompanyTags().add(i.getTag().getTagName());
+        }
         return contractingCompanyResDto;
     }
 
