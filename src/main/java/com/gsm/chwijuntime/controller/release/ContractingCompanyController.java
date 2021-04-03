@@ -34,7 +34,7 @@ public class ContractingCompanyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping("/contracting-company")
-    public CommonResult join(@RequestBody ContractingCompanySaveDto contractingCompanySaveDto) throws IllegalAccessException {
+    public CommonResult join(@RequestBody ContractingCompanySaveDto contractingCompanySaveDto) {
         contractingCompanyService.insertContractingCompany(contractingCompanySaveDto);
         return responseService.getSuccessResult();
     }
