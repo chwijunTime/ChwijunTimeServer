@@ -5,7 +5,6 @@ import com.gsm.chwijuntime.model.ContractingCompany;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.model.tagmapping.ContractingCompanyTag;
-import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 import lombok.*;
 
 import java.util.List;
