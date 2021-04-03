@@ -40,5 +40,4 @@ public class ContractingCompany {
     private Member member;
 
 
-
 }

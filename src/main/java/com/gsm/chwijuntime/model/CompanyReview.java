@@ -1,44 +1,46 @@
 package com.gsm.chwijuntime.model;
 
-import com.gsm.chwijuntime.model.tagmapping.CompanyReviewTag;
-import com.gsm.chwijuntime.model.tagmapping.EmploymentAnnouncementTag;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
+@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompanyReview {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long CompanyReviewIdx;
+    private Long companyReviewIdx;
 
     @Column(nullable = false)
-    private String CompanyName;
+    private String companyName;
 
     @Column(nullable = false)
-    private LocalDateTime CompanyDateofApplication;
+    private LocalDate companyDateofApplication;
 
     @Column(nullable = false)
-    private String CompanyAddress;
+    private String companyAddress;
 
     @Column(nullable = false)
-    private String CompanyReview;
+    private String companyReviews;
 
     @Column(nullable = false)
-    private String CompanyFrequentlyAskedQuestions;
+    private String companyFrequentlyAskedQuestions;
 
-    private int CompanyCost;
+    private int companyCost;
 
     // =============== 외래키(연관관계 주인) ================= //
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "MemberIdx")
     private Member member;
+
+
+    // ============== 비즈니스 로직 ==================== //
+
 }

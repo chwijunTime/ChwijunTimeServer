@@ -62,4 +62,11 @@ public class ExceptionAdvice {
     public CommonResult NotFoundTagException(HttpServletRequest request, NotFoundContractingCompanyException e) {
         return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundContractingCompanyException.code")), getMessage("NotFoundContractingCompanyException.msg"));
     }
+
+    // 작성자 권한이 아님
+    @ExceptionHandler(AuthorNotCertifiedException.class)
+    public CommonResult AuthorNotCertifiedException(HttpServletRequest request, NotFoundContractingCompanyException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("AuthorNotCertifiedException.code")), getMessage("AuthorNotCertifiedException.msg"));
+    }
+
 }

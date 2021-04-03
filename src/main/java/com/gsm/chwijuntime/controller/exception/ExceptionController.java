@@ -43,4 +43,9 @@ public class ExceptionController {
         throw new NotFoundContractingCompanyException();
     }
 
+    @GetMapping(value = "/AuthorNotCertifiedException")
+    public CommonResult AuthorNotCertifiedException() {
+        throw new AuthorNotCertifiedException();
+    }
+
 }
