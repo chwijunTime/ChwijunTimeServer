@@ -4,6 +4,7 @@ import com.gsm.chwijuntime.model.CompanyReview;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
 import com.gsm.chwijuntime.model.Tag;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CompanyReviewTag {

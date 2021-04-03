@@ -3,6 +3,8 @@ package com.gsm.chwijuntime.dto.companyreview;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,5 +20,6 @@ public class CompanyReviewResDto {
     private String companyReviews;
     private String companyFrequentlyAskedQuestions;
     private int companyCost;
+    private List<String> companyReviewTags = new ArrayList<>();
 
 }
