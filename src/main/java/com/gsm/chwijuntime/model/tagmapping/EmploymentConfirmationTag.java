@@ -19,11 +19,11 @@ public class EmploymentConfirmationTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long EmploymentConfirmationTagIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TagIdx")
     private Tag tag;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "EmploymentConfirmationIdx")
     private EmploymentConfirmation employmentConfirmation;
 

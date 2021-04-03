@@ -42,6 +42,14 @@ public class EmploymentAnnouncement {
 
 
     // ============== 연관관계 노예 ================== //
-    @OneToMany(mappedBy = "employmentAnnouncement", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employmentAnnouncement", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ApplicationEmployment> applicationEmployments = new ArrayList<>();
+
+    // ============== 연관관계 평의 메소드 ============== //
+    public void addApplicationEmployment(ApplicationEmployment applicationEmployment){
+        this.applicationEmployments.add(applicationEmployment);
+        applicationEmployment.changeEmploymentAnnouncement(this);
+    }
+
+
 }

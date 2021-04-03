@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.service.tag;
 
+import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.dto.tag.TagSaveDto;
 import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.repository.TagRepository;
@@ -16,7 +17,6 @@ public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepository;
 
-
     @Override
     public void insertTag(TagSaveDto tagSaveDto) {
         tagRepository.save(tagSaveDto.toEntity());
@@ -24,7 +24,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag findByTagIdxOne(Long tagIdx) {
-        return tagRepository.findById(tagIdx).orElseThrow(null);
+        return tagRepository.findById(tagIdx).orElseThrow(NotFoundTagException::new);
     }
 
     @Override
@@ -32,9 +32,18 @@ public class TagServiceImpl implements TagService {
         return tagRepository.findAll();
     }
 
+    @Transactional
+    @Override
+    public Tag updateTag(Long tagIdx, String tagName) {
+        Tag tag = tagRepository.findById(tagIdx).orElseThrow(NotFoundTagException::new);
+        tag.ChangeTagName(tagName);
+        return tag;
+    }
+
+    @Transactional
     @Override
     public void deleteTag(Long tagIdx) {
-        Tag tag = tagRepository.findById(tagIdx).orElseThrow(null);
-        tagRepository.delete(tag);
+        Long tag = tagRepository.findById(tagIdx).orElseThrow(NotFoundTagException::new).getTagIdx();
+        tagRepository.deleteById(tag);
     }
 }

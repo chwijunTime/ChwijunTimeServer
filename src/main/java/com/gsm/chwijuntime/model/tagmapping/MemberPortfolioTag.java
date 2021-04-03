@@ -19,11 +19,11 @@ public class MemberPortfolioTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long MemberPortfolioTagIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TagIdx")
     private Tag tag;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MemberPortfolioIdx")
     private MemberPortfolio memberPortfolio;
 

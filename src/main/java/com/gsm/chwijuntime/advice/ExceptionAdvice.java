@@ -1,8 +1,6 @@
 package com.gsm.chwijuntime.advice;
 
-import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
-import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
-import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
+import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -53,5 +51,15 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("EmailNotFoundException.code")), getMessage("EmailNotFoundException.msg"));
     }
 
+    // 태그 없음
+    @ExceptionHandler(NotFoundTagException.class)
+    public CommonResult NotFoundTagException(HttpServletRequest request, NotFoundTagException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundTagException.code")), getMessage("NotFoundTagException.msg"));
+    }
 
+    // 협약 업체 찾지 못함
+    @ExceptionHandler(NotFoundContractingCompanyException.class)
+    public CommonResult NotFoundTagException(HttpServletRequest request, NotFoundContractingCompanyException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundContractingCompanyException.code")), getMessage("NotFoundContractingCompanyException.msg"));
+    }
 }

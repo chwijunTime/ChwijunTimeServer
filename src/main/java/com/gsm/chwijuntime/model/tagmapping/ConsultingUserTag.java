@@ -19,11 +19,11 @@ public class ConsultingUserTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ConsultingUserTagIdx;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TagIdx")
     private Tag tag;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ConsultingUserIdx")
     private ConsultingUser consultingUser;
 

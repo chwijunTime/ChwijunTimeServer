@@ -1,6 +1,8 @@
 package com.gsm.chwijuntime.dto.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.Tag;
 import lombok.*;
 
 import java.util.Collections;
@@ -16,7 +18,8 @@ public class MemberJoinDto {
     private String memberPassword;
     private String memberClassNumber;
 
-    public Member ToEntity() {
+
+    public Member ToEntityByMember() {
         return Member.builder()
                 .memberEmail(this.memberEmail)
                 .memberPassword(this.memberPassword)
