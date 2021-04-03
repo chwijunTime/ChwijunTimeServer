@@ -37,6 +37,8 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
         contractingCompanyRepository.save(contractingCompanySaveDto.ToEntityByContractingCompany(member));
         for (String i: contractingCompanySaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
+            //이름 중복
+
             ContractingCompany contractingCompany = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
             contractingCompanySaveDto.MappingTag_ContractingCompany(tag, contractingCompany);
             contractingCompanyTagRepository.save(contractingCompanySaveDto.ToEntityByContractingCompanyTag());
