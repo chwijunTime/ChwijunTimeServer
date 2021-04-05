@@ -10,6 +10,6 @@ import lombok.*;
 public class MemberLoginDto {
 
     private String MemberEmail;
-    private String MemberPasword;
+    private String MemberPassword;
 
 }
