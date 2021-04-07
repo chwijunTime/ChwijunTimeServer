@@ -52,7 +52,7 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
                 .map(m -> mapper.map(m, ContractingCompanyResDto.class))
                 .collect(Collectors.toList());
         for (ContractingCompanyResDto i : contractingCompanyResDtos) {
-            ContractingCompany contractingCompany = contractingCompanyRepository.findById(i.getContractingCompanyIdx()).orElseThrow(null);
+            ContractingCompany contractingCompany = contractingCompanyRepository.findById(i.getContractingCompanyIdx()).orElseThrow(NotFoundContractingCompanyException::new);
             List<ContractingCompanyTag> contractingCompanyTags = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
             for (ContractingCompanyTag j : contractingCompanyTags) {
                 i.getContractingCompanyTags().add(j.getTag().getTagName());
@@ -65,7 +65,7 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
     public ContractingCompanyResDto findByContractingCompanyIdx(Long idx) {
         ContractingCompanyResDto contractingCompanyResDto = contractingCompanyRepository.findById(idx)
                 .map(m -> mapper.map(m, ContractingCompanyResDto.class)).orElseThrow(NotFoundContractingCompanyException::new);
-        ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(null);
+        ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(NotFoundContractingCompanyException::new);
         List<ContractingCompanyTag> allByContractingCompany = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
         for (ContractingCompanyTag i : allByContractingCompany) {
             contractingCompanyResDto.getContractingCompanyTags().add(i.getTag().getTagName());
@@ -84,7 +84,7 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
     //작성자 권한 체크
     public void UserWriteCheck(Long idx) {
         Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
-        Member WriteMember = contractingCompanyRepository.findById(idx).orElseThrow(null).getMember();
+        Member WriteMember = contractingCompanyRepository.findById(idx).orElseThrow(CAuthenticationEntryPointException::new).getMember();
         if (!CurrentUser.getMemberEmail().equals(WriteMember.getMemberEmail())) {
             throw new AuthorNotCertifiedException();
         }

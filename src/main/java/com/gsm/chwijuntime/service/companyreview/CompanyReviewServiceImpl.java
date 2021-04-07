@@ -2,6 +2,8 @@ package com.gsm.chwijuntime.service.companyreview;
 
 import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.NotFoundCompanyReviewException;
+import com.gsm.chwijuntime.advice.exception.NotFoundCompanyReviewException;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewSaveDto;
 import com.gsm.chwijuntime.model.CompanyReview;
@@ -52,7 +54,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
                 .map(m -> mapper.map(m, CompanyReviewResDto.class))
                 .collect(Collectors.toList());
         for (CompanyReviewResDto i : companyReviewResDtos) {
-            CompanyReview companyReview = companyReviewRepository.findById(i.getCompanyReviewIdx()).orElseThrow(null);
+            CompanyReview companyReview = companyReviewRepository.findById(i.getCompanyReviewIdx()).orElseThrow(NotFoundCompanyReviewException::new);
             List<CompanyReviewTag> companyReviewTags = companyReviewTagRepository.findAllByCompanyReview(companyReview);
             for (CompanyReviewTag j : companyReviewTags) {
                 i.getCompanyReviewTags().add(j.getTag().getTagName());
@@ -64,8 +66,8 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
     @Override
     public CompanyReviewResDto findByIdx(Long idx) {
         CompanyReviewResDto companyReviewResDto = companyReviewRepository.findById(idx)
-                .map(m -> mapper.map(m, CompanyReviewResDto.class)).orElseThrow(null);
-        CompanyReview companyReview = companyReviewRepository.findById(idx).orElseThrow(null);
+                .map(m -> mapper.map(m, CompanyReviewResDto.class)).orElseThrow(NotFoundCompanyReviewException::new);
+        CompanyReview companyReview = companyReviewRepository.findById(idx).orElseThrow(NotFoundCompanyReviewException::new);
         List<CompanyReviewTag> companyReviewTags = companyReviewTagRepository.findAllByCompanyReview(companyReview);
         for (CompanyReviewTag i : companyReviewTags) {
             companyReviewResDto.getCompanyReviewTags().add(i.getTag().getTagName());
@@ -82,7 +84,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
     //작성자 권한 체크
     public void UserWriteCheck(Long idx) {
         Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
-        Member WriteMember = companyReviewRepository.findById(idx).orElseThrow(null).getMember();
+        Member WriteMember = companyReviewRepository.findById(idx).orElseThrow(CAuthenticationEntryPointException::new).getMember();
         if (!CurrentUser.getMemberEmail().equals(WriteMember.getMemberEmail())) {
             throw new AuthorNotCertifiedException();
         }

@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+// 상담 신청 테이블
 public class ConsultingUser {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

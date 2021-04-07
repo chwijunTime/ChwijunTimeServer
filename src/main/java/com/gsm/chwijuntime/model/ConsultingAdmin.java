@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+// 상담 등록 테이블
 public class ConsultingAdmin {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -65,8 +65,13 @@ public class ExceptionAdvice {
 
     // 작성자 권한이 아님
     @ExceptionHandler(AuthorNotCertifiedException.class)
-    public CommonResult AuthorNotCertifiedException(HttpServletRequest request, NotFoundContractingCompanyException e) {
+    public CommonResult AuthorNotCertifiedException(HttpServletRequest request, AuthorNotCertifiedException e) {
         return responseService.getFailResult(Integer.valueOf(getMessage("AuthorNotCertifiedException.code")), getMessage("AuthorNotCertifiedException.msg"));
+    }
+
+    @ExceptionHandler(NotFoundCompanyReviewException.class)
+    public CommonResult NotFoundCompanyReview(HttpServletRequest request, NotFoundCompanyReviewException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundCompanyReviewException.code")), getMessage("NotFoundCompanyReviewException.msg"));
     }
 
 }

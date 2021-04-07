@@ -19,3 +19,6 @@ NotFoundTagException:
 NotFoundContractingCompanyException:
   code: "-6"
   msg: "선택하신 협약 업체는 없습니다."
+NotFoundCompanyReviewException:
+  code: "-7"
+  msg: "선택하신 회사 리뷰는 없습니다."
