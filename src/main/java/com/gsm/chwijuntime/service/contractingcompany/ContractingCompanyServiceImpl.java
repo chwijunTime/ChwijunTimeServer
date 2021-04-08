@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.service.contractingcompany;
 
 import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.DuplicateContractingCompanyException;
 import com.gsm.chwijuntime.advice.exception.NotFoundContractingCompanyException;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanyResDto;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
@@ -19,6 +20,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -35,14 +37,18 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
     @Override
     public void insertContractingCompany(ContractingCompanySaveDto contractingCompanySaveDto) {
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
-        contractingCompanyRepository.save(contractingCompanySaveDto.ToEntityByContractingCompany(member));
-        for (String i: contractingCompanySaveDto.getTagName()) {
-            Tag tag = tagRepository.findByTagName(i);
-            //이름 중복
-
-            ContractingCompany contractingCompany = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
-            contractingCompanySaveDto.MappingTag_ContractingCompany(tag, contractingCompany);
-            contractingCompanyTagRepository.save(contractingCompanySaveDto.ToEntityByContractingCompanyTag());
+        ContractingCompany findBy = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
+        if(findBy == null) {
+            contractingCompanyRepository.save(contractingCompanySaveDto.ToEntityByContractingCompany(member));
+            for (String i : contractingCompanySaveDto.getTagName()) {
+                Tag tag = tagRepository.findByTagName(i);
+                //이름 중복
+                ContractingCompany contractingCompany = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
+                contractingCompanySaveDto.MappingTag_ContractingCompany(tag, contractingCompany);
+                contractingCompanyTagRepository.save(contractingCompanySaveDto.ToEntityByContractingCompanyTag());
+            }
+        } else {
+            throw new DuplicateContractingCompanyException();
         }
     }
 

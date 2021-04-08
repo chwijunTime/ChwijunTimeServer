@@ -53,4 +53,9 @@ public class ExceptionController {
         throw new NotFoundCompanyReviewException();
     }
 
+    @GetMapping(value = "/DuplicateContractingCompanyException")
+    public CommonResult DuplicateContractingCompanyException() {
+        throw new DuplicateContractingCompanyException();
+    }
+
 }

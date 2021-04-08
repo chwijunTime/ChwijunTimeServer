@@ -74,4 +74,9 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundCompanyReviewException.code")), getMessage("NotFoundCompanyReviewException.msg"));
     }
 
+    @ExceptionHandler(DuplicateContractingCompanyException.class)
+    public CommonResult NotFoundCompanyReview(HttpServletRequest request, DuplicateContractingCompanyException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("DuplicateContractingCompanyException.code")), getMessage("DuplicateContractingCompanyException.msg"));
+    }
+
 }
