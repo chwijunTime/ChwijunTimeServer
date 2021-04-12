@@ -3,7 +3,6 @@ package com.gsm.chwijuntime.service.companyreview;
 import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.advice.exception.NotFoundCompanyReviewException;
-import com.gsm.chwijuntime.advice.exception.NotFoundCompanyReviewException;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewSaveDto;
 import com.gsm.chwijuntime.model.CompanyReview;

@@ -20,7 +20,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -42,7 +41,6 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
             contractingCompanyRepository.save(contractingCompanySaveDto.ToEntityByContractingCompany(member));
             for (String i : contractingCompanySaveDto.getTagName()) {
                 Tag tag = tagRepository.findByTagName(i);
-                //이름 중복
                 ContractingCompany contractingCompany = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
                 contractingCompanySaveDto.MappingTag_ContractingCompany(tag, contractingCompany);
                 contractingCompanyTagRepository.save(contractingCompanySaveDto.ToEntityByContractingCompanyTag());
@@ -81,16 +79,16 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
 
     @Override
     public void deleteContractingCompanyIdx(Long idx) {
-        UserWriteCheck(idx);
         ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(NotFoundContractingCompanyException::new);
+        UserWriteCheck(contractingCompany);
         contractingCompanyRepository.delete(contractingCompany);
     }
 
 
     //작성자 권한 체크
-    public void UserWriteCheck(Long idx) {
+    public void UserWriteCheck(ContractingCompany contractingCompany) {
         Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
-        Member WriteMember = contractingCompanyRepository.findById(idx).orElseThrow(CAuthenticationEntryPointException::new).getMember();
+        Member WriteMember = contractingCompanyRepository.findById(contractingCompany.getContractingCompanyIdx()).orElseThrow(CAuthenticationEntryPointException::new).getMember();
         if (!CurrentUser.getMemberEmail().equals(WriteMember.getMemberEmail())) {
             throw new AuthorNotCertifiedException();
         }

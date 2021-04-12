@@ -9,6 +9,7 @@ import com.gsm.chwijuntime.model.response.ListResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import com.gsm.chwijuntime.model.response.SingleResult;
 import com.gsm.chwijuntime.service.companyreview.CompanyReviewService;
+import com.gsm.chwijuntime.service.companyreview.CompanyReviewServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
