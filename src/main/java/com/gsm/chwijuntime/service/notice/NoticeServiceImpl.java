@@ -8,17 +8,18 @@ import com.gsm.chwijuntime.repository.NoticeRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class NoticeServiceImpl implements NoticeService {
 
     private final NoticeRepository noticeRepository;
     private final GetUserEmailUtil getUserEmailUtil;
     private final MemberRepository memberRepository;
-
 
     @Override
     public void save(NoticeSaveDto noticeSaveDto) {
@@ -28,11 +29,26 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public Notice findById(Long idx) {
-        return null;
+        Notice notice = noticeRepository.findById(idx).orElseThrow(null);
+        return notice;
     }
 
     @Override
     public List<Notice> findAll() {
-        return null;
+        List<Notice> notices = noticeRepository.findAll();
+        return notices;
+    }
+
+    @Transactional
+    @Override
+    public void deleteById(Long idx) {
+        noticeRepository.deleteById(idx);
+    }
+
+    @Transactional
+    @Override
+    public void updateId(Long idx, NoticeSaveDto noticeSaveDto) {
+        Notice notice = noticeRepository.findById(idx).orElseThrow(null);
+        notice.update(noticeSaveDto.getTitle(), noticeSaveDto.getContent());
     }
 }

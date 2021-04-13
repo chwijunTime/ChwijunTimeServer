@@ -30,4 +30,10 @@ public class Notice {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MemberIdx")
     private Member member;
+
+    // =================== 비지니스 로직 ======================== //
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
