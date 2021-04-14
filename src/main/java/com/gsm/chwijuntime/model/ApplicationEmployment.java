@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// 취업 공고 신청 테이블
 public class ApplicationEmployment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

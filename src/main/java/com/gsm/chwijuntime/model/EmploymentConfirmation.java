@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+// 채용 확정 현황 테이블
 public class EmploymentConfirmation {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

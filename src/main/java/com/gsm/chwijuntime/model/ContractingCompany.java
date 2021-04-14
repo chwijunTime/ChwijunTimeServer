@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// 협약 업체 테이블
 public class ContractingCompany {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

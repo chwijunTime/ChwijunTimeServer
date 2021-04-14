@@ -55,7 +55,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member findMember(MemberLoginDto memberLoginDto) {
         Member member = memberRepository.findByMemberEmail(memberLoginDto.getMemberEmail()).orElseThrow(EmailNotFoundException::new);
-        boolean check = passwordEncoder.matches(memberLoginDto.getMemberPasword(), member.getMemberPassword());
+        boolean check = passwordEncoder.matches(memberLoginDto.getMemberPassword(), member.getMemberPassword());
         if(!check) {
             throw new IncorrectPasswordException();
         }

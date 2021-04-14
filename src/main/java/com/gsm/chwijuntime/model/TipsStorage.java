@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+// 꿀팁 테이블
 public class TipsStorage {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

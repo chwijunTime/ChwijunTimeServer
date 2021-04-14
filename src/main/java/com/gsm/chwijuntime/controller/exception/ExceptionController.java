@@ -48,4 +48,14 @@ public class ExceptionController {
         throw new AuthorNotCertifiedException();
     }
 
+    @GetMapping(value = "/NotFoundCompanyReviewException")
+    public CommonResult NotFoundCompanyReviewException() {
+        throw new NotFoundCompanyReviewException();
+    }
+
+    @GetMapping(value = "/DuplicateContractingCompanyException")
+    public CommonResult DuplicateContractingCompanyException() {
+        throw new DuplicateContractingCompanyException();
+    }
+
 }

@@ -60,7 +60,7 @@ public class MemberServiceTest {
         //give
         MemberLoginDto memberLoginDto = MemberLoginDto.builder()
                 .MemberEmail("1234")
-                .MemberPasword("1234")
+                .MemberPassword("1234")
                 .build();
         //when
         memberService.findMember(memberLoginDto);
@@ -75,7 +75,7 @@ public class MemberServiceTest {
         //give
         MemberLoginDto memberLoginDto = MemberLoginDto.builder()
                 .MemberEmail("llmm030506@gmail.com")
-                .MemberPasword("12345")
+                .MemberPassword("12345")
                 .build();
         //when
         memberService.findMember(memberLoginDto);

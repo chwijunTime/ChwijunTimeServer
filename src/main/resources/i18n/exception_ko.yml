@@ -19,3 +19,12 @@ NotFoundTagException:
 NotFoundContractingCompanyException:
   code: "-6"
   msg: "선택하신 협약 업체는 없습니다."
+NotFoundCompanyReviewException:
+  code: "-7"
+  msg: "선택하신 회사 리뷰는 없습니다."
+AuthorNotCertifiedException:
+  code: "-8"
+  msg: "작성자의 권한이 필요합니다."
+DuplicateContractingCompanyException:
+  code: "-9"
+  msg: "이미 등록된 기업입니다."
