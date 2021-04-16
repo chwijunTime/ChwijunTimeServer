@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.service.notice;
 
+import com.gsm.chwijuntime.advice.exception.NotFoundNoticeException;
 import com.gsm.chwijuntime.dto.notice.NoticeSaveDto;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Notice;
@@ -23,13 +24,13 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public void save(NoticeSaveDto noticeSaveDto) {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(null);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(NotFoundNoticeException::new);
         noticeRepository.save(noticeSaveDto.ToEntityByNotice(member));
     }
 
     @Override
     public Notice findById(Long idx) {
-        Notice notice = noticeRepository.findById(idx).orElseThrow(null);
+        Notice notice = noticeRepository.findById(idx).orElseThrow(NotFoundNoticeException::new);
         return notice;
     }
 
@@ -48,7 +49,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional
     @Override
     public void updateId(Long idx, NoticeSaveDto noticeSaveDto) {
-        Notice notice = noticeRepository.findById(idx).orElseThrow(null);
+        Notice notice = noticeRepository.findById(idx).orElseThrow(NotFoundNoticeException::new);
         notice.update(noticeSaveDto.getTitle(), noticeSaveDto.getContent());
     }
 }

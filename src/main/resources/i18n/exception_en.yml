@@ -28,3 +28,6 @@ AuthorNotCertifiedException:
 DuplicateContractingCompanyException:
   code: "-9"
   msg: "이미 등록된 기업입니다."
+NotFoundNoticeException:
+  code: "-10"
+  msg: "선택하신 공지사항은 없습니다."
