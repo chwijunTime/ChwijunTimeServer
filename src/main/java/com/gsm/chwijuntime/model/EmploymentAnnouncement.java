@@ -1,6 +1,5 @@
 package com.gsm.chwijuntime.model;
 
-import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementSaveDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementUpdateDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,9 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -23,7 +20,7 @@ public class EmploymentAnnouncement {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employmentAnnouncementIdx;
 
-    private LocalDateTime announcementDate;
+    private LocalDate announcementDate;
 
     @Column(nullable = false)
     private String employmentAnnouncementName;
@@ -40,7 +37,7 @@ public class EmploymentAnnouncement {
     private String employmentAnnouncementAddress;
 
     @Column(nullable = false)
-    private LocalDateTime deadLine;
+    private LocalDate deadLine;
 
     private String employmentAnnouncementEtc;
 
@@ -49,17 +46,12 @@ public class EmploymentAnnouncement {
     @JoinColumn(name = "MemberIdx")
     private Member member;
 
-    // ============== 연관관계 노예 ================== //
-    @OneToMany(mappedBy = "employmentAnnouncement", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ApplicationEmployment> applicationEmployments = new ArrayList<>();
-
-    // ============== 연관관계 평의 메소드 ============== //
-    public void addApplicationEmployment(ApplicationEmployment applicationEmployment){
-        this.applicationEmployments.add(applicationEmployment);
-        applicationEmployment.changeEmploymentAnnouncement(this);
-    }
-
     public void update(EmploymentAnnouncementUpdateDto employmentAnnouncementUpdateDto){
-
+        this.employmentAnnouncementName = employmentAnnouncementUpdateDto.getEmploymentAnnouncementName();
+        this.recruitmentField = employmentAnnouncementUpdateDto.getRecruitmentField();
+        this.employmentAnnouncementExplanation = employmentAnnouncementUpdateDto.getEmploymentAnnouncementExplanation();
+        this.preferentialConditions = employmentAnnouncementUpdateDto.getPreferentialConditions();
+        this.employmentAnnouncementAddress = employmentAnnouncementUpdateDto.getEmploymentAnnouncementAddress();
+        this.employmentAnnouncementEtc = employmentAnnouncementUpdateDto.getEmploymentAnnouncementEtc();
     }
 }

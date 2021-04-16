@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.service.employmentAnnouncement;
 
 import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementResponseDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementSaveDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementUpdateDto;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
@@ -10,39 +11,50 @@ import com.gsm.chwijuntime.repository.EmploymentAnnouncementRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncementService {
 
+    private final ModelMapper mapper;
     private final MemberRepository memberRepository;
     private final GetUserEmailUtil getUserEmailUtil;
     private final EmploymentAnnouncementRepository employmentAnnouncementRepository;
 
+    @Transactional
     @Override
     public void EmploymentAnnouncementSave(EmploymentAnnouncementSaveDto employmentAnnouncementSaveDto) {
-        employmentAnnouncementRepository.save(employmentAnnouncementSaveDto.toEntityByEmploymentAnnouncement());
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow();
+        employmentAnnouncementRepository.save(employmentAnnouncementSaveDto.toEntityByEmploymentAnnouncement(member));
     }
 
     @Override
-    public EmploymentAnnouncement findByOne(Long idx) {
-        return employmentAnnouncementRepository.findById(idx).orElseThrow(null);
+    public EmploymentAnnouncementResponseDto findByOne(Long idx) {
+        EmploymentAnnouncementResponseDto employmentAnnouncementResponseDto = employmentAnnouncementRepository.findById(idx)
+                .map(m -> mapper.map(m, EmploymentAnnouncementResponseDto.class)).orElseThrow(null);
+        return employmentAnnouncementResponseDto;
     }
 
     @Override
-    public List<EmploymentAnnouncement> findByAll() {
-        return employmentAnnouncementRepository.findAll();
+    public List<EmploymentAnnouncementResponseDto> findByAll() {
+        List<EmploymentAnnouncementResponseDto> employmentAnnouncementResponseDtos = employmentAnnouncementRepository.findAll().stream()
+                .map(m -> mapper.map(m, EmploymentAnnouncementResponseDto.class))
+                .collect(Collectors.toList());
+        return employmentAnnouncementResponseDtos;
     }
 
     @Transactional
     @Override
     public void updateEmploymentAnnouncement(Long idx, EmploymentAnnouncementUpdateDto employmentAnnouncementUpdateDto) {
         EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(null);
+        UserWriteCheck(employmentAnnouncement);
         employmentAnnouncement.update(employmentAnnouncementUpdateDto);
     }
 
