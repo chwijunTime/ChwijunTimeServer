@@ -58,4 +58,9 @@ public class ExceptionController {
         throw new DuplicateContractingCompanyException();
     }
 
+    @GetMapping(value = "/NotFoundNoticeException")
+    public CommonResult NotFoundNoticeException() {
+        throw new NotFoundNoticeException();
+    }
+
 }

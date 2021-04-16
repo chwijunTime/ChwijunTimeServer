@@ -18,28 +18,28 @@ import java.util.List;
 public class EmploymentAnnouncement {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long EmploymentAnnouncementIdx;
+    private Long employmentAnnouncementIdx;
 
-    private LocalDateTime AnnouncementDate;
-
-    @Column(nullable = false)
-    private String EmploymentAnnouncementName;
+    private LocalDateTime announcementDate;
 
     @Column(nullable = false)
-    private String RecruitmentField;
+    private String employmentAnnouncementName;
 
     @Column(nullable = false)
-    private String EmploymentAnnouncementExplanation;
-
-    private String PreferentialConditions;
+    private String recruitmentField;
 
     @Column(nullable = false)
-    private String EmploymentAnnouncementAddress;
+    private String employmentAnnouncementExplanation;
+
+    private String preferentialConditions;
 
     @Column(nullable = false)
-    private LocalDateTime DeadLine;
+    private String employmentAnnouncementAddress;
 
-    private String EmploymentAnnouncementEtc;
+    @Column(nullable = false)
+    private LocalDateTime deadLine;
+
+    private String employmentAnnouncementEtc;
 
 
     // ============== 연관관계 노예 ================== //

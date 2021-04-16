@@ -79,4 +79,9 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("DuplicateContractingCompanyException.code")), getMessage("DuplicateContractingCompanyException.msg"));
     }
 
+    // 공지사항 못 찾음
+    @ExceptionHandler(NotFoundNoticeException.class)
+    public CommonResult NotFoundNoticeException(HttpServletRequest request, NotFoundNoticeException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundNoticeException.code")), getMessage("NotFoundNoticeException.msg"));
+    }
 }
