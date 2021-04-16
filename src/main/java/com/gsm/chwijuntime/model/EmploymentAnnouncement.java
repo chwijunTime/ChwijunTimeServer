@@ -1,7 +1,9 @@
 package com.gsm.chwijuntime.model;
 
-import com.gsm.chwijuntime.model.tagmapping.EmploymentAnnouncementTag;
+import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementSaveDto;
+import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementUpdateDto;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 // 취업 공고 테이블
 public class EmploymentAnnouncement {
 
@@ -41,6 +44,10 @@ public class EmploymentAnnouncement {
 
     private String employmentAnnouncementEtc;
 
+    // ================== 외래키(연관관계 주인) ================== //
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MemberIdx")
+    private Member member;
 
     // ============== 연관관계 노예 ================== //
     @OneToMany(mappedBy = "employmentAnnouncement", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -52,5 +59,7 @@ public class EmploymentAnnouncement {
         applicationEmployment.changeEmploymentAnnouncement(this);
     }
 
+    public void update(EmploymentAnnouncementUpdateDto employmentAnnouncementUpdateDto){
 
+    }
 }
