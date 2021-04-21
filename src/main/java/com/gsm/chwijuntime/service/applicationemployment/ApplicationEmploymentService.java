@@ -1,7 +1,10 @@
 package com.gsm.chwijuntime.service.applicationemployment;
 
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
+import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
 import com.gsm.chwijuntime.model.ApplicationEmployment;
+
+import java.util.List;
 
 public interface ApplicationEmploymentService {
 
@@ -9,7 +12,7 @@ public interface ApplicationEmploymentService {
     void application(Long employmentAnnouncementIdx, ApplicationEmploymentSaveDto applicationemploymentSaveDto);
 
     // 공고 신청 전체 보기 => 관리자 (학번, 이름, 깃허브, 회사 이름)
-    ApplicationEmployment findAllApplication();
+    List<FindAllApplicationResDto> findAllApplication();
 
     // 공고 요청 수락 하기 => 관리자
     void AcceptApplication();

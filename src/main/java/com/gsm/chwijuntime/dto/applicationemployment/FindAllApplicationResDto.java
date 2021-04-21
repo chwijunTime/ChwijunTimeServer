@@ -14,7 +14,5 @@ public class FindAllApplicationResDto {
     private String gitHubURL;
     private String employmentAnnouncementName;
     private String recruitmentField;
-    private String deadLine;
-
 
 }

@@ -1,8 +1,10 @@
 package com.gsm.chwijuntime.controller.release;
 
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
+import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewSaveDto;
 import com.gsm.chwijuntime.model.response.CommonResult;
+import com.gsm.chwijuntime.model.response.ListResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import com.gsm.chwijuntime.service.applicationemployment.ApplicationEmploymentService;
 import io.swagger.annotations.Api;
@@ -12,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Api(tags = {"7. 취업 공고 신청"})
 @RequiredArgsConstructor
@@ -39,8 +43,8 @@ public class ApplicationEmploymentController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/application")
-    public CommonResult FindAllApplication() {
-        applicationEmploymentService.findAllApplication();
-        return null;
+    public ListResult<FindAllApplicationResDto> FindAllApplication() {
+        List<FindAllApplicationResDto> allApplication = applicationEmploymentService.findAllApplication();
+        return responseService.getListResult(allApplication);
     }
 }

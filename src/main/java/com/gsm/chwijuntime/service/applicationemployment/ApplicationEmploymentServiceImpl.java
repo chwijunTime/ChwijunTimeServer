@@ -1,6 +1,8 @@
 package com.gsm.chwijuntime.service.applicationemployment;
 
+import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
+import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
 import com.gsm.chwijuntime.model.ApplicationEmployment;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
 import com.gsm.chwijuntime.model.Member;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,21 +31,26 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Override
     public void application(Long employmentAnnouncementIdx, ApplicationEmploymentSaveDto applicationemploymentSaveDto) {
         EmploymentAnnouncement findMyEmploymentAnnouncement = employmentAnnouncementRepository.findById(employmentAnnouncementIdx).orElseThrow(null);
-        Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(null);
+        Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         applicationEmploymentRepository.save(applicationemploymentSaveDto.toEntityByApplicationEmployment(findMember, findMyEmploymentAnnouncement));
     }
 
     @Override
-    public ApplicationEmployment findAllApplication() {
+    public List<FindAllApplicationResDto> findAllApplication() {
+        List<FindAllApplicationResDto> findAllApplicationResDtos = new ArrayList<>();
         List<ApplicationEmployment> all = applicationEmploymentRepository.findAll();
         for (ApplicationEmployment applicationEmployment : all) {
-            System.out.println("============== applicationEmployment.getApplicationEmploymentPortfolioURL() = " + applicationEmployment.getApplicationEmploymentPortfolioURL());
             Member member = applicationEmployment.getMember();
-            System.out.println("member = " + member.getMemberEmail());
             EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();
-            System.out.println("employmentAnnouncement.getEmploymentAnnouncementName() = " + employmentAnnouncement.getEmploymentAnnouncementName());
+            FindAllApplicationResDto build = FindAllApplicationResDto.builder()
+                    .memberClassNumber(member.getMemberClassNumber())
+                    .gitHubURL(applicationEmployment.getGitHubURL())
+                    .employmentAnnouncementName(employmentAnnouncement.getEmploymentAnnouncementName())
+                    .recruitmentField(employmentAnnouncement.getRecruitmentField())
+                    .build();
+            findAllApplicationResDtos.add(build);
         }
-        return null;
+        return findAllApplicationResDtos;
     }
 
     @Override
