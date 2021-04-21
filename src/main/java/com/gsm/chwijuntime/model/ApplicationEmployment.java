@@ -36,4 +36,14 @@ public class ApplicationEmployment {
     @JoinColumn(name = "EmploymentAnnouncementIdx")
     private EmploymentAnnouncement employmentAnnouncement;
 
+
+    // =============== 비즈니스 로직 =========================== //
+
+    public void changeApplicationEmploymentStatusApprove(){
+        this.applicationEmploymentStatus = ApplicationEmploymentStatus.Approve;
+    }
+
+    public void changeApplicationEmploymentStatusApproveReject() {
+        this.applicationEmploymentStatus = ApplicationEmploymentStatus.Reject;
+    }
 }

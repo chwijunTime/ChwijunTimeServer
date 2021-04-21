@@ -3,16 +3,12 @@ package com.gsm.chwijuntime.controller.release;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
-import com.gsm.chwijuntime.dto.companyreview.CompanyReviewSaveDto;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ListResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import com.gsm.chwijuntime.model.response.SingleResult;
 import com.gsm.chwijuntime.service.applicationemployment.ApplicationEmploymentService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -40,16 +36,6 @@ public class ApplicationEmploymentController {
         return responseService.getSuccessResult();
     }
 
-    @ApiOperation(value = "공고 전체 조회", notes = "관리자가 취업 공고를 전체 조회한다.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
-    @GetMapping("/application")
-    public ListResult<FindAllApplicationResDto> FindAllApplication() {
-        List<FindAllApplicationResDto> allApplication = applicationEmploymentService.findAllApplication();
-        return responseService.getListResult(allApplication);
-    }
-
     @ApiOperation(value = "공고 단일(디테일) 조회", notes = "관리자가 취업 공고를 단일(디테일) 조회한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
@@ -60,5 +46,33 @@ public class ApplicationEmploymentController {
         return responseService.getSingleResult(findAllApplicationDetailResDto);
     }
 
+    @ApiOperation(value = "공고 승인", notes = "관리자가 취업 공고 신청을 승인한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/application-accept/{applicationIdx}")
+    public CommonResult AcceptApplication(@PathVariable Long applicationIdx) throws Exception {
+        applicationEmploymentService.acceptApplication(applicationIdx);
+        return responseService.getSuccessResult();
+    }
 
+    @ApiOperation(value = "공고 거절", notes = "관리자가 취업 공고 신청을 승인한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/application-reject/{applicationIdx}")
+    public CommonResult Rejectpplication(@PathVariable Long applicationIdx) throws Exception {
+        applicationEmploymentService.rejectApplication(applicationIdx);
+        return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value = "공고 신청 상태 조회 (공고 전체 조회)", notes = "관리자가 취업 공고 상태를 조회한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @GetMapping("/application-status")
+    public ListResult<FindAllApplicationResDto> findByStatus(@RequestParam String status) throws Exception {
+        List<FindAllApplicationResDto> byStatus = applicationEmploymentService.findByStatus(status);
+        return responseService.getListResult(byStatus);
+    }
 }

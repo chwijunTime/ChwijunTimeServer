@@ -5,6 +5,7 @@ import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDt
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
 import com.gsm.chwijuntime.model.ApplicationEmployment;
+import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.repository.ApplicationEmploymentRepository;
@@ -37,24 +38,6 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     }
 
     @Override
-    public List<FindAllApplicationResDto> findAllApplication() {
-        List<FindAllApplicationResDto> findAllApplicationResDtos = new ArrayList<>();
-        List<ApplicationEmployment> all = applicationEmploymentRepository.findAll();
-        for (ApplicationEmployment applicationEmployment : all) {
-            Member member = applicationEmployment.getMember();
-            EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();
-            FindAllApplicationResDto build = FindAllApplicationResDto.builder()
-                    .memberClassNumber(member.getMemberClassNumber())
-                    .gitHubURL(applicationEmployment.getGitHubURL())
-                    .employmentAnnouncementName(employmentAnnouncement.getEmploymentAnnouncementName())
-                    .recruitmentField(employmentAnnouncement.getRecruitmentField())
-                    .build();
-            findAllApplicationResDtos.add(build);
-        }
-        return findAllApplicationResDtos;
-    }
-
-    @Override
     public FindAllApplicationDetailResDto applicationDetail(Long idx) {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findByApplicationEmploymentIdx(idx);
         Member member = applicationEmployment.getMember();
@@ -68,22 +51,56 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     }
 
     @Override
-    public ApplicationEmployment findByAccept() {
-        return null;
+    public List<FindAllApplicationResDto> findByStatus(String status) {
+        List<FindAllApplicationResDto> findAllApplicationResDtos = new ArrayList<>();
+        List<ApplicationEmployment> applicationEmploymentStatus = new ArrayList<>();
+        if (status.equals("Approve")){
+            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Approve);
+        } else if(status.equals("Wait")) {
+            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Wait);
+        } else if(status.equals("Reject")) {
+            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Reject);
+        } else if(status.equals("All")){
+            applicationEmploymentStatus = applicationEmploymentRepository.findAll();
+        }
+
+        for (ApplicationEmployment applicationEmployment : applicationEmploymentStatus) {
+            Member member = applicationEmployment.getMember();
+            EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();
+            FindAllApplicationResDto build = FindAllApplicationResDto.builder()
+                    .applicationEmploymentIdx(applicationEmployment.getApplicationEmploymentIdx())
+                    .applicationEmploymentStatus(applicationEmployment.getApplicationEmploymentStatus())
+                    .memberClassNumber(member.getMemberClassNumber())
+                    .gitHubURL(applicationEmployment.getGitHubURL())
+                    .employmentAnnouncementName(employmentAnnouncement.getEmploymentAnnouncementName())
+                    .recruitmentField(employmentAnnouncement.getRecruitmentField())
+                    .build();
+            findAllApplicationResDtos.add(build);
+        }
+        return findAllApplicationResDtos;
     }
 
+    @Transactional
     @Override
-    public ApplicationEmployment findByReject() {
-        return null;
+    public void acceptApplication(Long idx) throws Exception {
+        ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(null);
+        if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
+            throw new Exception("이미 승인된 요청입니다.");
+        } else if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Reject)){
+            throw new Exception("이미 거절된 요청입니다.");
+        }
+        applicationEmployment.changeApplicationEmploymentStatusApprove();
     }
 
+    @Transactional
     @Override
-    public void AcceptApplication() {
-
-    }
-
-    @Override
-    public void RejectApplication() {
-
+    public void rejectApplication(Long idx) throws Exception {
+        ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(null);
+        if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
+            throw new Exception("이미 승인된 요청입니다.");
+        } else if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Reject)){
+            throw new Exception("이미 거절된 요청입니다.");
+        }
+        applicationEmployment.changeApplicationEmploymentStatusApproveReject();
     }
 }
