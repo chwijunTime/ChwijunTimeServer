@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.service.applicationemployment;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
+import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
 import com.gsm.chwijuntime.model.ApplicationEmployment;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
@@ -54,18 +55,16 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     }
 
     @Override
-    public void AcceptApplication() {
+    public FindAllApplicationDetailResDto applicationDetail(Long idx) {
+        ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findByApplicationEmploymentIdx(idx);
+        Member member = applicationEmployment.getMember();
+        EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();
 
-    }
-
-    @Override
-    public void RejectApplication() {
-
-    }
-
-    @Override
-    public ApplicationEmployment ApplicationDetail() {
-        return null;
+        return FindAllApplicationDetailResDto.builder()
+                .member(member)
+                .applicationEmployment(applicationEmployment)
+                .employmentAnnouncement(employmentAnnouncement)
+                .build();
     }
 
     @Override
@@ -76,5 +75,15 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Override
     public ApplicationEmployment findByReject() {
         return null;
+    }
+
+    @Override
+    public void AcceptApplication() {
+
+    }
+
+    @Override
+    public void RejectApplication() {
+
     }
 }

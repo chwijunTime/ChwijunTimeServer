@@ -1,6 +1,7 @@
 package com.gsm.chwijuntime.service.applicationemployment;
 
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
+import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
 import com.gsm.chwijuntime.model.ApplicationEmployment;
 
@@ -21,7 +22,8 @@ public interface ApplicationEmploymentService {
     void RejectApplication();
 
     // 공고 신청 자세히 보기 => 관리자 (전부 출력)
-    ApplicationEmployment ApplicationDetail();
+    FindAllApplicationDetailResDto applicationDetail(Long idx);
+
 
     // 신청 공고 전체 조회 => 관리자 (학번, 이름, 깃허브, 회사 이름)
     ApplicationEmployment findByAccept();

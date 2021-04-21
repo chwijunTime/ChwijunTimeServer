@@ -13,4 +13,6 @@ public interface ApplicationEmploymentRepository extends JpaRepository<Applicati
     @Query("select a from ApplicationEmployment a join fetch a.member join fetch a.employmentAnnouncement")
     List<ApplicationEmployment> findAll();
 
+    @Query("select a from ApplicationEmployment a join fetch a.member join fetch a.employmentAnnouncement where a.applicationEmploymentIdx = :idx")
+    ApplicationEmployment findByApplicationEmploymentIdx(Long idx);
 }
