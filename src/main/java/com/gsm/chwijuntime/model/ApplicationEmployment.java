@@ -1,31 +1,31 @@
 package com.gsm.chwijuntime.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 // 취업 공고 신청 테이블
 public class ApplicationEmployment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ApplicationEmploymentIdx;
+    private Long applicationEmploymentIdx;
 
     @Column(nullable = false)
-    private String GitHubURL;
+    private String gitHubURL;
+
+    @Column(nullable = false)
+    private String applicationEmploymentResumeURL;
+
+    @Column(nullable = false)
+    private String applicationEmploymentPortfolioURL;
 
     @Enumerated(EnumType.STRING)
     private ApplicationEmploymentStatus applicationEmploymentStatus;
-
-    @Column(nullable = false)
-    private String ApplicationEmploymentResumeURL;
 
     // ================ 외래키(연관관계 주인) =================== //
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,9 +35,5 @@ public class ApplicationEmployment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EmploymentAnnouncementIdx")
     private EmploymentAnnouncement employmentAnnouncement;
-
-    public void changeEmploymentAnnouncement(EmploymentAnnouncement employmentAnnouncement){
-        this.employmentAnnouncement = employmentAnnouncement;
-    }
 
 }
