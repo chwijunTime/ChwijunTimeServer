@@ -1,6 +1,8 @@
 # exception_ko.yml
 unKnown:
   code: "-9999"
+MethodArgumentNotValidException:
+  code: "-8888"
 entryPointException:
   code: "-1"
   msg: "로그인이 필요합니다."

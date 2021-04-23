@@ -3,10 +3,12 @@ package com.gsm.chwijuntime.advice;
 import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
+import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -105,5 +107,9 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundApplicationEmploymentException.code")), getMessage("NotFoundApplicationEmploymentException.msg"));
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public CommonResult processValidationError(MethodArgumentNotValidException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("MethodArgumentNotValidException.code")), e.getAllErrors().get(0).getDefaultMessage());
+    }
 
 }
