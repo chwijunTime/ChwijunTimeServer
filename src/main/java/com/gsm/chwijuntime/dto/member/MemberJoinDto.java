@@ -7,10 +7,7 @@ import com.gsm.chwijuntime.model.Tag;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Collections;
 
 @Getter
@@ -21,10 +18,18 @@ import java.util.Collections;
 public class MemberJoinDto {
 
     @Email(message = "이메일 형식으로 입력해주세요.")
+    @NotBlank(message = "빈칸을 없애주세요")
+    @NotNull(message = "이메일을 입력해주세요")
     private String memberEmail;
+
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{8,15}.$", message = "숫자, 문자, 특수문자 모두 포함 (8~15자)")
+    @NotBlank(message = "빈칸을 없애주세요")
+    @NotNull(message = "비밀번호를 입력해주세요")
     private String memberPassword;
     
     @Size(max = 4, min = 4, message = "학번은 4글자로 입력해주세요")
+    @NotBlank(message = "빈칸을 없애주세요")
+    @NotNull(message = "학번을 입력해주세요")
     private String memberClassNumber;
 
     public Member ToEntityByMember() {
