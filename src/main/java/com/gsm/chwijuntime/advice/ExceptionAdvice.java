@@ -84,4 +84,15 @@ public class ExceptionAdvice {
     public CommonResult NotFoundNoticeException(HttpServletRequest request, NotFoundNoticeException e) {
         return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundNoticeException.code")), getMessage("NotFoundNoticeException.msg"));
     }
+
+    @ExceptionHandler(RequestAlreadyApprovedException.class)
+    public CommonResult RequestAlreadyApprovedException(HttpServletRequest request, RequestAlreadyApprovedException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("RequestAlreadyApprovedException.code")), getMessage("RequestAlreadyApprovedException.msg"));
+    }
+
+    @ExceptionHandler(RequestAlreadyRejectedException.class)
+    public CommonResult RequestAlreadyRejectedException(HttpServletRequest request, RequestAlreadyRejectedException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("RequestAlreadyRejectedException.code")), getMessage("RequestAlreadyRejectedException.msg"));
+    }
+
 }

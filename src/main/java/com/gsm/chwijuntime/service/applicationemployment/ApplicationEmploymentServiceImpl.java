@@ -1,6 +1,8 @@
 package com.gsm.chwijuntime.service.applicationemployment;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.RequestAlreadyApprovedException;
+import com.gsm.chwijuntime.advice.exception.RequestAlreadyRejectedException;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
@@ -85,9 +87,9 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     public void acceptApplication(Long idx) throws Exception {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(null);
         if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
-            throw new Exception("이미 승인된 요청입니다.");
+            throw new RequestAlreadyApprovedException("이미 승인된 요청입니다.");
         } else if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Reject)){
-            throw new Exception("이미 거절된 요청입니다.");
+            throw new RequestAlreadyRejectedException("이미 거절된 요청입니다.");
         }
         applicationEmployment.changeApplicationEmploymentStatusApprove();
     }
@@ -97,9 +99,9 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     public void rejectApplication(Long idx) throws Exception {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(null);
         if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
-            throw new Exception("이미 승인된 요청입니다.");
+            throw new RequestAlreadyApprovedException("이미 승인된 요청입니다.");
         } else if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Reject)){
-            throw new Exception("이미 거절된 요청입니다.");
+            throw new RequestAlreadyRejectedException("이미 거절된 요청입니다.");
         }
         applicationEmployment.changeApplicationEmploymentStatusApproveReject();
     }

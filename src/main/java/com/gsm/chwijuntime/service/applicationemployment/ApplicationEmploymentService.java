@@ -4,6 +4,7 @@ import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDt
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
 import com.gsm.chwijuntime.model.ApplicationEmployment;
+import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
 
 import java.util.List;
 
