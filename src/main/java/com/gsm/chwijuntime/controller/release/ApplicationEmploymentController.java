@@ -71,7 +71,7 @@ public class ApplicationEmploymentController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/application-status")
-    public ListResult<FindAllApplicationResDto> findByStatus(@RequestParam String status) throws Exception {
+    public ListResult<FindAllApplicationResDto> findByStatus(@RequestParam String status) {
         List<FindAllApplicationResDto> byStatus = applicationEmploymentService.findByStatus(status);
         return responseService.getListResult(byStatus);
     }

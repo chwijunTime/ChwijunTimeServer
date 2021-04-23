@@ -82,7 +82,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
 
     @Transactional
     @Override
-    public void acceptApplication(Long idx) throws Exception {
+    public void acceptApplication(Long idx) {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(NotFoundApplicationEmploymentException::new);
         if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
             throw new RequestAlreadyApprovedException("이미 승인된 요청입니다.");
@@ -94,7 +94,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
 
     @Transactional
     @Override
-    public void rejectApplication(Long idx) throws Exception {
+    public void rejectApplication(Long idx) {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(NotFoundApplicationEmploymentException::new);
         if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
             throw new RequestAlreadyApprovedException("이미 승인된 요청입니다.");
