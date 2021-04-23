@@ -95,4 +95,15 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("RequestAlreadyRejectedException.code")), getMessage("RequestAlreadyRejectedException.msg"));
     }
 
+    @ExceptionHandler(NotFoundEmploymentAnnouncementException.class)
+    public CommonResult NotFoundEmploymentAnnouncementException(HttpServletRequest request, NotFoundEmploymentAnnouncementException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundEmploymentAnnouncementException.code")), getMessage("NotFoundEmploymentAnnouncementException.msg"));
+    }
+
+    @ExceptionHandler(NotFoundApplicationEmploymentException.class)
+    public CommonResult NotFoundApplicationEmploymentException(HttpServletRequest request, NotFoundApplicationEmploymentException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundApplicationEmploymentException.code")), getMessage("NotFoundApplicationEmploymentException.msg"));
+    }
+
+
 }

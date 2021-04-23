@@ -37,3 +37,9 @@ RequestAlreadyApprovedException:
 RequestAlreadyRejectedException:
   code: "-12"
   msg: "이미 거절된 요청입니다."
+NotFoundEmploymentAnnouncementException:
+  code: "-13"
+  msg: "취업 공고를 찾을 수 없습니다."
+NotFoundApplicationEmploymentException:
+  code: "-14"
+  msg: "취업 공고 신청을 찾을 수 없습니다."

@@ -1,8 +1,6 @@
 package com.gsm.chwijuntime.service.applicationemployment;
 
-import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
-import com.gsm.chwijuntime.advice.exception.RequestAlreadyApprovedException;
-import com.gsm.chwijuntime.advice.exception.RequestAlreadyRejectedException;
+import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
@@ -34,7 +32,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Transactional
     @Override
     public void application(Long employmentAnnouncementIdx, ApplicationEmploymentSaveDto applicationemploymentSaveDto) {
-        EmploymentAnnouncement findMyEmploymentAnnouncement = employmentAnnouncementRepository.findById(employmentAnnouncementIdx).orElseThrow(null);
+        EmploymentAnnouncement findMyEmploymentAnnouncement = employmentAnnouncementRepository.findById(employmentAnnouncementIdx).orElseThrow(NotFoundEmploymentAnnouncementException::new);
         Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         applicationEmploymentRepository.save(applicationemploymentSaveDto.toEntityByApplicationEmployment(findMember, findMyEmploymentAnnouncement));
     }
@@ -85,7 +83,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Transactional
     @Override
     public void acceptApplication(Long idx) throws Exception {
-        ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(null);
+        ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(NotFoundApplicationEmploymentException::new);
         if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
             throw new RequestAlreadyApprovedException("이미 승인된 요청입니다.");
         } else if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Reject)){
@@ -97,7 +95,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Transactional
     @Override
     public void rejectApplication(Long idx) throws Exception {
-        ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(null);
+        ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(NotFoundApplicationEmploymentException::new);
         if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
             throw new RequestAlreadyApprovedException("이미 승인된 요청입니다.");
         } else if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Reject)){
