@@ -33,6 +33,13 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Override
     public void application(Long employmentAnnouncementIdx, ApplicationEmploymentSaveDto applicationemploymentSaveDto) {
         EmploymentAnnouncement findMyEmploymentAnnouncement = employmentAnnouncementRepository.findById(employmentAnnouncementIdx).orElseThrow(NotFoundEmploymentAnnouncementException::new);
+
+        //공고 날짜/신청 날짜 비교
+        int compare = applicationemploymentSaveDto.getLocalDate().compareTo(findMyEmploymentAnnouncement.getDeadLine());
+        if(compare >= 0) {
+            System.out.println("신청 날짜 지남");
+        }
+
         Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         applicationEmploymentRepository.save(applicationemploymentSaveDto.toEntityByApplicationEmployment(findMember, findMyEmploymentAnnouncement));
     }

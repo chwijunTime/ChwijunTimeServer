@@ -30,8 +30,8 @@ public class MemberJoinDto {
     @Size(max = 4, min = 4, message = "학번은 4글자로 입력해주세요")
     @NotBlank(message = "빈칸을 없애주세요")
     @NotNull(message = "학번을 입력해주세요")
-    private String memberClassNumber;
 
+    private String memberClassNumber;
     public Member ToEntityByMember() {
         return Member.builder()
                 .memberEmail(this.memberEmail)

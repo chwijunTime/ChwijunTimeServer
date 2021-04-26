@@ -15,6 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,10 +46,20 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
 
     @Override
     public List<EmploymentAnnouncementResponseDto> findByAll() {
+        List<EmploymentAnnouncementResponseDto> responseDtoList = new ArrayList<>();
         List<EmploymentAnnouncementResponseDto> employmentAnnouncementResponseDtos = employmentAnnouncementRepository.findAll().stream()
                 .map(m -> mapper.map(m, EmploymentAnnouncementResponseDto.class))
                 .collect(Collectors.toList());
-        return employmentAnnouncementResponseDtos;
+        LocalDate now = LocalDate.now();
+        //지난 날짜 걸러주기
+        for (EmploymentAnnouncementResponseDto employmentAnnouncementResponseDto : employmentAnnouncementResponseDtos) {
+            int compare = employmentAnnouncementResponseDto.getDeadLine().compareTo(now);
+            if(compare >= 0) {
+                System.out.println("========================== deadLine 안 지남");
+                responseDtoList.add(employmentAnnouncementResponseDto);
+            }
+        }
+        return responseDtoList;
     }
 
     @Transactional

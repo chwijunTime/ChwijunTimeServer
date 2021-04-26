@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -20,7 +21,8 @@ public class EmploymentAnnouncement {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employmentAnnouncementIdx;
 
-    private LocalDate announcementDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate announcementDate;    //공고 등록 날짜
 
     @Column(nullable = false)
     private String employmentAnnouncementName;

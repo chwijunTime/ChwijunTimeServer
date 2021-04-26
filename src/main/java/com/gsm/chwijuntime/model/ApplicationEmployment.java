@@ -1,8 +1,12 @@
 package com.gsm.chwijuntime.model;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -26,6 +30,9 @@ public class ApplicationEmployment {
 
     @Enumerated(EnumType.STRING)
     private ApplicationEmploymentStatus applicationEmploymentStatus;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate applicationDate;  //지원 날짜
 
     // ================ 외래키(연관관계 주인) =================== //
     @ManyToOne(fetch = FetchType.LAZY)
