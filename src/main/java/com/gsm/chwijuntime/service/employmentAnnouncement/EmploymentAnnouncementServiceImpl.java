@@ -7,14 +7,20 @@ import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementSave
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementUpdateDto;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
 import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.Tag;
+import com.gsm.chwijuntime.model.tagmapping.EmploymentAnnouncementTag;
 import com.gsm.chwijuntime.repository.EmploymentAnnouncementRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
+import com.gsm.chwijuntime.repository.TagRepository;
+import com.gsm.chwijuntime.repository.tag.EmploymentAnnouncementTagRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +30,8 @@ import java.util.stream.Collectors;
 public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncementService {
 
     private final ModelMapper mapper;
+    private final TagRepository tagRepository;
+    private final EmploymentAnnouncementTagRepository employmentAnnouncementTagRepository;
     private final MemberRepository memberRepository;
     private final GetUserEmailUtil getUserEmailUtil;
     private final EmploymentAnnouncementRepository employmentAnnouncementRepository;
@@ -33,21 +41,50 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
     public void EmploymentAnnouncementSave(EmploymentAnnouncementSaveDto employmentAnnouncementSaveDto) {
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow();
         employmentAnnouncementRepository.save(employmentAnnouncementSaveDto.toEntityByEmploymentAnnouncement(member));
+        for(String i : employmentAnnouncementSaveDto.getTagName()){
+            Tag tag = tagRepository.findByTagName(i);
+            List<EmploymentAnnouncement> allByEmploymentAnnouncementName = employmentAnnouncementRepository.findAllByEmploymentAnnouncementName(employmentAnnouncementSaveDto.getEmploymentAnnouncementName());
+            int size = allByEmploymentAnnouncementName.size() - 1;
+            employmentAnnouncementSaveDto.MappingTagByEmploymentAnnouncement(tag, allByEmploymentAnnouncementName.get(size));
+            employmentAnnouncementTagRepository.save(employmentAnnouncementSaveDto.ToEntityByEmploymentAnnouncementTag());
+        }
     }
 
     @Override
     public EmploymentAnnouncementResponseDto findByOne(Long idx) {
         EmploymentAnnouncementResponseDto employmentAnnouncementResponseDto = employmentAnnouncementRepository.findById(idx)
                 .map(m -> mapper.map(m, EmploymentAnnouncementResponseDto.class)).orElseThrow(null);
+        EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(null);
+        List<EmploymentAnnouncementTag> employmentAnnouncementTags = employmentAnnouncementTagRepository.findAllByEmploymentAnnouncement(employmentAnnouncement);
+        for (EmploymentAnnouncementTag i : employmentAnnouncementTags) {
+            employmentAnnouncementResponseDto.getEmploymentAnnouncementTags().add(i.getTag().getTagName());
+        }
         return employmentAnnouncementResponseDto;
     }
 
     @Override
     public List<EmploymentAnnouncementResponseDto> findByAll() {
+        List<EmploymentAnnouncementResponseDto> responseDtoList = new ArrayList<>();
         List<EmploymentAnnouncementResponseDto> employmentAnnouncementResponseDtos = employmentAnnouncementRepository.findAll().stream()
                 .map(m -> mapper.map(m, EmploymentAnnouncementResponseDto.class))
                 .collect(Collectors.toList());
-        return employmentAnnouncementResponseDtos;
+        LocalDate now = LocalDate.now();
+        //지난 날짜 걸러주기
+        for (EmploymentAnnouncementResponseDto employmentAnnouncementResponseDto : employmentAnnouncementResponseDtos) {
+            int compare = employmentAnnouncementResponseDto.getDeadLine().compareTo(now);
+            if(compare >= 0) {
+                responseDtoList.add(employmentAnnouncementResponseDto);
+            }
+        }
+        //태그 보여주기
+        for (EmploymentAnnouncementResponseDto i : responseDtoList) {
+            EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(i.getEmploymentAnnouncementIdx()).orElseThrow(null);
+            List<EmploymentAnnouncementTag> employmentAnnouncementTags = employmentAnnouncementTagRepository.findAllByEmploymentAnnouncement(employmentAnnouncement);
+            for (EmploymentAnnouncementTag j : employmentAnnouncementTags) {
+                i.getEmploymentAnnouncementTags().add(j.getTag().getTagName());
+            }
+        }
+        return responseDtoList;
     }
 
     @Transactional

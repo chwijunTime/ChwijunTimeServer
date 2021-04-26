@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Api(tags = {"1. 회원"})
 @RequiredArgsConstructor
@@ -33,14 +34,14 @@ public class MemberController {
 
     @ApiOperation(value = "가입", notes = "회원가입을 한다.")
     @PostMapping("/join")
-    public CommonResult join(@RequestBody MemberJoinDto memberJoinDto) throws IllegalAccessException {
+    public CommonResult join(@Valid @RequestBody MemberJoinDto memberJoinDto) throws IllegalAccessException {
         memberService.InsertMember(memberJoinDto);
         return responseService.getSuccessResult();
     }
 
     @ApiOperation(value = "로그인", notes = "이메일 회원 로그인을 한다.")
     @PostMapping("/login")
-    public SingleResult<MemberLoginResDto> login(@RequestBody MemberLoginDto memberLoginDto) throws Exception {
+    public SingleResult<MemberLoginResDto> login(@Valid @RequestBody MemberLoginDto memberLoginDto) throws Exception {
         Member member = memberService.findMember(memberLoginDto);
         String accessToken = jwtTokenProvider.generateToken(member);
         String refreshToken = jwtTokenProvider.generateRefreshToken(member);

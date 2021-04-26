@@ -3,6 +3,8 @@ package com.gsm.chwijuntime.dto.employmentAnnouncement;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,5 +22,7 @@ public class EmploymentAnnouncementResponseDto {
     private String employmentAnnouncementAddress;
     private LocalDate deadLine;
     private String employmentAnnouncementEtc;
+
+    private List<String> employmentAnnouncementTags = new ArrayList<>();
 
 }

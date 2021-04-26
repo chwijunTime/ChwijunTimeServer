@@ -1,6 +1,8 @@
 # exception_ko.yml
 unKnown:
   code: "-9999"
+MethodArgumentNotValidException:
+  code: "-8888"
 entryPointException:
   code: "-1"
   msg: "로그인이 필요합니다."
@@ -31,3 +33,15 @@ DuplicateContractingCompanyException:
 NotFoundNoticeException:
   code: "-10"
   msg: "선택하신 공지사항은 없습니다."
+RequestAlreadyApprovedException:
+  code: "-11"
+  msg: "이미 승인된 요청입니다."
+RequestAlreadyRejectedException:
+  code: "-12"
+  msg: "이미 거절된 요청입니다."
+NotFoundEmploymentAnnouncementException:
+  code: "-13"
+  msg: "취업 공고를 찾을 수 없습니다."
+NotFoundApplicationEmploymentException:
+  code: "-14"
+  msg: "취업 공고 신청을 찾을 수 없습니다."

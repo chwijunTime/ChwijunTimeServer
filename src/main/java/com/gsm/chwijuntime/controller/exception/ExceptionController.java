@@ -63,4 +63,23 @@ public class ExceptionController {
         throw new NotFoundNoticeException();
     }
 
+    @GetMapping(value = "/RequestAlreadyApprovedException")
+    public CommonResult RequestAlreadyApprovedException() {
+        throw new RequestAlreadyApprovedException();
+    }
+
+    @GetMapping(value = "/RequestAlreadyRejectedException")
+    public CommonResult RequestAlreadyRejectedException() {
+        throw new RequestAlreadyRejectedException();
+    }
+
+    @GetMapping(value = "/NotFoundEmploymentAnnouncementException")
+    public CommonResult NotFoundEmploymentAnnouncementException() {
+        throw new NotFoundEmploymentAnnouncementException();
+    }
+
+    @GetMapping(value = "/NotFoundApplicationEmploymentException")
+    public CommonResult NotFoundApplicationEmploymentException() {
+        throw new NotFoundApplicationEmploymentException();
+    }
 }
