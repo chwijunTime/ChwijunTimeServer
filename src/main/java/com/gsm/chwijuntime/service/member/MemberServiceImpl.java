@@ -94,6 +94,14 @@ public class MemberServiceImpl implements MemberService {
         //나중에 생각
     }
 
+    @Override
+    public void userEmailCheck(String email) {
+        Optional<Member> member = memberRepository.findByMemberEmail(email);
+        if(!member.isEmpty()){
+            throw new UserDuplicationException();
+        }
+    }
+
     @Transactional
     @Override
     public MemberTagResDto viewMember() {
