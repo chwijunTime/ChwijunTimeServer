@@ -84,7 +84,6 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
                 i.getEmploymentAnnouncementTags().add(j.getTag().getTagName());
             }
         }
-
         return responseDtoList;
     }
 
