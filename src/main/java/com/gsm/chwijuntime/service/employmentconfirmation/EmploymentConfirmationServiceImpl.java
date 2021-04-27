@@ -50,7 +50,7 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
     public EmploymentConfirmationResDto findByIdx(Long idx) {
         EmploymentConfirmationResDto employmentConfirmationResDto = employmentConfirmationRepository.findById(idx)
                 .map(m -> mapper.map(m, EmploymentConfirmationResDto.class)).orElseThrow(null);
-        EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findById(idx).orElseThrow(null);
+        EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findByEmploymentConfirmationIdx(employmentConfirmationResDto.getEmploymentConfirmationIdx());
         List<EmploymentConfirmationTag> employmentConfirmationTags = employmentConfirmationTagRepository.findAllByEmploymentConfirmation(employmentConfirmation);
         for (EmploymentConfirmationTag i : employmentConfirmationTags) {
             employmentConfirmationResDto.getEmploymentConfirmationTags().add(i.getTag().getTagName());
@@ -60,17 +60,18 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
 
     @Override
     public List<EmploymentConfirmationResDto> findAll() {
-        List<EmploymentConfirmationResDto> employmentConfirmationResDtoStream = employmentConfirmationRepository.findAll()
-                .stream().map(m -> mapper.map(m, EmploymentConfirmationResDto.class))
+        List<EmploymentConfirmationResDto> employmentConfirmationResDtos = employmentConfirmationRepository.findAll().stream()
+                .map(m -> mapper.map(m, EmploymentConfirmationResDto.class))
                 .collect(Collectors.toList());
-        for (EmploymentConfirmationResDto i : employmentConfirmationResDtoStream) {
+        //태그 보여주기
+        for (EmploymentConfirmationResDto i : employmentConfirmationResDtos) {
             EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findById(i.getEmploymentConfirmationIdx()).orElseThrow(null);
             List<EmploymentConfirmationTag> employmentConfirmationTags = employmentConfirmationTagRepository.findAllByEmploymentConfirmation(employmentConfirmation);
             for (EmploymentConfirmationTag j : employmentConfirmationTags) {
                 i.getEmploymentConfirmationTags().add(j.getTag().getTagName());
             }
         }
-        return employmentConfirmationResDtoStream;
+        return employmentConfirmationResDtos;
     }
 
     @Transactional
@@ -80,8 +81,10 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
         employmentConfirmation.changeEmploymentConfirmation(employmentConfirmationUpdateDto);
     }
 
+    @Transactional
     @Override
     public void deleteEmploymentConfirmation(Long idx) {
-        employmentConfirmationRepository.deleteById(idx);
+        //삭제는 없음
     }
+
 }
