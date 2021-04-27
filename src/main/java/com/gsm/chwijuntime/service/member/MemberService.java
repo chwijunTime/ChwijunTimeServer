@@ -16,4 +16,5 @@ public interface MemberService {
     MemberTagResDto viewMember();
     void updateMemberProfile(MemberProfileSaveDto memberProfileSaveDto);
 
+    void userEmailCheck(String email);
 }

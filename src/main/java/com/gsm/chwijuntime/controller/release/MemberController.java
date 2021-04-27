@@ -39,6 +39,13 @@ public class MemberController {
         return responseService.getSuccessResult();
     }
 
+    @ApiOperation(value = "아이디 중복 체크", notes = "회원가입을 할때 이메일 중복 체크를 한다.")
+    @PostMapping("/email-check")
+    public CommonResult userEmailCheck(@RequestParam String email){
+        memberService.userEmailCheck(email);
+        return responseService.getSuccessResult();
+    }
+
     @ApiOperation(value = "로그인", notes = "이메일 회원 로그인을 한다.")
     @PostMapping("/login")
     public SingleResult<MemberLoginResDto> login(@Valid @RequestBody MemberLoginDto memberLoginDto) throws Exception {

@@ -3,6 +3,7 @@ package com.gsm.chwijuntime.model;
 import com.gsm.chwijuntime.model.tagmapping.MemberResumeTag;
 import com.gsm.chwijuntime.model.tagmapping.TipsStorageTag;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,16 +15,21 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class MemberResume {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long MemberResumeIdx;
+    private Long memberResumeIdx;
 
     @Column(nullable = false)
-    private String ResumefileURL;
+    private String resumeFileURL;
 
     // =============== 외래키(연관관계 주인) =============== //
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MemberIdx")
     private Member member;
+
+    public void changeURL(String url){
+        this.resumeFileURL = url;
+    }
 }
