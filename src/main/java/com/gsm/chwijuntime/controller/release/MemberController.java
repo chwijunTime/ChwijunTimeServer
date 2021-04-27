@@ -1,0 +1,100 @@
+package com.gsm.chwijuntime.controller.release;
+
+import com.gsm.chwijuntime.dto.member.*;
+import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.response.CommonResult;
+import com.gsm.chwijuntime.model.response.ResponseService;
+import com.gsm.chwijuntime.model.response.SingleResult;
+import com.gsm.chwijuntime.service.member.MemberService;
+import com.gsm.chwijuntime.util.JwtTokenProvider;
+import com.gsm.chwijuntime.util.RedisUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+@Api(tags = {"1. 회원"})
+@RequiredArgsConstructor
+@RestController
+@RequestMapping(value = "/v1")
+@CrossOrigin("http://localhost:3000")
+@Slf4j
+public class MemberController {
+
+    private final MemberService memberService;
+    private final ResponseService responseService;
+    private final RedisUtil redisUtil;
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @ApiOperation(value = "가입", notes = "회원가입을 한다.")
+    @PostMapping("/join")
+    public CommonResult join(@Valid @RequestBody MemberJoinDto memberJoinDto) throws IllegalAccessException {
+        memberService.InsertMember(memberJoinDto);
+        return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value = "아이디 중복 체크", notes = "회원가입을 할때 이메일 중복 체크를 한다.")
+    @PostMapping("/email-check")
+    public CommonResult userEmailCheck(@RequestParam String email){
+        memberService.userEmailCheck(email);
+        return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value = "로그인", notes = "이메일 회원 로그인을 한다.")
+    @PostMapping("/login")
+    public SingleResult<MemberLoginResDto> login(@Valid @RequestBody MemberLoginDto memberLoginDto) throws Exception {
+        Member member = memberService.findMember(memberLoginDto);
+        String accessToken = jwtTokenProvider.generateToken(member);
+        String refreshToken = jwtTokenProvider.generateRefreshToken(member);
+        String roles = member.String_Role(member);
+        redisUtil.setDataExpire(member.getUsername(), refreshToken, jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
+        MemberLoginResDto memberLoginResDto = MemberLoginResDto.mapping(member.getMemberEmail(), member.getMemberClassNumber(), roles, accessToken);
+        return responseService.getSingleResult(memberLoginResDto);
+    }
+
+    @ApiOperation(value = "로그아웃", notes = "사용자가 로그아웃한다.")
+    @PostMapping("/logout")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    public CommonResult logout() {
+        memberService.logoutMember();
+        return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value = "유저 정보", notes = "현재 로그인 된 유저 정보를 가져온다.")
+    @PostMapping("/userinfo")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    public SingleResult<Member> userinfo(){
+        Member member = memberService.UserInfo();
+        return responseService.getSingleResult(member);
+    }
+
+    @ApiOperation(value = "프로필 생성", notes = "유저가 프로필을 설정한다.")
+    @PostMapping("/profile")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    public CommonResult profile(@RequestBody MemberProfileSaveDto memberProfileSaveDto){
+        memberService.memberProfileSave(memberProfileSaveDto);
+        return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value = "프로필 보기", notes = "유저가 프로필을 확인한다.")
+    @PostMapping("/view-profile")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    public SingleResult<MemberTagResDto> view_profile(){
+        MemberTagResDto viewMember = memberService.viewMember();
+        return responseService.getSingleResult(viewMember);
+    }
+}

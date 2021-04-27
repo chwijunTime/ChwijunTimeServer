@@ -1,0 +1,47 @@
+# exception_ko.yml
+unKnown:
+  code: "-9999"
+MethodArgumentNotValidException:
+  code: "-8888"
+entryPointException:
+  code: "-1"
+  msg: "로그인이 필요합니다."
+accessDenied:
+  code: "-2"
+  msg: "관리자 권한이 없습니다."
+UserDuplicationException:
+  code: "-3"
+  msg: "이메일이 중복 되었습니다."
+EmailNotFoundException:
+  code: "-4"
+  msg: "이메일을 다시 입력해주세요."
+NotFoundTagException:
+  code: "-5"
+  msg: "선택하신 태그가 없습니다."
+NotFoundContractingCompanyException:
+  code: "-6"
+  msg: "선택하신 협약 업체는 없습니다."
+NotFoundCompanyReviewException:
+  code: "-7"
+  msg: "선택하신 회사 리뷰는 없습니다."
+AuthorNotCertifiedException:
+  code: "-8"
+  msg: "작성자의 권한이 필요합니다."
+DuplicateContractingCompanyException:
+  code: "-9"
+  msg: "이미 등록된 기업입니다."
+NotFoundNoticeException:
+  code: "-10"
+  msg: "선택하신 공지사항은 없습니다."
+RequestAlreadyApprovedException:
+  code: "-11"
+  msg: "이미 승인된 요청입니다."
+RequestAlreadyRejectedException:
+  code: "-12"
+  msg: "이미 거절된 요청입니다."
+NotFoundEmploymentAnnouncementException:
+  code: "-13"
+  msg: "취업 공고를 찾을 수 없습니다."
+NotFoundApplicationEmploymentException:
+  code: "-14"
+  msg: "취업 공고 신청을 찾을 수 없습니다."

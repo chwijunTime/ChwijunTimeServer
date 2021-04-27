@@ -1,0 +1,16 @@
+package com.gsm.chwijuntime.repository.tag;
+
+import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.tagmapping.MemberTag;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface MemberTagRepository extends JpaRepository<MemberTag, Long> {
+
+    List<MemberTag> findByMember(Member member);
+}
