@@ -16,5 +16,5 @@ public interface EmploymentConfirmationRepository extends JpaRepository<Employme
     @Query("select e from EmploymentConfirmation e join fetch e.member where e.employmentConfirmationIdx = :idx")
     EmploymentConfirmation findByEmploymentConfirmationIdx(Long idx);
 
-
+    List<EmploymentConfirmation> findAllByEmploymentConfirmationName(String name);
 }

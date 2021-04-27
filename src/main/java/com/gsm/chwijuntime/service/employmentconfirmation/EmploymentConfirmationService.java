@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.service.employmentconfirmation;
 
+import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationResDto;
 import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationSaveDto;
 import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationUpdateDto;
 import com.gsm.chwijuntime.model.EmploymentConfirmation;
@@ -10,8 +11,8 @@ public interface EmploymentConfirmationService {
 
 
     void EmploymentConfirmationServiceSave(EmploymentConfirmationSaveDto employmentConfirmationSaveDto);
-    EmploymentConfirmation findByIdx(Long idx);
-    List<EmploymentConfirmation> findAll();
+    EmploymentConfirmationResDto findByIdx(Long idx);
+    List<EmploymentConfirmationResDto> findAll();
     void updateEmploymentConfirmation(Long idx, EmploymentConfirmationUpdateDto employmentConfirmationUpdateDto);
     void deleteEmploymentConfirmation(Long idx);
 
