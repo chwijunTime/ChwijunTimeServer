@@ -112,4 +112,8 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.parseInt(getMessage("MethodArgumentNotValidException.code")), e.getAllErrors().get(0).getDefaultMessage());
     }
 
+    @ExceptionHandler(IncorrectPasswordException.class)
+    public CommonResult IncorrectPasswordException(HttpServletRequest request, IncorrectPasswordException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("IncorrectPasswordException.code")), getMessage("IncorrectPasswordException.msg"));
+    }
 }
