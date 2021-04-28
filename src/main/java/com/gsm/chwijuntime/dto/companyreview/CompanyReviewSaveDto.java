@@ -3,6 +3,11 @@ package com.gsm.chwijuntime.dto.companyreview;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gsm.chwijuntime.model.CompanyReview;
 import com.gsm.chwijuntime.model.ContractingCompany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
+
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.model.tagmapping.CompanyReviewTag;
@@ -20,12 +25,25 @@ import java.util.List;
 @Builder
 public class CompanyReviewSaveDto {
 
+    @NotBlank(message = "회사 이름을 입력해주세요.")
     private String companyName;
+
+    @PastOrPresent(message = "미래의 날짜를 입력하지 말아주세요.")
     private LocalDate companyDateofApplication;
+
+    @NotBlank(message = "회사 주소를 입력해주세요.")
     private String companyAddress;
+
+    @NotBlank(message = "리뷰를 입력해주세요")
     private String companyReviews;
+
+    @NotBlank(message = "자주 물어본 질문을 입력해주세요.")
     private String companyFrequentlyAskedQuestions;
+
+    @Positive(message = "비용을 입력해주세요.")
     private int companyCost; // 면접 과정중 사용된 비용
+
+    @NotEmpty(message = "태그를 1개 이상 등록해주세요.")
     private List<String> tagName = new ArrayList<>();
 
     @JsonIgnore

@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = {"2. 태그"})
@@ -31,9 +32,10 @@ public class TagController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "태그 저장", notes = "관리자가 태그를 저장한다.")
     @PostMapping("/tag")
-    public CommonResult tagSave(@RequestBody TagSaveDto tagSaveDto){
+    public CommonResult tagSave(@Valid @RequestBody TagSaveDto tagSaveDto){
         tagService.insertTag(tagSaveDto);
         return responseService.getSuccessResult();
     }
@@ -41,6 +43,7 @@ public class TagController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "태그 단일 조회", notes = "관리자가 태그를 단일 조회한다.")
     @GetMapping("/tag/{tagIdx}")
     public SingleResult<Tag> findByTagIdx(@PathVariable Long tagIdx){
@@ -50,6 +53,7 @@ public class TagController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "태그 전체 조회", notes = "관리자가 태그를 전체 조회한다.")
     @GetMapping("/tag")
     public ListResult<Tag> findAll(){
@@ -60,6 +64,7 @@ public class TagController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "태그 삭제", notes = "관리자가 태그를 전체 삭제한다.")
     @DeleteMapping("/tag/{tagIdx}")
     public CommonResult deleteByTagIdx(@PathVariable Long tagIdx){
@@ -70,9 +75,10 @@ public class TagController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "태그 이름 수정", notes = "관리자가 태그의 이름을 수정한다.")
     @PutMapping("/tag/{tagIdx}")
-    public SingleResult<Tag> updateByTagIdx(@PathVariable Long tagIdx, @RequestBody TagSaveDto tagSaveDto){
+    public SingleResult<Tag> updateByTagIdx(@PathVariable Long tagIdx, @Valid @RequestBody TagSaveDto tagSaveDto){
         Tag tag = tagService.updateTag(tagIdx, tagSaveDto.getTagName());
         return responseService.getSingleResult(tag);
     }

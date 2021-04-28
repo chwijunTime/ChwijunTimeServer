@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = {"3. 협약 업체"})
@@ -33,8 +34,9 @@ public class ContractingCompanyController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @PostMapping("/contracting-company")
-    public CommonResult join(@RequestBody ContractingCompanySaveDto contractingCompanySaveDto) {
+    public CommonResult join(@Valid @RequestBody ContractingCompanySaveDto contractingCompanySaveDto) {
         contractingCompanyService.insertContractingCompany(contractingCompanySaveDto);
         return responseService.getSuccessResult();
     }
@@ -43,6 +45,7 @@ public class ContractingCompanyController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @GetMapping("/contracting-company")
     public ListResult<ContractingCompanyResDto> findAll() {
         List<ContractingCompanyResDto> contractingCompanies = contractingCompanyService.findAllContractingCompany();
@@ -53,6 +56,7 @@ public class ContractingCompanyController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @GetMapping("/contracting-company/{companyidx}")
     public SingleResult<ContractingCompanyResDto> findIdx(@PathVariable Long companyidx) {
         ContractingCompanyResDto contractingCompanyResDto = contractingCompanyService.findByContractingCompanyIdx(companyidx);
@@ -63,6 +67,7 @@ public class ContractingCompanyController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @DeleteMapping("/contracting-company/{companyidx}")
     public CommonResult deleteById(@PathVariable Long companyidx) {
         contractingCompanyService.deleteContractingCompanyIdx(companyidx);

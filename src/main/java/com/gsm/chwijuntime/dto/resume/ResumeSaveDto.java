@@ -5,6 +5,8 @@ import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.MemberResume;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,6 +14,7 @@ import lombok.*;
 @Builder
 public class ResumeSaveDto {
 
+    @NotBlank(message = "이력서 URL을 입력해주세요.")
     private String resumeFileURL;
 
     public MemberResume toEntityByMember(Member member) {

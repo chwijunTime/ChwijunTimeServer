@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = {"8. 이력서 저장"})
@@ -32,9 +33,10 @@ public class ResumeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "이력서 저장", notes = "사용자가 이력서를 저장한다.")
     @PostMapping("/resume")
-    public CommonResult ResumeSave(@RequestBody ResumeSaveDto resumeSaveDto){
+    public CommonResult ResumeSave(@Valid @RequestBody ResumeSaveDto resumeSaveDto){
         resumeService.saveResume(resumeSaveDto);
         return responseService.getSuccessResult();
     }
@@ -42,6 +44,7 @@ public class ResumeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "이력서 전체 조회", notes = "관리자가 이력서를 전체 조히한다.")
     @GetMapping("/resume")
     public CommonResult findAllResume(){
@@ -52,6 +55,7 @@ public class ResumeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "이력서 단일 조회", notes = "관리자와 사용자가 이력서를 단일 조회한다.")
     @GetMapping("/resume/{resumeIdx}")
     public SingleResult<MemberResume> findByIdx(@PathVariable Long resumeIdx){
@@ -62,9 +66,10 @@ public class ResumeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "이력서 수정", notes = "사용자가 이력서를 업데이트한다.")
     @PutMapping("/resume/{resumeIdx}")
-    public CommonResult updateByIdx(@PathVariable Long resumeIdx, @RequestBody ResumeUpdateDto resumeUpdateDto){
+    public CommonResult updateByIdx(@PathVariable Long resumeIdx, @Valid @RequestBody ResumeUpdateDto resumeUpdateDto){
         resumeService.updateResume(resumeIdx, resumeUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -72,6 +77,7 @@ public class ResumeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "이력서 삭제", notes = "사용자가 이력서를 삭제한다.")
     @DeleteMapping("/resume/{resumeIdx}")
     public CommonResult deleteByIdx(@PathVariable Long resumeIdx){
@@ -82,6 +88,7 @@ public class ResumeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "나의 이력서 전체 보기", notes = "사용자가 자신이 등록한 이력서를 전체 조회한다.")
     @GetMapping("/my-resume")
     public ListResult<MemberResume> myResume(){

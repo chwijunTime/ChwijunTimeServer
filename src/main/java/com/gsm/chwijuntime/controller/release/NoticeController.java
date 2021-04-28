@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = {"5. 공지사항"})
@@ -32,9 +33,10 @@ public class NoticeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "공지사항 저장", notes = "관리자가 공지사항를 저장한다.")
     @PostMapping("/notice")
-    public CommonResult noticeSave(@RequestBody NoticeSaveDto noticeSaveDto){
+    public CommonResult noticeSave(@Valid @RequestBody NoticeSaveDto noticeSaveDto){
         noticeService.save(noticeSaveDto);
         return responseService.getSuccessResult();
     }
@@ -42,6 +44,7 @@ public class NoticeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "공지사항 전체 조회", notes = "관리자와 사용자가 공지사항를 전체 조회한다.")
     @GetMapping("/notice")
     public ListResult<Notice> findAllNotice(){
@@ -53,6 +56,7 @@ public class NoticeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "공지사항 단일 조회", notes = "관리자와 사용자가 공지사항를 단일 조회한다.")
     @GetMapping("/notice/{noticeidx}")
     public SingleResult<Notice> findByNoticeIdx(@PathVariable Long noticeidx){
@@ -63,6 +67,7 @@ public class NoticeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "공지사항 삭제", notes = "관리자가 공지사항을 삭제한다.")
     @DeleteMapping("/notice/{noticeidx}")
     public CommonResult delelteByIdx(@PathVariable Long noticeidx){
@@ -73,9 +78,10 @@ public class NoticeController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "공지사항 업데이트", notes = "관리자가 공지사항을 업데이트 한다.")
     @PutMapping("/notice/{noticeidx}")
-    public CommonResult updateByIdx(@PathVariable Long noticeidx, @RequestBody NoticeSaveDto noticeSaveDto){
+    public CommonResult updateByIdx(@PathVariable Long noticeidx, @Valid @RequestBody NoticeSaveDto noticeSaveDto){
         noticeService.updateId(noticeidx, noticeSaveDto);
         return responseService.getSuccessResult();
     }

@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = {"9. 포트폴리오 저장"})
@@ -32,9 +33,10 @@ public class PortfolioController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "포트폴리오 저장", notes = "사용자가 포트폴리오를 저장한다.")
     @PostMapping("/portfolio")
-    public CommonResult portfolioSave(@RequestBody PortfolioSaveDto portfolioSaveDto){
+    public CommonResult portfolioSave(@Valid @RequestBody PortfolioSaveDto portfolioSaveDto){
         portfolioService.savePortfolio(portfolioSaveDto);
         return responseService.getSuccessResult();
     }
@@ -42,6 +44,7 @@ public class PortfolioController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "포트폴리오 전체 조회", notes = "관리자가 포트폴리오를 전체 조회한다.")
     @GetMapping("/portfolio")
     public ListResult<MemberPortfolio> findAll(){
@@ -52,6 +55,7 @@ public class PortfolioController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "포트폴리오 단일 조회", notes = "관리자가 포트폴리오를 전체 조회한다.")
     @GetMapping("/portfolio/{portfolioIdx}")
     public SingleResult<MemberPortfolio> findByIdx(@PathVariable Long portfolioIdx){
@@ -62,9 +66,10 @@ public class PortfolioController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "포트폴리오 수정", notes = "사용자가 포트폴리오를 수정한다.")
     @PutMapping("/portfolio/{portfolioIdx}")
-    public CommonResult updateByIdx(@PathVariable Long portfolioIdx, @RequestBody PortfolioUpdateDto portfolioUpdateDto){
+    public CommonResult updateByIdx(@PathVariable Long portfolioIdx, @Valid @RequestBody PortfolioUpdateDto portfolioUpdateDto){
         portfolioService.updatePortfolio(portfolioIdx, portfolioUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -72,6 +77,7 @@ public class PortfolioController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "포트폴리오 삭제", notes = "사용자가 포트폴리오를 삭제한다.")
     @DeleteMapping("/portfolio/{portfolioIdx}")
     public CommonResult deleteByIdx(@PathVariable Long portfolioIdx){
@@ -82,6 +88,7 @@ public class PortfolioController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @ApiOperation(value = "나의 포트폴리오 전체 보기", notes = "사용자가 자신이 등록한 포트폴리오를 전체 조회한다.")
     @GetMapping("/my-portfolio")
     public ListResult<MemberPortfolio> findByMember(){
