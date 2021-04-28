@@ -12,11 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class MemberLoginDto {
 
-    @Email(message = "이메일 형식으로 입력해주세요.")
-    @NotBlank(message = "이메일을 입력해주세요.")
     private String MemberEmail;
-
-    @NotBlank(message = "비밀번호를 입력해주세요.")
     private String MemberPassword;
 
 }
