@@ -33,83 +33,83 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(CAuthenticationEntryPointException.class)
     public CommonResult authenticationEntryPointException(HttpServletRequest request, CAuthenticationEntryPointException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("entryPointException.code")), getMessage("entryPointException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("entryPointException.code")), getMessage("entryPointException.msg"));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public CommonResult AccessDeniedException(HttpServletRequest request, AccessDeniedException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
     }
 
     //유저 중복 Exception
     @ExceptionHandler(UserDuplicationException.class)
     public CommonResult UserDuplicationException(HttpServletRequest request, UserDuplicationException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("UserDuplicationException.code")), getMessage("UserDuplicationException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("UserDuplicationException.code")), getMessage("UserDuplicationException.msg"));
     }
 
     //유저 이메일 없음 Exception
     @ExceptionHandler(EmailNotFoundException.class)
     public CommonResult EmailNotFoundException(HttpServletRequest request, EmailNotFoundException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("EmailNotFoundException.code")), getMessage("EmailNotFoundException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("EmailNotFoundException.code")), getMessage("EmailNotFoundException.msg"));
     }
 
     // 태그 없음
     @ExceptionHandler(NotFoundTagException.class)
     public CommonResult NotFoundTagException(HttpServletRequest request, NotFoundTagException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundTagException.code")), getMessage("NotFoundTagException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundTagException.code")), getMessage("NotFoundTagException.msg"));
     }
 
     // 협약 업체 찾지 못함
     @ExceptionHandler(NotFoundContractingCompanyException.class)
     public CommonResult NotFoundTagException(HttpServletRequest request, NotFoundContractingCompanyException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundContractingCompanyException.code")), getMessage("NotFoundContractingCompanyException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundContractingCompanyException.code")), getMessage("NotFoundContractingCompanyException.msg"));
     }
 
     // 작성자 권한이 아님
     @ExceptionHandler(AuthorNotCertifiedException.class)
     public CommonResult AuthorNotCertifiedException(HttpServletRequest request, AuthorNotCertifiedException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("AuthorNotCertifiedException.code")), getMessage("AuthorNotCertifiedException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("AuthorNotCertifiedException.code")), getMessage("AuthorNotCertifiedException.msg"));
     }
 
     @ExceptionHandler(NotFoundCompanyReviewException.class)
     public CommonResult NotFoundCompanyReview(HttpServletRequest request, NotFoundCompanyReviewException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundCompanyReviewException.code")), getMessage("NotFoundCompanyReviewException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundCompanyReviewException.code")), getMessage("NotFoundCompanyReviewException.msg"));
     }
 
     @ExceptionHandler(DuplicateContractingCompanyException.class)
     public CommonResult NotFoundCompanyReview(HttpServletRequest request, DuplicateContractingCompanyException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("DuplicateContractingCompanyException.code")), getMessage("DuplicateContractingCompanyException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("DuplicateContractingCompanyException.code")), getMessage("DuplicateContractingCompanyException.msg"));
     }
 
     // 공지사항 못 찾음
     @ExceptionHandler(NotFoundNoticeException.class)
     public CommonResult NotFoundNoticeException(HttpServletRequest request, NotFoundNoticeException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundNoticeException.code")), getMessage("NotFoundNoticeException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundNoticeException.code")), getMessage("NotFoundNoticeException.msg"));
     }
 
     @ExceptionHandler(RequestAlreadyApprovedException.class)
     public CommonResult RequestAlreadyApprovedException(HttpServletRequest request, RequestAlreadyApprovedException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("RequestAlreadyApprovedException.code")), getMessage("RequestAlreadyApprovedException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("RequestAlreadyApprovedException.code")), getMessage("RequestAlreadyApprovedException.msg"));
     }
 
     @ExceptionHandler(RequestAlreadyRejectedException.class)
     public CommonResult RequestAlreadyRejectedException(HttpServletRequest request, RequestAlreadyRejectedException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("RequestAlreadyRejectedException.code")), getMessage("RequestAlreadyRejectedException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("RequestAlreadyRejectedException.code")), getMessage("RequestAlreadyRejectedException.msg"));
     }
 
     @ExceptionHandler(NotFoundEmploymentAnnouncementException.class)
     public CommonResult NotFoundEmploymentAnnouncementException(HttpServletRequest request, NotFoundEmploymentAnnouncementException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundEmploymentAnnouncementException.code")), getMessage("NotFoundEmploymentAnnouncementException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundEmploymentAnnouncementException.code")), getMessage("NotFoundEmploymentAnnouncementException.msg"));
     }
 
     @ExceptionHandler(NotFoundApplicationEmploymentException.class)
     public CommonResult NotFoundApplicationEmploymentException(HttpServletRequest request, NotFoundApplicationEmploymentException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("NotFoundApplicationEmploymentException.code")), getMessage("NotFoundApplicationEmploymentException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundApplicationEmploymentException.code")), getMessage("NotFoundApplicationEmploymentException.msg"));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public CommonResult processValidationError(MethodArgumentNotValidException e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("MethodArgumentNotValidException.code")), e.getAllErrors().get(0).getDefaultMessage());
+        return responseService.getFailResult(Integer.parseInt(getMessage("MethodArgumentNotValidException.code")), e.getAllErrors().get(0).getDefaultMessage());
     }
 
 }
