@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = {"7. 취업 공고 신청"})
@@ -31,7 +32,8 @@ public class ApplicationEmploymentController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping("/application/{employmentAnnouncementIdx}")
-    public CommonResult application(@PathVariable Long employmentAnnouncementIdx, @RequestBody ApplicationEmploymentSaveDto applicationEmploymentSaveDto) {
+    @ResponseBody
+    public CommonResult application(@PathVariable Long employmentAnnouncementIdx, @Valid @RequestBody ApplicationEmploymentSaveDto applicationEmploymentSaveDto) {
         applicationEmploymentService.application(employmentAnnouncementIdx, applicationEmploymentSaveDto);
         return responseService.getSuccessResult();
     }
@@ -40,6 +42,7 @@ public class ApplicationEmploymentController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @GetMapping("/application/{applicationIdx}")
     public SingleResult<FindAllApplicationDetailResDto> FindAllApplicationByidx(@PathVariable Long applicationIdx) {
         FindAllApplicationDetailResDto findAllApplicationDetailResDto = applicationEmploymentService.applicationDetail(applicationIdx);
@@ -50,6 +53,7 @@ public class ApplicationEmploymentController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @PostMapping("/application-accept/{applicationIdx}")
     public CommonResult AcceptApplication(@PathVariable Long applicationIdx) throws Exception {
         applicationEmploymentService.acceptApplication(applicationIdx);
@@ -60,6 +64,7 @@ public class ApplicationEmploymentController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @PostMapping("/application-reject/{applicationIdx}")
     public CommonResult Rejectpplication(@PathVariable Long applicationIdx) throws Exception {
         applicationEmploymentService.rejectApplication(applicationIdx);
@@ -70,6 +75,7 @@ public class ApplicationEmploymentController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @GetMapping("/application-status")
     public ListResult<FindAllApplicationResDto> findByStatus(@RequestParam String status) {
         List<FindAllApplicationResDto> byStatus = applicationEmploymentService.findByStatus(status);

@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = {"4. 면접 후기 및 회사 후기"})
@@ -35,8 +36,9 @@ public class CompanyReviewController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @PostMapping("/companyreview")
-    public CommonResult join(@RequestBody CompanyReviewSaveDto companyReviewSaveDto) {
+    public CommonResult join(@Valid @RequestBody CompanyReviewSaveDto companyReviewSaveDto) {
         companyReviewService.insertCompanyReview(companyReviewSaveDto);
         return responseService.getSuccessResult();
     }
@@ -45,6 +47,7 @@ public class CompanyReviewController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @GetMapping("/companyreview/{companyreviewIdx}")
     public SingleResult<CompanyReviewResDto> findByIdx(@PathVariable Long companyreviewIdx) {
         CompanyReviewResDto companyReviewResDto = companyReviewService.findByIdx(companyreviewIdx);
@@ -55,6 +58,7 @@ public class CompanyReviewController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @GetMapping("/companyreview")
     public ListResult<CompanyReviewResDto> findAll() {
         List<CompanyReviewResDto> companyReviewResDtos = companyReviewService.findAll();
@@ -65,6 +69,7 @@ public class CompanyReviewController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @DeleteMapping("/companyreview/{companyreviewIdx}")
     public CommonResult deletebByIdx(@PathVariable Long companyreviewIdx) {
         companyReviewService.deleteByIdx(companyreviewIdx);

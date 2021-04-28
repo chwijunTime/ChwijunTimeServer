@@ -4,6 +4,8 @@ import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.MemberPortfolio;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -11,6 +13,7 @@ import lombok.*;
 @Builder
 public class PortfolioSaveDto {
 
+    @NotBlank(message = "포트폴리오 URL을 입력해주세요.")
     private String notionPortfolioURL;
 
     public MemberPortfolio toEntityByPortfolio(Member member){
