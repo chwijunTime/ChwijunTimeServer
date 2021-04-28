@@ -7,6 +7,8 @@ import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.model.tagmapping.ContractingCompanyTag;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Getter
@@ -16,11 +18,22 @@ import java.util.List;
 @Builder
 public class ContractingCompanySaveDto {
 
+    @NotBlank(message = "회사 이름을 입력해주세요.")
     private String contractingCompanyName;
+
+    @NotBlank(message = "회사 위치를 입력해주세요.")
     private String contractingBusinessAreas;
+
+    @NotBlank(message = "회사의 정확한 주소를 입력해주세요.")
     private String contractingCompanyAddress;
+
+    @NotBlank(message = "기타 정보를 입력해주세요.")
     private String contractingCompanyAboutUs;
+
+    @NotBlank(message = "평균 연봉을 입력해주세요.")
     private String contractingCompanyAverageAnnualSalary;
+
+    @NotEmpty(message = "태그를 1개 이상 등록해주세요.")
     private List<String> tagName;
 
     @JsonIgnore

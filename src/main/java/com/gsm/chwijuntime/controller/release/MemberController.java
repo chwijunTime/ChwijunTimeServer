@@ -33,6 +33,7 @@ public class MemberController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @ApiOperation(value = "가입", notes = "회원가입을 한다.")
+    @ResponseBody
     @PostMapping("/join")
     public CommonResult join(@Valid @RequestBody MemberJoinDto memberJoinDto) throws IllegalAccessException {
         memberService.InsertMember(memberJoinDto);
@@ -40,6 +41,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "아이디 중복 체크", notes = "회원가입을 할때 이메일 중복 체크를 한다.")
+    @ResponseBody
     @PostMapping("/email-check")
     public CommonResult userEmailCheck(@RequestParam String email){
         memberService.userEmailCheck(email);
@@ -47,6 +49,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "로그인", notes = "이메일 회원 로그인을 한다.")
+    @ResponseBody
     @PostMapping("/login")
     public SingleResult<MemberLoginResDto> login(@Valid @RequestBody MemberLoginDto memberLoginDto) throws Exception {
         Member member = memberService.findMember(memberLoginDto);
@@ -59,40 +62,45 @@ public class MemberController {
     }
 
     @ApiOperation(value = "로그아웃", notes = "사용자가 로그아웃한다.")
-    @PostMapping("/logout")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
+    @PostMapping("/logout")
     public CommonResult logout() {
         memberService.logoutMember();
         return responseService.getSuccessResult();
     }
 
     @ApiOperation(value = "유저 정보", notes = "현재 로그인 된 유저 정보를 가져온다.")
-    @PostMapping("/userinfo")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
+    @PostMapping("/userinfo")
     public SingleResult<Member> userinfo(){
         Member member = memberService.UserInfo();
         return responseService.getSingleResult(member);
     }
 
     @ApiOperation(value = "프로필 생성", notes = "유저가 프로필을 설정한다.")
-    @PostMapping("/profile")
+
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    public CommonResult profile(@RequestBody MemberProfileSaveDto memberProfileSaveDto){
+    @ResponseBody
+    @PostMapping("/profile")
+    public CommonResult profile(@Valid @RequestBody MemberProfileSaveDto memberProfileSaveDto){
         memberService.memberProfileSave(memberProfileSaveDto);
         return responseService.getSuccessResult();
     }
 
     @ApiOperation(value = "프로필 보기", notes = "유저가 프로필을 확인한다.")
-    @PostMapping("/view-profile")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
+    @PostMapping("/view-profile")
     public SingleResult<MemberTagResDto> view_profile(){
         MemberTagResDto viewMember = memberService.viewMember();
         return responseService.getSingleResult(viewMember);

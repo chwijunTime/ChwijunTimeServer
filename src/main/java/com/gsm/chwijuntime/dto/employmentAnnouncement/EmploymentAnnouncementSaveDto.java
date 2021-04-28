@@ -11,6 +11,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,13 +26,27 @@ public class EmploymentAnnouncementSaveDto {
     @JsonIgnore
     private LocalDate announcementDate;   //공고일
 
+    @NotBlank(message = "공고 회사 이름을 입력해주세요.")
     private String employmentAnnouncementName;
+
+    @NotBlank(message = "채용 분야를 입력해주세요.")
     private String recruitmentField;    //채용 분야
+
+    @NotBlank(message = "회사 설명을 간단하게 입력해주세요.")
     private String employmentAnnouncementExplanation;  //회사 설명
+
+    @NotBlank(message = "우대 조건을 입력해주세요.")
     private String preferentialConditions; //우대 조건
+
+    @NotBlank(message = "회사 위치를 입력해주세요.")
     private String employmentAnnouncementAddress; //회사 위치
+
+    @FutureOrPresent(message = "현재 시간보다 미래 날짜를 입력해주세요.")
     private LocalDate deadLine;  //공고 마감일
+
     private String employmentAnnouncementEtc; //기타 설명
+
+    @NotEmpty(message = "태그를 1개 이상 등록해주세요.")
     private List<String> tagName;
 
     @JsonIgnore

@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = {"10. 취업 확정 현황"})
@@ -33,8 +34,9 @@ public class EmploymentConfirmationController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @PostMapping("/employment-confirmation")
-    public CommonResult save(@RequestBody EmploymentConfirmationSaveDto employmentConfirmationSaveDto) {
+    public CommonResult save(@Valid @RequestBody EmploymentConfirmationSaveDto employmentConfirmationSaveDto) {
         employmentConfirmationService.EmploymentConfirmationServiceSave(employmentConfirmationSaveDto);
         return responseService.getSuccessResult();
     }
@@ -43,6 +45,7 @@ public class EmploymentConfirmationController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @GetMapping("/employment-confirmation")
     public ListResult<EmploymentConfirmationResDto> findAll() {
         List<EmploymentConfirmationResDto> all = employmentConfirmationService.findAll();
@@ -53,6 +56,7 @@ public class EmploymentConfirmationController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @GetMapping("/employment-confirmation/{employmentConfirmationIdx}")
     public SingleResult<EmploymentConfirmationResDto> fidnByIdx(@PathVariable Long employmentConfirmationIdx) {
         EmploymentConfirmationResDto byIdx = employmentConfirmationService.findByIdx(employmentConfirmationIdx);
@@ -63,9 +67,9 @@ public class EmploymentConfirmationController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-
+    @ResponseBody
     @PutMapping("/employment-confirmation/{employmentConfirmationIdx}")
-    public CommonResult updateByIdx(@PathVariable Long employmentConfirmationIdx, @RequestBody EmploymentConfirmationUpdateDto employmentConfirmationUpdateDto) {
+    public CommonResult updateByIdx(@PathVariable Long employmentConfirmationIdx, @Valid @RequestBody EmploymentConfirmationUpdateDto employmentConfirmationUpdateDto) {
         employmentConfirmationService.updateEmploymentConfirmation(employmentConfirmationIdx, employmentConfirmationUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -74,6 +78,7 @@ public class EmploymentConfirmationController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @DeleteMapping("/employment-confirmation/{employmentConfirmationIdx}")
     public CommonResult deleteByIdx(@PathVariable Long employmentConfirmationIdx) {
         employmentConfirmationService.deleteEmploymentConfirmation(employmentConfirmationIdx);

@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = {"6. 취업 공고"})
@@ -35,8 +36,9 @@ public class EmploymentAnnouncementController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @PostMapping("/employment-announcement")
-    public CommonResult save(@RequestBody EmploymentAnnouncementSaveDto employmentAnnouncementSaveDto) {
+    public CommonResult save(@Valid @RequestBody EmploymentAnnouncementSaveDto employmentAnnouncementSaveDto) {
         employmentAnnouncementService.EmploymentAnnouncementSave(employmentAnnouncementSaveDto);
         return responseService.getSuccessResult();
     }
@@ -45,6 +47,7 @@ public class EmploymentAnnouncementController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @GetMapping("/employment-announcement/{employmentAnnouncementIdx}")
     public SingleResult<EmploymentAnnouncementResponseDto> findByIdx(@PathVariable Long employmentAnnouncementIdx) {
         EmploymentAnnouncementResponseDto employmentAnnouncementResponseDto = employmentAnnouncementService.findByOne(employmentAnnouncementIdx);
@@ -55,6 +58,7 @@ public class EmploymentAnnouncementController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @GetMapping("/employment-announcement")
     public ListResult<EmploymentAnnouncementResponseDto> findAll() {
         List<EmploymentAnnouncementResponseDto> employmentAnnouncements = employmentAnnouncementService.findByAll();
@@ -65,8 +69,9 @@ public class EmploymentAnnouncementController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @PutMapping("/employment-announcement/{employmentAnnouncementIdx}")
-    public CommonResult update(@PathVariable Long employmentAnnouncementIdx, @RequestBody EmploymentAnnouncementUpdateDto employmentAnnouncementUpdateDto) {
+    public CommonResult update(@PathVariable Long employmentAnnouncementIdx, @Valid @RequestBody EmploymentAnnouncementUpdateDto employmentAnnouncementUpdateDto) {
         employmentAnnouncementService.updateEmploymentAnnouncement(employmentAnnouncementIdx, employmentAnnouncementUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -75,6 +80,7 @@ public class EmploymentAnnouncementController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
+    @ResponseBody
     @DeleteMapping("/employment-announcement/{employmentAnnouncementIdx}")
     public CommonResult delete(@PathVariable Long employmentAnnouncementIdx) {
         employmentAnnouncementService.deleteEmploymentAnnouncement(employmentAnnouncementIdx);
