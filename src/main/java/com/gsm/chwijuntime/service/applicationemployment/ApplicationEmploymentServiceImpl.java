@@ -12,7 +12,9 @@ import com.gsm.chwijuntime.repository.ApplicationEmploymentRepository;
 import com.gsm.chwijuntime.repository.EmploymentAnnouncementRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
