@@ -137,4 +137,25 @@ public class ExceptionAdvice {
     public CommonResult IncorrectPasswordException(HttpServletRequest request, IncorrectPasswordException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("IncorrectPasswordException.code")), getMessage("IncorrectPasswordException.msg"));
     }
+
+    // 채용 확정 정보를 찾을 수 없을 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundEmploymentConfirmationException.class)
+    public CommonResult NotFoundEmploymentConfirmationException(HttpServletRequest request, NotFoundEmploymentConfirmationException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundEmploymentConfirmationException.code")), getMessage("NotFoundEmploymentConfirmationException.msg"));
+    }
+
+    // 포트폴리오 정보를 찾을 수 없을 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundPortfolioException.class)
+    public CommonResult NotFoundPortfolioException(HttpServletRequest request, NotFoundPortfolioException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundPortfolioException.code")), getMessage("NotFoundPortfolioException.msg"));
+    }
+
+    // 이력서 정보를 찾을 수 없는 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundResumeException.class)
+    public CommonResult NotFoundResumeException(HttpServletRequest request, NotFoundResumeException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundResumeException.code")), getMessage("NotFoundResumeException.msg"));
+    }
 }

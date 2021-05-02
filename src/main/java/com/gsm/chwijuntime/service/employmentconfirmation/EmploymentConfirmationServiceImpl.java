@@ -1,6 +1,7 @@
 package com.gsm.chwijuntime.service.employmentconfirmation;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.NotFoundEmploymentConfirmationException;
 import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationResDto;
 import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationSaveDto;
 import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationUpdateDto;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +51,7 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
     @Override
     public EmploymentConfirmationResDto findByIdx(Long idx) {
         EmploymentConfirmationResDto employmentConfirmationResDto = employmentConfirmationRepository.findById(idx)
-                .map(m -> mapper.map(m, EmploymentConfirmationResDto.class)).orElseThrow(null);
+                .map(m -> mapper.map(m, EmploymentConfirmationResDto.class)).orElseThrow(NotFoundEmploymentConfirmationException::new);
         EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findByEmploymentConfirmationIdx(employmentConfirmationResDto.getEmploymentConfirmationIdx());
         List<EmploymentConfirmationTag> employmentConfirmationTags = employmentConfirmationTagRepository.findAllByEmploymentConfirmation(employmentConfirmation);
         for (EmploymentConfirmationTag i : employmentConfirmationTags) {
@@ -67,7 +67,7 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
                 .collect(Collectors.toList());
         //태그 보여주기
         for (EmploymentConfirmationResDto i : employmentConfirmationResDtos) {
-            EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findById(i.getEmploymentConfirmationIdx()).orElseThrow(null);
+            EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findById(i.getEmploymentConfirmationIdx()).orElseThrow(NotFoundEmploymentConfirmationException::new);
             List<EmploymentConfirmationTag> employmentConfirmationTags = employmentConfirmationTagRepository.findAllByEmploymentConfirmation(employmentConfirmation);
             for (EmploymentConfirmationTag j : employmentConfirmationTags) {
                 i.getEmploymentConfirmationTags().add(j.getTag().getTagName());
@@ -79,7 +79,7 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
     @Transactional
     @Override
     public void updateEmploymentConfirmation(Long idx, EmploymentConfirmationUpdateDto employmentConfirmationUpdateDto) {
-        EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findById(idx).orElseThrow(null);
+        EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findById(idx).orElseThrow(NotFoundEmploymentConfirmationException::new);
         employmentConfirmation.changeEmploymentConfirmation(employmentConfirmationUpdateDto);
     }
 

@@ -9,7 +9,6 @@ import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
 import java.util.List;
 
 public interface ApplicationEmploymentService {
-
     // 공고 신청하기 => 사용자
     void application(Long employmentAnnouncementIdx, ApplicationEmploymentSaveDto applicationemploymentSaveDto);
 

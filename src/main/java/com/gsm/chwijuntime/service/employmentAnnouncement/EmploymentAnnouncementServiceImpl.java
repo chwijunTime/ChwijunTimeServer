@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.service.employmentAnnouncement;
 
 import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.NotFoundEmploymentAnnouncementException;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementResponseDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementSaveDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementUpdateDto;
@@ -53,8 +54,8 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
     @Override
     public EmploymentAnnouncementResponseDto findByOne(Long idx) {
         EmploymentAnnouncementResponseDto employmentAnnouncementResponseDto = employmentAnnouncementRepository.findById(idx)
-                .map(m -> mapper.map(m, EmploymentAnnouncementResponseDto.class)).orElseThrow(null);
-        EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(null);
+                .map(m -> mapper.map(m, EmploymentAnnouncementResponseDto.class)).orElseThrow(NotFoundEmploymentAnnouncementException::new);
+        EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(NotFoundEmploymentAnnouncementException::new);
         List<EmploymentAnnouncementTag> employmentAnnouncementTags = employmentAnnouncementTagRepository.findAllByEmploymentAnnouncement(employmentAnnouncement);
         for (EmploymentAnnouncementTag i : employmentAnnouncementTags) {
             employmentAnnouncementResponseDto.getEmploymentAnnouncementTags().add(i.getTag().getTagName());
@@ -78,7 +79,7 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
         }
         //태그 보여주기
         for (EmploymentAnnouncementResponseDto i : responseDtoList) {
-            EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(i.getEmploymentAnnouncementIdx()).orElseThrow(null);
+            EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(i.getEmploymentAnnouncementIdx()).orElseThrow(NotFoundEmploymentAnnouncementException::new);
             List<EmploymentAnnouncementTag> employmentAnnouncementTags = employmentAnnouncementTagRepository.findAllByEmploymentAnnouncement(employmentAnnouncement);
             for (EmploymentAnnouncementTag j : employmentAnnouncementTags) {
                 i.getEmploymentAnnouncementTags().add(j.getTag().getTagName());
@@ -90,7 +91,7 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
     @Transactional
     @Override
     public void updateEmploymentAnnouncement(Long idx, EmploymentAnnouncementUpdateDto employmentAnnouncementUpdateDto) {
-        EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(null);
+        EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(NotFoundEmploymentAnnouncementException::new);
         UserWriteCheck(employmentAnnouncement);
         employmentAnnouncement.update(employmentAnnouncementUpdateDto);
     }
@@ -98,7 +99,7 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
     @Transactional
     @Override
     public void deleteEmploymentAnnouncement(Long idx) {
-        EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(null);
+        EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(NotFoundEmploymentAnnouncementException::new);
         UserWriteCheck(employmentAnnouncement);
         employmentAnnouncementRepository.deleteById(idx);
     }

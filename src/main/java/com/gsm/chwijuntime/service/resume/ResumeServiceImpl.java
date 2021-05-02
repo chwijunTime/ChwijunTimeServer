@@ -1,6 +1,7 @@
 package com.gsm.chwijuntime.service.resume;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.NotFoundResumeException;
 import com.gsm.chwijuntime.dto.resume.ResumeSaveDto;
 import com.gsm.chwijuntime.dto.resume.ResumeUpdateDto;
 import com.gsm.chwijuntime.model.Member;
@@ -44,7 +45,7 @@ public class ResumeServiceImpl implements ResumeService {
     @Transactional
     @Override
     public void updateResume(Long idx, ResumeUpdateDto resumeUpdateDto) {
-        MemberResume memberResume = memberResumeRepository.findById(idx).orElseThrow(null);
+        MemberResume memberResume = memberResumeRepository.findById(idx).orElseThrow(NotFoundResumeException::new);
         memberResume.changeURL(resumeUpdateDto.getResumeFileURL());
     }
 
