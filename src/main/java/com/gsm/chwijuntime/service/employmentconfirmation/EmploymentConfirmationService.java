@@ -8,12 +8,9 @@ import com.gsm.chwijuntime.model.EmploymentConfirmation;
 import java.util.List;
 
 public interface EmploymentConfirmationService {
-
-
     void EmploymentConfirmationServiceSave(EmploymentConfirmationSaveDto employmentConfirmationSaveDto);
     EmploymentConfirmationResDto findByIdx(Long idx);
     List<EmploymentConfirmationResDto> findAll();
     void updateEmploymentConfirmation(Long idx, EmploymentConfirmationUpdateDto employmentConfirmationUpdateDto);
     void deleteEmploymentConfirmation(Long idx);
-
 }

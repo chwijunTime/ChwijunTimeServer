@@ -15,15 +15,17 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PortfolioServiceImpl implements PortfolioService {
 
     private final GetUserEmailUtil getUserEmailUtil;
     private final MemberRepository memberRepository;
     private final MemberPortfolioRepository memberPortfolioRepository;
 
+    @Transactional
     @Override
     public void savePortfolio(PortfolioSaveDto portfolioSaveDto) {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(null);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(null);
         memberPortfolioRepository.save(portfolioSaveDto.toEntityByPortfolio(member));
     }
 
@@ -44,6 +46,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         memberPortfolio.changeNotionPortfolioURL(portfolioUpdateDto.getNotionPortfolioURL());
     }
 
+    @Transactional
     @Override
     public void deletePortfolio(Long idx) {
         memberPortfolioRepository.deleteById(idx);
@@ -51,7 +54,7 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public List<MemberPortfolio> myPortfolio() {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(null);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(null);
         return memberPortfolioRepository.findByMember(member);
     }
 }

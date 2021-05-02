@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class EmploymentConfirmationServiceImpl implements EmploymentConfirmationService {
 
     private final GetUserEmailUtil getUserEmailUtil;
@@ -33,9 +34,10 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
     private final EmploymentConfirmationTagRepository employmentConfirmationTagRepository;
     private final EmploymentConfirmationRepository employmentConfirmationRepository;
 
+    @Transactional
     @Override
     public void EmploymentConfirmationServiceSave(EmploymentConfirmationSaveDto employmentConfirmationSaveDto) {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         employmentConfirmationRepository.save(employmentConfirmationSaveDto.toEntityByEmploymentConfirmation(member));
         for(String i : employmentConfirmationSaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
@@ -84,7 +86,7 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
     @Transactional
     @Override
     public void deleteEmploymentConfirmation(Long idx) {
-        //삭제는 없음
+        //삭제는 없음 (에러 걸림)
     }
 
 }

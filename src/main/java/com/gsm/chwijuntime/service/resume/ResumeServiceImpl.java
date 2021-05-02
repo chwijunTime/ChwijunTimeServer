@@ -16,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ResumeServiceImpl implements ResumeService {
 
     private final GetUserEmailUtil getUserEmailUtil;
@@ -25,7 +26,7 @@ public class ResumeServiceImpl implements ResumeService {
     @Transactional
     @Override
     public void saveResume(ResumeSaveDto resumeSaveDto) {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         memberResumeRepository.save(resumeSaveDto.toEntityByMember(member));
     }
 
@@ -47,6 +48,7 @@ public class ResumeServiceImpl implements ResumeService {
         memberResume.changeURL(resumeUpdateDto.getResumeFileURL());
     }
 
+    @Transactional
     @Override
     public void deleteResume(Long idx) {
         memberResumeRepository.deleteById(idx);
@@ -54,7 +56,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     public List<MemberResume> findByMember() {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         List<MemberResume> resumes = memberResumeRepository.findAllByMember(member);
         return resumes;
     }

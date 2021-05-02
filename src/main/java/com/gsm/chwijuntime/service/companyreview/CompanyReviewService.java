@@ -7,11 +7,8 @@ import com.gsm.chwijuntime.model.CompanyReview;
 import java.util.List;
 
 public interface CompanyReviewService {
-
     void insertCompanyReview(CompanyReviewSaveDto companyReviewSaveDto);
     List<CompanyReviewResDto> findAll();
     CompanyReviewResDto findByIdx(Long idx);
     void deleteByIdx(Long idx);
-
-
 }

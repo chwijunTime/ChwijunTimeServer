@@ -22,9 +22,10 @@ public class NoticeServiceImpl implements NoticeService {
     private final GetUserEmailUtil getUserEmailUtil;
     private final MemberRepository memberRepository;
 
+    @Transactional
     @Override
     public void save(NoticeSaveDto noticeSaveDto) {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(NotFoundNoticeException::new);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(NotFoundNoticeException::new);
         noticeRepository.save(noticeSaveDto.ToEntityByNotice(member));
     }
 

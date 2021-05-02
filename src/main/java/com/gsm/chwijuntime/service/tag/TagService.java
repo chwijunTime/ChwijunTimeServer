@@ -6,11 +6,9 @@ import com.gsm.chwijuntime.model.Tag;
 import java.util.List;
 
 public interface TagService {
-
     void insertTag(TagSaveDto tagSaveDto);
     Tag findByTagIdxOne(Long tagIdx);
     List<Tag> findAll();
     Tag updateTag(Long tagIdx, String tagName);
     void deleteTag(Long tagIdx);
-
 }

@@ -39,7 +39,7 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
     @Transactional
     @Override
     public void EmploymentAnnouncementSave(EmploymentAnnouncementSaveDto employmentAnnouncementSaveDto) {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow();
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow();
         employmentAnnouncementRepository.save(employmentAnnouncementSaveDto.toEntityByEmploymentAnnouncement(member));
         for(String i : employmentAnnouncementSaveDto.getTagName()){
             Tag tag = tagRepository.findByTagName(i);
@@ -103,9 +103,9 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
         employmentAnnouncementRepository.deleteById(idx);
     }
 
-    //작성자 권한 체크
+    // 작성자 권한 체크 Method
     public void UserWriteCheck(EmploymentAnnouncement employmentAnnouncement) {
-        Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         Member WriteMember = employmentAnnouncementRepository.findById(employmentAnnouncement.getEmploymentAnnouncementIdx()).orElseThrow(CAuthenticationEntryPointException::new).getMember();
         if (!CurrentUser.getMemberEmail().equals(WriteMember.getMemberEmail())) {
             throw new AuthorNotCertifiedException();
