@@ -22,8 +22,7 @@ public class ConsultingAdmin {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long consultingIdx;
 
-    @Column(nullable = false)
-    private LocalDate applicationDate;
+    private String applicationDate;
 
     @Enumerated(EnumType.STRING)
     private ConsultingStatus consultingStatus;
@@ -32,4 +31,8 @@ public class ConsultingAdmin {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MemberIdx")
     private Member member;
+
+    public void changeConsultingStatus(){
+        this.consultingStatus = ConsultingStatus.Apply;
+    }
 }

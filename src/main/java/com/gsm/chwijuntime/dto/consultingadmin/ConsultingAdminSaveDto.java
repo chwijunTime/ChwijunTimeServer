@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Builder
 public class ConsultingAdminSaveDto {
 
-    private LocalDate applicationDate;
+    private String applicationDate;
 
     public ConsultingAdmin toEntityByConsultingAdmin(Member member) {
         return ConsultingAdmin.builder()
