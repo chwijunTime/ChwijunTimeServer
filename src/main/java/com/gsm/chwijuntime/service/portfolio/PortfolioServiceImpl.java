@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.service.portfolio;
 
+import com.gsm.chwijuntime.advice.exception.NotFoundPortfolioException;
 import com.gsm.chwijuntime.dto.portfolio.PortfolioSaveDto;
 import com.gsm.chwijuntime.dto.portfolio.PortfolioUpdateDto;
 import com.gsm.chwijuntime.model.Member;
@@ -15,15 +16,17 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PortfolioServiceImpl implements PortfolioService {
 
     private final GetUserEmailUtil getUserEmailUtil;
     private final MemberRepository memberRepository;
     private final MemberPortfolioRepository memberPortfolioRepository;
 
+    @Transactional
     @Override
     public void savePortfolio(PortfolioSaveDto portfolioSaveDto) {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(null);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(NotFoundPortfolioException::new);
         memberPortfolioRepository.save(portfolioSaveDto.toEntityByPortfolio(member));
     }
 
@@ -40,10 +43,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Transactional
     @Override
     public void updatePortfolio(Long idx, PortfolioUpdateDto portfolioUpdateDto) {
-        MemberPortfolio memberPortfolio = memberPortfolioRepository.findById(idx).orElseThrow(null);
+        MemberPortfolio memberPortfolio = memberPortfolioRepository.findById(idx).orElseThrow(NotFoundPortfolioException::new);
         memberPortfolio.changeNotionPortfolioURL(portfolioUpdateDto.getNotionPortfolioURL());
     }
 
+    @Transactional
     @Override
     public void deletePortfolio(Long idx) {
         memberPortfolioRepository.deleteById(idx);
@@ -51,7 +55,7 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public List<MemberPortfolio> myPortfolio() {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(null);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(NotFoundPortfolioException::new);
         return memberPortfolioRepository.findByMember(member);
     }
 }

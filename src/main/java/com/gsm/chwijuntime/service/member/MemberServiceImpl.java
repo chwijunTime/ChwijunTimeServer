@@ -17,8 +17,6 @@ import com.gsm.chwijuntime.repository.tag.MemberTagRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import com.gsm.chwijuntime.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,13 +62,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void logoutMember() {
-        String userEmail = getUserEmailUtil.GetUserEmail();
+        String userEmail = getUserEmailUtil.getUserEmail();
         redisUtil.deleteData(userEmail);
     }
 
     @Override
     public Member UserInfo() {
-        String UserEmail = getUserEmailUtil.GetUserEmail();
+        String UserEmail = getUserEmailUtil.getUserEmail();
         return memberRepository.findByMemberEmail(UserEmail).orElseThrow(CAuthenticationEntryPointException::new);
     }
 
@@ -79,7 +77,7 @@ public class MemberServiceImpl implements MemberService {
     public void memberProfileSave(MemberProfileSaveDto memberProfileSaveDto) {
         for (String i : memberProfileSaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
-            String userEmail = getUserEmailUtil.GetUserEmail();
+            String userEmail = getUserEmailUtil.getUserEmail();
             Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(CAuthenticationEntryPointException::new);
             memberProfileSaveDto.MappingTag_Member(tag, member);
             //프로필 업데이트
@@ -106,12 +104,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberTagResDto viewMember() {
         List<String> tags = new ArrayList<>();
-        String userEmail = getUserEmailUtil.GetUserEmail();
+        String userEmail = getUserEmailUtil.getUserEmail();
         Member findMember = memberRepository.findByMemberEmail(userEmail).orElseThrow(CAuthenticationEntryPointException::new);
         List<MemberTag> findMemberTag = memberTagRepository.findByMember(findMember);
         for (MemberTag memberTag : findMemberTag) {
             String Name = memberTag.getTag().getTagName();
-            System.out.println("Name = " + Name);
             Tag tag = tagRepository.findByTagName(Name);
             tags.add(tag.getTagName());
         }

@@ -1,7 +1,6 @@
 package com.gsm.chwijuntime.advice.exception;
 
 public class IncorrectPasswordException extends RuntimeException {
-
     public IncorrectPasswordException(String msg, Throwable t) {
         super(msg, t);
     }
@@ -13,5 +12,4 @@ public class IncorrectPasswordException extends RuntimeException {
     public IncorrectPasswordException() {
         super();
     }
-
 }

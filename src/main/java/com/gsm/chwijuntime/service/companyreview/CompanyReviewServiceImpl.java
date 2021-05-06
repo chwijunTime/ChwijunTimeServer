@@ -34,9 +34,10 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
     private final ModelMapper mapper;
     private final GetUserEmailUtil getUserEmailUtil;
 
+    @Transactional
     @Override
     public void insertCompanyReview(CompanyReviewSaveDto companyReviewSaveDto) {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         companyReviewRepository.save(companyReviewSaveDto.ToEntityByContractingCompany(member));
         for (String i: companyReviewSaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
@@ -74,15 +75,16 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         return companyReviewResDto;
     }
 
+    @Transactional
     @Override
     public void deleteByIdx(Long idx) {
         UserWriteCheck(idx);
         companyReviewRepository.deleteById(idx);
     }
 
-    //작성자 권한 체크
+    //작성자 권한 체크 Method
     public void UserWriteCheck(Long idx) {
-        Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         Member WriteMember = companyReviewRepository.findById(idx).orElseThrow(CAuthenticationEntryPointException::new).getMember();
         if (!CurrentUser.getMemberEmail().equals(WriteMember.getMemberEmail())) {
             throw new AuthorNotCertifiedException();

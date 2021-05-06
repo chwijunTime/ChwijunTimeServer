@@ -17,6 +17,7 @@ public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepository;
 
+    @Transactional
     @Override
     public void insertTag(TagSaveDto tagSaveDto) {
         tagRepository.save(tagSaveDto.toEntity());

@@ -1,9 +1,6 @@
 package com.gsm.chwijuntime.advice.exception;
 
-import org.springframework.stereotype.Component;
-
 public class UserDuplicationException extends RuntimeException {
-
     public UserDuplicationException(String msg, Throwable t) {
         super(msg, t);
     }
@@ -15,5 +12,4 @@ public class UserDuplicationException extends RuntimeException {
     public UserDuplicationException() {
         super();
     }
-
 }

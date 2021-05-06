@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class GetUserEmailUtil {
 
-    //현재 사용자의 ID를 Return
-    public String GetUserEmail() {
+    //현재 로그인된 사용자의 ID를 Return
+    public String getUserEmail() {
         String userEmail;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {

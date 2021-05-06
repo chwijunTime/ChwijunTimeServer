@@ -17,14 +17,15 @@ import com.gsm.chwijuntime.repository.tag.ContractingCompanyTagRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class ContractingCompanyServiceImpl implements ContractingCompanyService {
 
     private final ContractingCompanyRepository contractingCompanyRepository;
@@ -34,9 +35,10 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
     private final ModelMapper mapper;
     private final GetUserEmailUtil getUserEmailUtil;
 
+    @Transactional
     @Override
     public void insertContractingCompany(ContractingCompanySaveDto contractingCompanySaveDto) {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         ContractingCompany findBy = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
         if(findBy == null) {
             contractingCompanyRepository.save(contractingCompanySaveDto.ToEntityByContractingCompany(member));
@@ -78,6 +80,7 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
         return contractingCompanyResDto;
     }
 
+    @Transactional
     @Override
     public void deleteContractingCompanyIdx(Long idx) {
         ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(NotFoundContractingCompanyException::new);
@@ -85,10 +88,9 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
         contractingCompanyRepository.delete(contractingCompany);
     }
 
-
-    //작성자 권한 체크
+    //작성자 권한 체크 Method
     public void UserWriteCheck(ContractingCompany contractingCompany) {
-        Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.GetUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         Member WriteMember = contractingCompanyRepository.findById(contractingCompany.getContractingCompanyIdx()).orElseThrow(CAuthenticationEntryPointException::new).getMember();
         if (!CurrentUser.getMemberEmail().equals(WriteMember.getMemberEmail())) {
             throw new AuthorNotCertifiedException();

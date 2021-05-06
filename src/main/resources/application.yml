@@ -1,3 +1,4 @@
+# 기본 설정
 server:
   port: 8080
   servlet:
@@ -6,14 +7,12 @@ server:
       force: true
       enabled: true
 
-## H2Database Config
 spring:
-  profiles:
-    active: dev
-
+  # JWT key 설정
   jwt:
     secret: goelepel@%&*(&(*&()^%&^*jhadsklfh*&^*&(^ds8af76(*&^ads8fsadf879asd6f*(A&^AFSads987f6asd897f6(*&ASF^ads9876fsad897f6(A*&SF^ads897fg6asd9f876*(&AFS^ads987gf6adfs8976
 
+  # 데이터 베이스 설정
   h2:
     console:
       enabled: true
@@ -37,7 +36,6 @@ spring:
     show-sql: true
     open-in-view: false
 
-
   #Redis
   cache:
     type: redis
@@ -49,6 +47,7 @@ spring:
       repositories:
         enabled: false
 
+  # i18n (에러 다국어 처리)
   messages:
     basename: i18n/exception
     encoding: UTF-8

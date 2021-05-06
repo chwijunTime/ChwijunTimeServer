@@ -6,7 +6,6 @@ import com.gsm.chwijuntime.model.Notice;
 import java.util.List;
 
 public interface NoticeService {
-
     void save(NoticeSaveDto noticeSaveDto);
     Notice findById(Long idx);
     List<Notice> findAll();
