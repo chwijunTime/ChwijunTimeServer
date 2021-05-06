@@ -3,6 +3,7 @@ package com.gsm.chwijuntime.service.companyreview;
 import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.advice.exception.NotFoundCompanyReviewException;
+import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewSaveDto;
 import com.gsm.chwijuntime.model.CompanyReview;
@@ -41,6 +42,9 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         companyReviewRepository.save(companyReviewSaveDto.ToEntityByContractingCompany(member));
         for (String i: companyReviewSaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
             List<CompanyReview> allByCompanyName = companyReviewRepository.findAllByCompanyName(companyReviewSaveDto.getCompanyName());
             int size = allByCompanyName.size() - 1;
             companyReviewSaveDto.MappingTag_ContractingCompany(tag, allByCompanyName.get(size));

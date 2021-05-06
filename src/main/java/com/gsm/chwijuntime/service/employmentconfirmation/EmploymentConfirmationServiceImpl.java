@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.service.employmentconfirmation;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.advice.exception.NotFoundEmploymentConfirmationException;
+import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationResDto;
 import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationSaveDto;
 import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationUpdateDto;
@@ -41,6 +42,9 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
         employmentConfirmationRepository.save(employmentConfirmationSaveDto.toEntityByEmploymentConfirmation(member));
         for(String i : employmentConfirmationSaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
             List<EmploymentConfirmation> allByEmploymentConfirmationName = employmentConfirmationRepository.findAllByEmploymentConfirmationName(employmentConfirmationSaveDto.getEmploymentConfirmationName());
             int size = allByEmploymentConfirmationName.size() - 1;
             employmentConfirmationSaveDto.mappingTagEmploymentConfirmation(tag, allByEmploymentConfirmationName.get(size));

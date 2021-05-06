@@ -3,6 +3,7 @@ package com.gsm.chwijuntime.service.employmentAnnouncement;
 import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.advice.exception.NotFoundEmploymentAnnouncementException;
+import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementResponseDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementSaveDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementUpdateDto;
@@ -44,6 +45,9 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
         employmentAnnouncementRepository.save(employmentAnnouncementSaveDto.toEntityByEmploymentAnnouncement(member));
         for(String i : employmentAnnouncementSaveDto.getTagName()){
             Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
             List<EmploymentAnnouncement> allByEmploymentAnnouncementName = employmentAnnouncementRepository.findAllByEmploymentAnnouncementName(employmentAnnouncementSaveDto.getEmploymentAnnouncementName());
             int size = allByEmploymentAnnouncementName.size() - 1;
             employmentAnnouncementSaveDto.MappingTagByEmploymentAnnouncement(tag, allByEmploymentAnnouncementName.get(size));

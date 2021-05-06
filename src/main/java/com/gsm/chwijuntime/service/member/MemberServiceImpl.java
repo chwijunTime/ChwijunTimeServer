@@ -1,9 +1,6 @@
 package com.gsm.chwijuntime.service.member;
 
-import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
-import com.gsm.chwijuntime.advice.exception.EmailNotFoundException;
-import com.gsm.chwijuntime.advice.exception.IncorrectPasswordException;
-import com.gsm.chwijuntime.advice.exception.UserDuplicationException;
+import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.member.MemberJoinDto;
 import com.gsm.chwijuntime.dto.member.MemberLoginDto;
 import com.gsm.chwijuntime.dto.member.MemberProfileSaveDto;
@@ -77,6 +74,9 @@ public class MemberServiceImpl implements MemberService {
     public void memberProfileSave(MemberProfileSaveDto memberProfileSaveDto) {
         for (String i : memberProfileSaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
             String userEmail = getUserEmailUtil.getUserEmail();
             Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(CAuthenticationEntryPointException::new);
             memberProfileSaveDto.MappingTag_Member(tag, member);

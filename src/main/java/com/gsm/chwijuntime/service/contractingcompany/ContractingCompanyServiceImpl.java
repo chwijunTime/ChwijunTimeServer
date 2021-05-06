@@ -1,9 +1,6 @@
 package com.gsm.chwijuntime.service.contractingcompany;
 
-import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
-import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
-import com.gsm.chwijuntime.advice.exception.DuplicateContractingCompanyException;
-import com.gsm.chwijuntime.advice.exception.NotFoundContractingCompanyException;
+import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanyResDto;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
 import com.gsm.chwijuntime.model.ContractingCompany;
@@ -44,6 +41,9 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
             contractingCompanyRepository.save(contractingCompanySaveDto.ToEntityByContractingCompany(member));
             for (String i : contractingCompanySaveDto.getTagName()) {
                 Tag tag = tagRepository.findByTagName(i);
+                if(tag == null) {
+                    throw new NotFoundTagException();
+                }
                 ContractingCompany contractingCompany = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
                 contractingCompanySaveDto.MappingTag_ContractingCompany(tag, contractingCompany);
                 contractingCompanyTagRepository.save(contractingCompanySaveDto.ToEntityByContractingCompanyTag());

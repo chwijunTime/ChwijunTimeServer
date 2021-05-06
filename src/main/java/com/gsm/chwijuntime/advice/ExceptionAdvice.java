@@ -4,8 +4,11 @@ import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.secure.spi.IntegrationException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -157,5 +160,11 @@ public class ExceptionAdvice {
     @ExceptionHandler(NotFoundResumeException.class)
     public CommonResult NotFoundResumeException(HttpServletRequest request, NotFoundResumeException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundResumeException.code")), getMessage("NotFoundResumeException.msg"));
+    }
+
+    // 태그 삭제 에러
+    @ExceptionHandler(ConstraintViolationException.class)
+    public CommonResult IntegrationException(HttpServletRequest request, ConstraintViolationException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("ConstraintViolationException.code")), getMessage("ConstraintViolationException.msg"));
     }
 }
