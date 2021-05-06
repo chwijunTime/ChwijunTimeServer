@@ -1,6 +1,5 @@
 package com.gsm.chwijuntime.model;
 
-import com.gsm.chwijuntime.model.tagmapping.ConsultingUserTag;
 import com.gsm.chwijuntime.model.tagmapping.TipsStorageTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
