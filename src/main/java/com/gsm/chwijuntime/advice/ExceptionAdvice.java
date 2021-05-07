@@ -167,4 +167,10 @@ public class ExceptionAdvice {
     public CommonResult IntegrationException(HttpServletRequest request, ConstraintViolationException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("ConstraintViolationException.code")), getMessage("ConstraintViolationException.msg"));
     }
+
+    // 신청 날짜 만료
+    @ExceptionHandler(ApplicationDateExpirationException.class)
+    public CommonResult IntegrationException(HttpServletRequest request, ApplicationDateExpirationException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("ApplicationDateExpirationException.code")), getMessage("ApplicationDateExpirationException.msg"));
+    }
 }

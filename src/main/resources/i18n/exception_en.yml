@@ -60,3 +60,6 @@ NotFoundResumeException:
 ConstraintViolationException:
   code: "-19"
   msg: "다른 곳에 태그를 등록하였기 때문에 삭제할 수 없습니다."
+ApplicationDateExpirationException:
+  code: "-20"
+  msg: "신청이 만료되었습니다."

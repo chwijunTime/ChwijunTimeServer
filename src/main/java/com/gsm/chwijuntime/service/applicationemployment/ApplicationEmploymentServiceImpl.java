@@ -37,7 +37,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
         //공고 날짜/신청 날짜 비교
         int compare = applicationemploymentSaveDto.getLocalDate().compareTo(findMyEmploymentAnnouncement.getDeadLine());
         if(compare >= 0) {
-            System.out.println("신청 날짜 지남");
+            throw new ApplicationDateExpirationException();
         }
 
         Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
