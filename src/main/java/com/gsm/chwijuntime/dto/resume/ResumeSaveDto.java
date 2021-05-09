@@ -6,6 +6,7 @@ import com.gsm.chwijuntime.model.MemberResume;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter

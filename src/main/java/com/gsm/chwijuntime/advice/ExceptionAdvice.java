@@ -173,4 +173,10 @@ public class ExceptionAdvice {
     public CommonResult IntegrationException(HttpServletRequest request, ApplicationDateExpirationException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("ApplicationDateExpirationException.code")), getMessage("ApplicationDateExpirationException.msg"));
     }
+
+    // URL 유효성 검사 에러
+    @ExceptionHandler(URLValidationException.class)
+    public CommonResult IntegrationException(HttpServletRequest request, URLValidationException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("URLValidationException.code")), getMessage("URLValidationException.msg"));
+    }
 }

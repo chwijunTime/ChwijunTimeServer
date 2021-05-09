@@ -63,3 +63,6 @@ ConstraintViolationException:
 ApplicationDateExpirationException:
   code: "-20"
   msg: "신청이 만료되었습니다."
+URLValidationException:
+  code: "-21"
+  msg: "URL 형식으로 입력해주세요."
