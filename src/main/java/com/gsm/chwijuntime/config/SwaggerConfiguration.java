@@ -26,7 +26,6 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
-
     private String version;
     private String title;
 

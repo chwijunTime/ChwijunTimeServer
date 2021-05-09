@@ -51,6 +51,7 @@ public class ExceptionAdvice {
 
     //유저가 중복될 경우
     @ExceptionHandler(UserDuplicationException.class)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public CommonResult UserDuplicationException(HttpServletRequest request, UserDuplicationException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("UserDuplicationException.code")), getMessage("UserDuplicationException.msg"));
     }
@@ -91,6 +92,7 @@ public class ExceptionAdvice {
     }
 
     // 협약 업체가 중복된 경우
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(DuplicateContractingCompanyException.class)
     public CommonResult NotFoundCompanyReview(HttpServletRequest request, DuplicateContractingCompanyException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("DuplicateContractingCompanyException.code")), getMessage("DuplicateContractingCompanyException.msg"));
@@ -104,12 +106,14 @@ public class ExceptionAdvice {
     }
 
     // 이미 요청이 승인된 경우
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(RequestAlreadyApprovedException.class)
     public CommonResult RequestAlreadyApprovedException(HttpServletRequest request, RequestAlreadyApprovedException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("RequestAlreadyApprovedException.code")), getMessage("RequestAlreadyApprovedException.msg"));
     }
 
     // 이미 요청이 거절된 경우
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(RequestAlreadyRejectedException.class)
     public CommonResult RequestAlreadyRejectedException(HttpServletRequest request, RequestAlreadyRejectedException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("RequestAlreadyRejectedException.code")), getMessage("RequestAlreadyRejectedException.msg"));
@@ -130,12 +134,14 @@ public class ExceptionAdvice {
     }
 
     // DTO Valid를 할 경우
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public CommonResult processValidationError(MethodArgumentNotValidException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("MethodArgumentNotValidException.code")), e.getAllErrors().get(0).getDefaultMessage());
     }
 
     // 패스워드를 틀릴 경우
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(IncorrectPasswordException.class)
     public CommonResult IncorrectPasswordException(HttpServletRequest request, IncorrectPasswordException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("IncorrectPasswordException.code")), getMessage("IncorrectPasswordException.msg"));
@@ -163,20 +169,25 @@ public class ExceptionAdvice {
     }
 
     // 태그 삭제 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(ConstraintViolationException.class)
     public CommonResult IntegrationException(HttpServletRequest request, ConstraintViolationException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("ConstraintViolationException.code")), getMessage("ConstraintViolationException.msg"));
     }
 
     // 신청 날짜 만료
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(ApplicationDateExpirationException.class)
     public CommonResult IntegrationException(HttpServletRequest request, ApplicationDateExpirationException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("ApplicationDateExpirationException.code")), getMessage("ApplicationDateExpirationException.msg"));
     }
 
     // URL 유효성 검사 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(URLValidationException.class)
     public CommonResult IntegrationException(HttpServletRequest request, URLValidationException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("URLValidationException.code")), getMessage("URLValidationException.msg"));
     }
+
+
 }

@@ -20,14 +20,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .exposedHeaders("*")
                 .exposedHeaders("Authorization");	//make client read header("Authorization")
     }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
-    @Bean
-    public UrlValidator urlValidator() {
-        return new UrlValidator();
-    }
 }
