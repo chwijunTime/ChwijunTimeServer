@@ -1,7 +1,8 @@
 package com.gsm.chwijuntime.service.member;
 
 import com.gsm.chwijuntime.advice.exception.*;
-import com.gsm.chwijuntime.aop.MemoryCheck;
+import com.gsm.chwijuntime.aop.memorycheck.MemoryCheck;
+import com.gsm.chwijuntime.aop.timecheck.TimeCheck;
 import com.gsm.chwijuntime.dto.member.MemberJoinDto;
 import com.gsm.chwijuntime.dto.member.MemberLoginDto;
 import com.gsm.chwijuntime.dto.member.MemberProfileSaveDto;
@@ -35,7 +36,7 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final GetUserEmailUtil getUserEmailUtil;
 
-    @MemoryCheck
+    @MemoryCheck @TimeCheck
     @Transactional
     @Override
     public void InsertMember(MemberJoinDto memberJoinDto) {
