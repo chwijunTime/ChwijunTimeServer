@@ -97,7 +97,22 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
     public void updateEmploymentAnnouncement(Long idx, EmploymentAnnouncementUpdateDto employmentAnnouncementUpdateDto) {
         EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(NotFoundEmploymentAnnouncementException::new);
         UserWriteCheck(employmentAnnouncement);
+        //1차 수정
         employmentAnnouncement.update(employmentAnnouncementUpdateDto);
+        //태그 삭제
+        List<EmploymentAnnouncementTag> employmentAnnouncementTags = employmentAnnouncementTagRepository.findAllByEmploymentAnnouncement(employmentAnnouncement);
+        for (EmploymentAnnouncementTag employmentAnnouncementTag : employmentAnnouncementTags) {
+            employmentAnnouncementTagRepository.delete(employmentAnnouncementTag);
+        }
+        //태그 저장
+        for(String i : employmentAnnouncementUpdateDto.getTagName()){
+            Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
+            employmentAnnouncementUpdateDto.MappingTagByEmploymentAnnouncement(tag, employmentAnnouncement);
+            employmentAnnouncementTagRepository.save(employmentAnnouncementUpdateDto.ToEntityByEmploymentAnnouncementTag());
+        }
     }
 
     @Transactional

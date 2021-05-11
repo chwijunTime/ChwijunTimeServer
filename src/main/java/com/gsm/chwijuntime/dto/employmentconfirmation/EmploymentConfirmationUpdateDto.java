@@ -1,12 +1,18 @@
 package com.gsm.chwijuntime.dto.employmentconfirmation;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gsm.chwijuntime.model.EmploymentConfirmation;
+import com.gsm.chwijuntime.model.Tag;
+import com.gsm.chwijuntime.model.tagmapping.EmploymentConfirmationTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -28,4 +34,23 @@ public class EmploymentConfirmationUpdateDto {
 
     private String employmentConfirmationEtc;
 
+    @NotEmpty(message = "태그를 1개 이상 등록해주세요.")
+    private List<String> tagName;
+
+    @JsonIgnore
+    private Tag tag;
+    @JsonIgnore
+    private EmploymentConfirmation employmentConfirmation;
+
+    public void mappingTagEmploymentConfirmation(Tag tag, EmploymentConfirmation employmentConfirmation){
+        this.tag = tag;
+        this.employmentConfirmation = employmentConfirmation;
+    }
+
+    public EmploymentConfirmationTag toEntityByEmploymentConfirmationTag(){
+        return EmploymentConfirmationTag.builder()
+                .employmentConfirmation(this.employmentConfirmation)
+                .tag(this.tag)
+                .build();
+    }
 }

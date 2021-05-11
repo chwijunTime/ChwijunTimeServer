@@ -1,11 +1,19 @@
 package com.gsm.chwijuntime.dto.employmentAnnouncement;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gsm.chwijuntime.model.EmploymentAnnouncement;
+import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.Tag;
+import com.gsm.chwijuntime.model.tagmapping.EmploymentAnnouncementTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Builder
@@ -30,4 +38,23 @@ public class EmploymentAnnouncementUpdateDto {
 
     private String employmentAnnouncementEtc;
 
+    @NotEmpty(message = "태그를 1개 이상 등록해주세요.")
+    private List<String> tagName;
+
+    @JsonIgnore
+    private Tag tag;
+    @JsonIgnore
+    private EmploymentAnnouncement employmentAnnouncement;
+
+    public void MappingTagByEmploymentAnnouncement(Tag tag, EmploymentAnnouncement employmentAnnouncement){
+        this.tag = tag;
+        this.employmentAnnouncement = employmentAnnouncement;
+    }
+
+    public EmploymentAnnouncementTag ToEntityByEmploymentAnnouncementTag(){
+        return EmploymentAnnouncementTag.builder()
+                .employmentAnnouncement(this.employmentAnnouncement)
+                .tag(this.tag)
+                .build();
+    }
 }

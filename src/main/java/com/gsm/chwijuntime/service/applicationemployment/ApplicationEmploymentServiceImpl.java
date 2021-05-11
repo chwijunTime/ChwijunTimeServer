@@ -4,10 +4,8 @@ import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
-import com.gsm.chwijuntime.model.ApplicationEmployment;
-import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
-import com.gsm.chwijuntime.model.EmploymentAnnouncement;
-import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
+import com.gsm.chwijuntime.model.*;
 import com.gsm.chwijuntime.repository.ApplicationEmploymentRepository;
 import com.gsm.chwijuntime.repository.EmploymentAnnouncementRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
@@ -50,13 +48,10 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Override
     public FindAllApplicationDetailResDto applicationDetail(Long idx) {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findByApplicationEmploymentIdx(idx);
-        Member member = applicationEmployment.getMember();
         EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();
 
         return FindAllApplicationDetailResDto.builder()
-                .member(member)
                 .applicationEmployment(applicationEmployment)
-                .employmentAnnouncement(employmentAnnouncement)
                 .build();
     }
 
