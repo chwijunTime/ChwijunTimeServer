@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.controller.release;
 
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanyResDto;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
+import com.gsm.chwijuntime.dto.contractingcompany.ContractionCompanyUpdateDto;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ListResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
@@ -30,7 +31,7 @@ public class ContractingCompanyController {
     private final ResponseService responseService;
 
 
-    @ApiOperation(value = "협약 업체 등록", notes = "관리자가 협약 업체를 등록한다.")
+    @ApiOperation(value = "관리자 협약 업체 등록", notes = "관리자가 협약 업체를 등록한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -41,7 +42,7 @@ public class ContractingCompanyController {
         return responseService.getSuccessResult();
     }
 
-    @ApiOperation(value = "협약 업체 전체 조회", notes = "관리자와 사용자가 협약 업체를 모두 조회한다.")
+    @ApiOperation(value = "사용자 협약 업체 전체 조회", notes = "관리자와 사용자가 협약 업체를 모두 조회한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -52,7 +53,7 @@ public class ContractingCompanyController {
         return responseService.getListResult(contractingCompanies);
     }
 
-    @ApiOperation(value = "협약 업체 단일 조회", notes = "관리자와 사용자가 협약 업체를 단일 조회한다.")
+    @ApiOperation(value = "사용자 협약 업체 단일 조회", notes = "관리자와 사용자가 협약 업체를 단일 조회한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -63,7 +64,7 @@ public class ContractingCompanyController {
         return responseService.getSingleResult(contractingCompanyResDto);
     }
 
-    @ApiOperation(value = "협약 업체 삭제", notes = "관리자가 협약 업체를 삭제한다.")
+    @ApiOperation(value = "관리자 협약 업체 삭제", notes = "관리자가 협약 업체를 삭제한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -74,4 +75,14 @@ public class ContractingCompanyController {
         return responseService.getSuccessResult();
     }
 
+    @ApiOperation(value = "관리자 협약 업체 수정", notes = "관리자가 협약 업체를 수정한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @PutMapping("/contracting-company/{companyidx}")
+    public CommonResult updateByIdx(@PathVariable Long companyidx, @Valid @RequestBody ContractionCompanyUpdateDto contractionCompanyUpdateDto) {
+        contractingCompanyService.updateContractingCompany(companyidx, contractionCompanyUpdateDto);
+        return responseService.getSuccessResult();
+    }
 }

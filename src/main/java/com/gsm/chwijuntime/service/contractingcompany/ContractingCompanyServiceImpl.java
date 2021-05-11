@@ -3,6 +3,7 @@ package com.gsm.chwijuntime.service.contractingcompany;
 import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanyResDto;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
+import com.gsm.chwijuntime.dto.contractingcompany.ContractionCompanyUpdateDto;
 import com.gsm.chwijuntime.model.ContractingCompany;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
@@ -86,6 +87,29 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
         ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(NotFoundContractingCompanyException::new);
         UserWriteCheck(contractingCompany);
         contractingCompanyRepository.delete(contractingCompany);
+    }
+
+    @Transactional
+    @Override
+    public void updateContractingCompany(Long idx, ContractionCompanyUpdateDto contractionCompanyUpdateDto) {
+        ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(NotFoundContractingCompanyException::new);
+        UserWriteCheck(contractingCompany);
+        // 1번째 수정
+        contractingCompany.changeContractingCompany(contractionCompanyUpdateDto);
+        // 관련된 태그 전체 지움
+        List<ContractingCompanyTag> allByContractingCompany = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
+        for (ContractingCompanyTag contractingCompanyTag : allByContractingCompany) {
+            contractingCompanyTagRepository.delete(contractingCompanyTag);
+        }
+        // 태그 저장
+        for (String i : contractionCompanyUpdateDto.getTagName()) {
+            Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
+            contractionCompanyUpdateDto.MappingTag_ContractingCompany(tag, contractingCompany);
+            contractingCompanyTagRepository.save(contractionCompanyUpdateDto.ToEntityByContractingCompanyTag());
+        }
     }
 
     //작성자 권한 체크 Method
