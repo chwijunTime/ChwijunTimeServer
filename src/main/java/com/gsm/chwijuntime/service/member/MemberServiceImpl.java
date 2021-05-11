@@ -3,10 +3,7 @@ package com.gsm.chwijuntime.service.member;
 import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.aop.memorycheck.MemoryCheck;
 import com.gsm.chwijuntime.aop.timecheck.TimeCheck;
-import com.gsm.chwijuntime.dto.member.MemberJoinDto;
-import com.gsm.chwijuntime.dto.member.MemberLoginDto;
-import com.gsm.chwijuntime.dto.member.MemberProfileSaveDto;
-import com.gsm.chwijuntime.dto.member.MemberTagResDto;
+import com.gsm.chwijuntime.dto.member.*;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.model.tagmapping.MemberTag;
@@ -84,15 +81,30 @@ public class MemberServiceImpl implements MemberService {
             Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(CAuthenticationEntryPointException::new);
             memberProfileSaveDto.MappingTag_Member(tag, member);
             //프로필 업데이트
-            member.Change_profile(memberProfileSaveDto.getMemberPhoneNumber(), memberProfileSaveDto.getMemberETC());
+            member.change_profile(memberProfileSaveDto.getMemberPhoneNumber(), memberProfileSaveDto.getMemberETC());
             memberTagRepository.save(memberProfileSaveDto.ToEntityByMemberTag());
         }
     }
 
     @Transactional
     @Override
-    public void updateMemberProfile(MemberProfileSaveDto memberProfileSaveDto) {
-        //나중에 생각
+    public void updateMemberProfile(UpdateMemberProfileDto updateMemberProfileDto) {
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        member.change_profile(updateMemberProfileDto.getMemberPhoneNumber(), updateMemberProfileDto.getMemberETC());
+        List<MemberTag> findMemberTag = memberTagRepository.findByMember(member);
+        // 관련된 태그들 모두 삭제
+        for (MemberTag memberTag : findMemberTag) {
+            memberTagRepository.delete(memberTag);
+        }
+        //태그 저장
+        for (String i : updateMemberProfileDto.getTagName()){
+            Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
+            updateMemberProfileDto.MappingTag_Member(tag, member);
+            memberTagRepository.save(updateMemberProfileDto.ToEntityByMemberTag());
+        }
     }
 
     @Override

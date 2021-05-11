@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,4 +30,11 @@ public class MemberTag {
     @JoinColumn(name = "MemberIdx")
     private Member member;
 
+    public void updateTag(Tag tag) {
+        this.tag = tag;
+    }
+
+    public void clear() {
+
+    }
 }

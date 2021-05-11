@@ -105,4 +105,16 @@ public class MemberController {
         MemberTagResDto viewMember = memberService.viewMember();
         return responseService.getSingleResult(viewMember);
     }
+
+    @ApiOperation(value = "프로필 수정", notes = "유저가 프로필을 수정한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @PutMapping("/update-profile")
+    public CommonResult update_profile(@RequestBody UpdateMemberProfileDto updateMemberProfileDto){
+        memberService.updateMemberProfile(updateMemberProfileDto);
+        return responseService.getSuccessResult();
+    }
 }
+

@@ -6,6 +6,7 @@ import com.gsm.chwijuntime.advice.exception.NotFoundCompanyReviewException;
 import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewSaveDto;
+import com.gsm.chwijuntime.dto.companyreview.CompanyUpdateDto;
 import com.gsm.chwijuntime.model.CompanyReview;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
@@ -86,6 +87,29 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         companyReviewRepository.deleteById(idx);
     }
 
+    @Transactional
+    @Override
+    public void update(Long idx, CompanyUpdateDto companyUpdateDto) {
+        UserWriteCheck(idx);
+        CompanyReview companyReview = companyReviewRepository.findById(idx).orElseThrow(NotFoundCompanyReviewException::new);
+        // 1번째 수정
+        companyReview.changeCompanyReview(companyUpdateDto);
+        List<CompanyReviewTag> companyReviewTags = companyReviewTagRepository.findAllByCompanyReview(companyReview);
+        // 관련된 태그 전부 삭제
+        for (CompanyReviewTag companyReviewTag : companyReviewTags) {
+            companyReviewTagRepository.delete(companyReviewTag);
+        }
+        // 태그 저장
+        for (String i: companyUpdateDto.getTagName()) {
+            Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
+            companyUpdateDto.MappingTag_ContractingCompany(tag, companyReview);
+            companyReviewTagRepository.save(companyUpdateDto.ToEntityByCompanyReviewTag());
+        }
+    }
+
     //작성자 권한 체크 Method
     public void UserWriteCheck(Long idx) {
         Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
@@ -94,5 +118,4 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             throw new AuthorNotCertifiedException();
         }
     }
-
 }

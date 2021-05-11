@@ -3,6 +3,7 @@ package com.gsm.chwijuntime.controller.release;
 
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewSaveDto;
+import com.gsm.chwijuntime.dto.companyreview.CompanyUpdateDto;
 import com.gsm.chwijuntime.model.CompanyReview;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ListResult;
@@ -32,7 +33,7 @@ public class CompanyReviewController {
     private final CompanyReviewService companyReviewService;
     private final ResponseService responseService;
 
-    @ApiOperation(value = "면버 후기 등록", notes = "사용자가 면접 후기를 등록한다.")
+    @ApiOperation(value = "사용자 면접 후기 등록", notes = "사용자가 면접 후기를 등록한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -43,7 +44,7 @@ public class CompanyReviewController {
         return responseService.getSuccessResult();
     }
 
-    @ApiOperation(value = "면접 후기 단일 조회", notes = "사용자가 면접 후기를 단일 조회한다.")
+    @ApiOperation(value = "사용자 면접 후기 단일 조회", notes = "사용자가 면접 후기를 단일 조회한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -54,7 +55,7 @@ public class CompanyReviewController {
         return responseService.getSingleResult(companyReviewResDto);
     }
 
-    @ApiOperation(value = "면접 후기 전체 조회", notes = "사용자가 면접 후기를 단일 조회한다.")
+    @ApiOperation(value = "사용자 면접 후기 전체 조회", notes = "사용자가 면접 후기를 단일 조회한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -65,7 +66,7 @@ public class CompanyReviewController {
         return responseService.getListResult(companyReviewResDtos);
     }
 
-    @ApiOperation(value = "면접 후기 전체 삭제", notes = "사용자가 면접 후기를 단일 삭제한다.")
+    @ApiOperation(value = "사용자 면접 후기 전체 삭제", notes = "사용자가 면접 후기를 단일 삭제한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -73,6 +74,17 @@ public class CompanyReviewController {
     @DeleteMapping("/companyreview/{companyreviewIdx}")
     public CommonResult deletebByIdx(@PathVariable Long companyreviewIdx) {
         companyReviewService.deleteByIdx(companyreviewIdx);
+        return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value = "사용자 면접 후기 수정", notes = "사용자가 면접 후기를 수정한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @PutMapping("/companyreview/{companyreviewIdx}")
+    public CommonResult deletebByIdx(@PathVariable Long companyreviewIdx, @Valid @RequestBody CompanyUpdateDto companyUpdateDto) {
+        companyReviewService.update(companyreviewIdx, companyUpdateDto);
         return responseService.getSuccessResult();
     }
 }

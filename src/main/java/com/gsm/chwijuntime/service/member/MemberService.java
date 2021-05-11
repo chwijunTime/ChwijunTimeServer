@@ -1,9 +1,6 @@
 package com.gsm.chwijuntime.service.member;
 
-import com.gsm.chwijuntime.dto.member.MemberJoinDto;
-import com.gsm.chwijuntime.dto.member.MemberLoginDto;
-import com.gsm.chwijuntime.dto.member.MemberProfileSaveDto;
-import com.gsm.chwijuntime.dto.member.MemberTagResDto;
+import com.gsm.chwijuntime.dto.member.*;
 import com.gsm.chwijuntime.model.Member;
 
 public interface MemberService {
@@ -26,7 +23,7 @@ public interface MemberService {
     MemberTagResDto viewMember();
 
     // 프로필 업데이트
-    void updateMemberProfile(MemberProfileSaveDto memberProfileSaveDto);
+    void updateMemberProfile(UpdateMemberProfileDto updateMemberProfileDto);
 
     // 이메일 중복
     void userEmailCheck(String email);

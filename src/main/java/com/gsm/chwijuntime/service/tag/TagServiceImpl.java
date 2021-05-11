@@ -42,7 +42,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag updateTag(Long tagIdx, String tagName) {
         Tag tag = tagRepository.findById(tagIdx).orElseThrow(NotFoundTagException::new);
-        tag.ChangeTagName(tagName);
+        tag.changeTagName(tagName);
         return tag;
     }
 

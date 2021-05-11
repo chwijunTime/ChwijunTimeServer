@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gsm.chwijuntime.dto.member.UpdateMemberProfileDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,7 +44,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Column
     private String memberETC;
-
 
     private LocalDateTime memberCreated;
 
@@ -104,7 +104,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
         return authorityIterator.next().toString();
     }
 
-    public void Change_profile(String memberPhoneNumber, String memberETC){
+    public void change_profile(String memberPhoneNumber, String memberETC){
         this.memberPhoneNumber = memberPhoneNumber;
         this.memberETC = memberETC;
     }

@@ -21,9 +21,8 @@ public class Tag {
     @Column(nullable = false)
     private String tagName;
 
-    public void ChangeTagName(String tagName) {
+    public void changeTagName(String tagName) {
         this.tagName = tagName;
     }
-
 
 }
