@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Api(tags = {"2. 태그"})
+@Api(tags = {"7. 태그"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/v1")

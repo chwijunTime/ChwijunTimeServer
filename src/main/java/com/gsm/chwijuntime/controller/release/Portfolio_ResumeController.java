@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Api(tags = {"9. 이력서 및 포트폴리오 저장"})
+@Api(tags = {"8. 이력서 및 포트폴리오"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/v1")

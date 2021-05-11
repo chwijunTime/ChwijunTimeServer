@@ -43,8 +43,8 @@ public class MemberController {
     @ApiOperation(value = "아이디 중복 체크", notes = "회원가입을 할때 이메일 중복 체크를 한다.")
     @ResponseBody
     @PostMapping("/email-check")
-    public CommonResult userEmailCheck(@RequestParam String email){
-        memberService.userEmailCheck(email);
+    public CommonResult userEmailCheck(@Valid @RequestBody IdDuplicateCheckDto idDuplicateCheckDto){
+        memberService.userEmailCheck(idDuplicateCheckDto.getEmail());
         return responseService.getSuccessResult();
     }
 

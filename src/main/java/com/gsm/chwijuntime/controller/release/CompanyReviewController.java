@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Api(tags = {"4. 면접 후기 및 회사 후기"})
+@Api(tags = {"2. 면접 후기 및 회사 후기"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/v1")

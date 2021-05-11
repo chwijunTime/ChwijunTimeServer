@@ -20,6 +20,11 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public void insertTag(TagSaveDto tagSaveDto) {
+        Tag byTagName = tagRepository.findByTagName(tagSaveDto.getTagName());
+        if(byTagName != null){
+            System.out.println("태그 중복");
+            return;
+        }
         tagRepository.save(tagSaveDto.toEntity());
     }
 
