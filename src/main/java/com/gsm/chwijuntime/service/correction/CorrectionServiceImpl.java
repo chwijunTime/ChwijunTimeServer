@@ -28,6 +28,7 @@ public class CorrectionServiceImpl implements CorrectionService {
     private final CorrectionApplyRepository correctionApplyRepository;
     private final CorrectionRepository correctionRepository;
 
+    @Transactional
     @Override
     public void saveCorrectionApply(Long idx, CorrectionApplySaveDto correctionApplySaveDto, CorrectionType correctionType) throws Exception {
         checkCorrectionApply(idx);
@@ -61,11 +62,8 @@ public class CorrectionServiceImpl implements CorrectionService {
     @Override
     public void requestApproval(Long idx, CorrectionApprovalSaveDto correctionApprovalSaveDto) throws Exception {
         checkAdmin(idx);
-        // 요청 검색
         CorrectionApply correctionApply = correctionApplyRepository.findById(idx).orElseThrow(null);
-        // 상태 변경
         correctionApply.changeApproval();
-        // 첨삭 저장
         correctionRepository.save(correctionApprovalSaveDto.toEntityByApproval(correctionApply));
     }
 
@@ -75,9 +73,7 @@ public class CorrectionServiceImpl implements CorrectionService {
     public void requestRejection(Long idx, CorrectionRejectionSaveDto correctionRejectionSaveDto) throws Exception {
         checkAdmin(idx);
         CorrectionApply correctionApply = correctionApplyRepository.findById(idx).orElseThrow(null);
-        // 상태 바꿈
         correctionApply.changeRejection();
-        //저장
         correctionRepository.save(correctionRejectionSaveDto.toEntityByApproval(correctionApply));
     }
 
@@ -105,4 +101,7 @@ public class CorrectionServiceImpl implements CorrectionService {
     public List<CorrectionApply> findAll() {
         return null;
     }
+
+    // 전체 마이페이지 하기
+    // 내가 신청한 포트폴리오와 이력서 보기
 }
