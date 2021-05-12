@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = {"9. 상담"})
+@Api(tags = {"10. 상담"})
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/v1")

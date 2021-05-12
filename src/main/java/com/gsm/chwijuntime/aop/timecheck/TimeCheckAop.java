@@ -24,8 +24,8 @@ public class TimeCheckAop {
     @AfterReturning(pointcut = "TimeCheck()", returning = "result")
     public void AfterReturning(JoinPoint joinPoint, Object result) {
         afterTime = System.currentTimeMillis();
+        log.info("result = " + result);
         log.info("코드 수행 시간(ms) : " + (afterTime - beforeTime) + "ms");
         log.info("코드 수행 시간(s) : " + ((afterTime - beforeTime)/1000.0) + "s");
     }
-
 }

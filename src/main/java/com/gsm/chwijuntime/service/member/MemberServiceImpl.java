@@ -33,7 +33,6 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final GetUserEmailUtil getUserEmailUtil;
 
-    @MemoryCheck @TimeCheck
     @Transactional
     @Override
     public void InsertMember(MemberJoinDto memberJoinDto) {
@@ -47,6 +46,7 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @MemoryCheck @TimeCheck
     @Override
     public Member findMember(MemberLoginDto memberLoginDto) {
         Member member = memberRepository.findByMemberEmail(memberLoginDto.getMemberEmail()).orElseThrow(EmailNotFoundException::new);
