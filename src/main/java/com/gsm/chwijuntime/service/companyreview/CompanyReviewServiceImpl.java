@@ -58,14 +58,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         List<CompanyReviewResDto> companyReviewResDtos = companyReviewRepository.findAll().stream()
                 .map(m -> mapper.map(m, CompanyReviewResDto.class))
                 .collect(Collectors.toList());
-        for (CompanyReviewResDto i : companyReviewResDtos) {
-            CompanyReview companyReview = companyReviewRepository.findById(i.getCompanyReviewIdx()).orElseThrow(NotFoundCompanyReviewException::new);
-            List<CompanyReviewTag> companyReviewTags = companyReviewTagRepository.findAllByCompanyReview(companyReview);
-            for (CompanyReviewTag j : companyReviewTags) {
-                i.getCompanyReviewTags().add(j.getTag().getTagName());
-            }
-        }
-        return companyReviewResDtos;
+        return getCompanyReviewResDtos(companyReviewResDtos);
     }
 
     @Override
@@ -78,13 +71,6 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             companyReviewResDto.getCompanyReviewTags().add(i.getTag().getTagName());
         }
         return companyReviewResDto;
-    }
-
-    @Transactional
-    @Override
-    public void deleteByIdx(Long idx) {
-        UserWriteCheck(idx);
-        companyReviewRepository.deleteById(idx);
     }
 
     @Transactional
@@ -116,6 +102,17 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         List<CompanyReviewResDto> companyReviewResDtos = companyReviewRepository.findByMember(findMember).stream()
                 .map(m -> mapper.map(m, CompanyReviewResDto.class))
                 .collect(Collectors.toList());
+        return getCompanyReviewResDtos(companyReviewResDtos);
+    }
+
+    @Transactional
+    @Override
+    public void deleteByIdx(Long idx) {
+        UserWriteCheck(idx);
+        companyReviewRepository.deleteById(idx);
+    }
+
+    private List<CompanyReviewResDto> getCompanyReviewResDtos(List<CompanyReviewResDto> companyReviewResDtos) {
         for (CompanyReviewResDto i : companyReviewResDtos) {
             CompanyReview companyReview = companyReviewRepository.findById(i.getCompanyReviewIdx()).orElseThrow(NotFoundCompanyReviewException::new);
             List<CompanyReviewTag> companyReviewTags = companyReviewTagRepository.findAllByCompanyReview(companyReview);
@@ -127,7 +124,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
     }
 
     //작성자 권한 체크 Method
-    public void UserWriteCheck(Long idx) {
+    private void UserWriteCheck(Long idx) {
         Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         Member WriteMember = companyReviewRepository.findById(idx).orElseThrow(CAuthenticationEntryPointException::new).getMember();
         if (!CurrentUser.getMemberEmail().equals(WriteMember.getMemberEmail())) {

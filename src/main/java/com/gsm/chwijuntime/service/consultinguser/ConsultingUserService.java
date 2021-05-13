@@ -13,4 +13,7 @@ public interface ConsultingUserService {
 
     // 관리자가 신청 조회 => 신청한 상담을 조회한다.
     List<ConsultingUserResDto> findAll();
+
+    // 내가 신청한 상담
+    List<ConsultingUserResDto> findByMember();
 }

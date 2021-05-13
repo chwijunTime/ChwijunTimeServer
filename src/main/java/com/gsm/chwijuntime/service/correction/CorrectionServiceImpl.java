@@ -86,6 +86,13 @@ public class CorrectionServiceImpl implements CorrectionService {
         return byMember;
     }
 
+    @Override
+    public List<Correction> findMyCorrection() {
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        List<Correction> byMember = correctionRepository.findByMember(member);
+        return byMember;
+    }
+
     private void checkAdmin(Long idx) throws Exception {
         Optional<CorrectionApply> byId = correctionApplyRepository.findById(idx);
         if (byId.isEmpty()){

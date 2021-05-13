@@ -31,4 +31,8 @@ public class ConsultingUser {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ConsultingIdx")
     private ConsultingAdmin consultingAdmin;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "MemberIdx")
+    private Member member;
 }

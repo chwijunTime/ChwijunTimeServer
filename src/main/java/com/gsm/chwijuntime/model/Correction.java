@@ -24,4 +24,8 @@ public class Correction {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private CorrectionApply correctionApply;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "MemberIdx")
+    private Member member;
 }

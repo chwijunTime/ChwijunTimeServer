@@ -2,6 +2,8 @@ package com.gsm.chwijuntime.controller.release;
 
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
+import com.gsm.chwijuntime.dto.consultinguser.ConsultingUserResDto;
+import com.gsm.chwijuntime.model.Correction;
 import com.gsm.chwijuntime.model.CorrectionApply;
 import com.gsm.chwijuntime.model.MemberPortfolio;
 import com.gsm.chwijuntime.model.MemberResume;
@@ -35,7 +37,6 @@ public class MyPageController {
     private final ResumeService resumeService;
     private final PortfolioService portfolioService;
     private final ConsultingUserService consultingUserService;
-    private final ConsultingAdminService consultingAdminService;
     private final CorrectionService correctionService;
     private final CompanyReviewService companyReviewService;
     private final ApplicationEmploymentService applicationEmploymentService;
@@ -95,15 +96,34 @@ public class MyPageController {
     })
     @ResponseBody
     @ApiOperation(value = "첨삭 신청 보기(마이페이지)", notes = "사용자의 첨삭 신청을 전체 조회한다.")
-    @GetMapping("/mypage-correction")
-    public ListResult<CorrectionApply> myPageCorrection() {
+    @GetMapping("/mypage-correction-apply")
+    public ListResult<CorrectionApply> myPageCorrectionApply() {
         List<CorrectionApply> byMyApply = correctionService.findByMyApply();
         return responseService.getListResult(byMyApply);
     }
 
-    // 첨삭 보기
-
+    // 내가 받은 첨삭 보기
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @ApiOperation(value = "첨삭 보기(마이페이지)", notes = "사용자의 첨삭을 전체 조회한다.")
+    @GetMapping("/mypage-correction")
+    public ListResult<Correction> myPageCorrection() {
+        List<Correction> myCorrection = correctionService.findMyCorrection();
+        return responseService.getListResult(myCorrection);
+    }
 
     // 내가 신청한 상담 보기
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @ApiOperation(value = "상담 신청 보기(마이페이지)", notes = "사용자의 상담 신청을 전체 조회한다.")
+    @GetMapping("/mypage-consulting-user")
+    public ListResult<ConsultingUserResDto> myPageConsultingUser() {
+        List<ConsultingUserResDto> byMember = consultingUserService.findByMember();
+        return responseService.getListResult(byMember);
+    }
 
 }
