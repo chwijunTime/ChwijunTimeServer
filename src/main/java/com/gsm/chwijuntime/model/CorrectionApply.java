@@ -16,10 +16,6 @@ public class CorrectionApply {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long correctionApplyIdx;
 
-    private String classNumber;
-
-    private String Name;
-
     @Enumerated(EnumType.STRING)
     private CorrectionStatus correctionStatus;
 

@@ -10,11 +10,12 @@ import java.util.List;
 
 public interface CorrectionService {
 
-    void saveCorrectionApply(Long idx, CorrectionApplySaveDto correctionApplySaveDto, CorrectionType correctionType) throws Exception;
+    void saveCorrectionApply(Long idx, CorrectionType correctionType) throws Exception;
     CorrectionApply findByIdx(Long idx);
     List<CorrectionApply> findAll();
 
     void requestApproval(Long idx, CorrectionApprovalSaveDto correctionApprovalSaveDto) throws Exception;
     void requestRejection(Long idx, CorrectionRejectionSaveDto correctionRejectionSaveDto) throws Exception;
 
+    List<CorrectionApply> findByMyApply();
 }

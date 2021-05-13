@@ -27,10 +27,11 @@ public class CorrectionServiceImpl implements CorrectionService {
     private final GetUserEmailUtil getUserEmailUtil;
     private final CorrectionApplyRepository correctionApplyRepository;
     private final CorrectionRepository correctionRepository;
+    private final CorrectionApplySaveDto correctionApplySaveDto;
 
     @Transactional
     @Override
-    public void saveCorrectionApply(Long idx, CorrectionApplySaveDto correctionApplySaveDto, CorrectionType correctionType) throws Exception {
+    public void saveCorrectionApply(Long idx, CorrectionType correctionType) throws Exception {
         checkCorrectionApply(idx);
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         if (correctionType.equals(CorrectionType.Resume)) {
@@ -77,6 +78,14 @@ public class CorrectionServiceImpl implements CorrectionService {
         correctionRepository.save(correctionRejectionSaveDto.toEntityByApproval(correctionApply));
     }
 
+    // 내가 신청한 리스트 보기
+    @Override
+    public List<CorrectionApply> findByMyApply() {
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        List<CorrectionApply> byMember = correctionApplyRepository.findByMember(member);
+        return byMember;
+    }
+
     private void checkAdmin(Long idx) throws Exception {
         Optional<CorrectionApply> byId = correctionApplyRepository.findById(idx);
         if (byId.isEmpty()){
@@ -93,15 +102,15 @@ public class CorrectionServiceImpl implements CorrectionService {
     // 관리자가 신청 단일 조회하기
     @Override
     public CorrectionApply findByIdx(Long idx) {
-        return null;
+        return correctionApplyRepository.findById(idx).orElseThrow(null);
     }
 
     // 관리자가 신청한 모든 사람 보기
     @Override
     public List<CorrectionApply> findAll() {
-        return null;
+        List<CorrectionApply> all = correctionApplyRepository.findAll();
+        return all;
     }
 
     // 전체 마이페이지 하기
-    // 내가 신청한 포트폴리오와 이력서 보기
 }

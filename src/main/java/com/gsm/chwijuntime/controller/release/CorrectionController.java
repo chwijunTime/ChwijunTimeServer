@@ -3,9 +3,12 @@ package com.gsm.chwijuntime.controller.release;
 import com.gsm.chwijuntime.dto.correction.CorrectionApplySaveDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionApprovalSaveDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionRejectionSaveDto;
+import com.gsm.chwijuntime.model.CorrectionApply;
 import com.gsm.chwijuntime.model.CorrectionType;
 import com.gsm.chwijuntime.model.response.CommonResult;
+import com.gsm.chwijuntime.model.response.ListResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
+import com.gsm.chwijuntime.model.response.SingleResult;
 import com.gsm.chwijuntime.service.correction.CorrectionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,6 +17,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Api(tags = {"9. 이력서 및 포트폴리오 첨삭"})
 @RequiredArgsConstructor
@@ -32,8 +37,8 @@ public class CorrectionController {
     })
     @ResponseBody
     @PostMapping("/correction-request")
-    public CommonResult saveCorrection(@RequestParam Long idx, @RequestBody CorrectionApplySaveDto correctionApplySaveDto, @RequestParam CorrectionType correctionType) throws Exception {
-        correctionService.saveCorrectionApply(idx, correctionApplySaveDto, correctionType);
+    public CommonResult saveCorrection(@RequestParam Long idx, @RequestParam CorrectionType correctionType) throws Exception {
+        correctionService.saveCorrectionApply(idx, correctionType);
         return responseService.getSuccessResult();
     }
 
@@ -57,5 +62,38 @@ public class CorrectionController {
     public CommonResult correctionApproval(@RequestParam Long idx, @RequestBody CorrectionApprovalSaveDto correctionApprovalSaveDto) throws Exception {
         correctionService.requestApproval(idx, correctionApprovalSaveDto);
         return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value = "요청 단일 조회", notes = "관리자가 요청을 단일 조회한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @GetMapping("/correction/{idx}")
+    public SingleResult<CorrectionApply> findByIdx(@PathVariable Long idx) {
+        CorrectionApply byIdx = correctionService.findByIdx(idx);
+        return responseService.getSingleResult(byIdx);
+    }
+
+    @ApiOperation(value = "관리자 요청 전체 조회", notes = "관리자가 요청을 전체 조회한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @GetMapping("/correction")
+    public ListResult<CorrectionApply> findByAll() {
+        List<CorrectionApply> all = correctionService.findAll();
+        return responseService.getListResult(all);
+    }
+
+    @ApiOperation(value = "사용자 요청 전체 조회", notes = "내가 신청한 요청을 전체 조회한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @GetMapping("/my-correction")
+    public ListResult<CorrectionApply> findByMember() {
+        List<CorrectionApply> all = correctionService.findByMyApply();
+        return responseService.getListResult(all);
     }
 }
