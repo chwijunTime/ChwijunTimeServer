@@ -27,8 +27,4 @@ public class Correction {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "correctionApplyIdx")
     private CorrectionApply correctionApply;
-
-    @ManyToOne(fetch = FetchType.EAGER) // 누가 첨삭 해줬는지 ->  관리자
-    @JoinColumn(name = "MemberIdx")
-    private Member member;
 }
