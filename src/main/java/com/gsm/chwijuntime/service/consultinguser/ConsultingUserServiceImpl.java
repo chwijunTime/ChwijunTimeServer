@@ -32,9 +32,10 @@ public class ConsultingUserServiceImpl implements ConsultingUserService {
     @Transactional
     @Override
     public void saveConsultingUser(Long idx, ConsultingUserSaveDto consultingUserSaveDto) {
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         ConsultingAdmin consultingAdmin = consultingAdminRepository.findById(idx).orElseThrow(null);
         consultingAdmin.changeConsultingStatus();
-        consultingUserRepository.save(consultingUserSaveDto.toEntityByConsultingUser(consultingAdmin));
+        consultingUserRepository.save(consultingUserSaveDto.toEntityByConsultingUser(consultingAdmin, member));
     }
 
     @Override

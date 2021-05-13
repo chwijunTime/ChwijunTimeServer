@@ -1,10 +1,7 @@
 package com.gsm.chwijuntime.model;
 
 import com.gsm.chwijuntime.model.tagmapping.TipsStorageTag;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 // 상담 신청 테이블
 public class ConsultingUser {
 
