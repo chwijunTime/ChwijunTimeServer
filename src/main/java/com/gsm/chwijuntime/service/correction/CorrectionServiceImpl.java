@@ -111,6 +111,4 @@ public class CorrectionServiceImpl implements CorrectionService {
         List<CorrectionApply> all = correctionApplyRepository.findAll();
         return all;
     }
-
-    // 전체 마이페이지 하기
 }

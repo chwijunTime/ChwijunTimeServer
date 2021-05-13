@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.repository;
 
 import com.gsm.chwijuntime.model.ApplicationEmployment;
 import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
+import com.gsm.chwijuntime.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,6 @@ public interface ApplicationEmploymentRepository extends JpaRepository<Applicati
     ApplicationEmployment findByApplicationEmploymentIdx(Long idx);
 
     List<ApplicationEmployment> findByApplicationEmploymentStatus(ApplicationEmploymentStatus applicationEmploymentStatus);
+
+    List<ApplicationEmployment> findByMember(Member member);
 }

@@ -110,6 +110,22 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         }
     }
 
+    @Override
+    public List<CompanyReviewResDto> findByMember() {
+        Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        List<CompanyReviewResDto> companyReviewResDtos = companyReviewRepository.findByMember(findMember).stream()
+                .map(m -> mapper.map(m, CompanyReviewResDto.class))
+                .collect(Collectors.toList());
+        for (CompanyReviewResDto i : companyReviewResDtos) {
+            CompanyReview companyReview = companyReviewRepository.findById(i.getCompanyReviewIdx()).orElseThrow(NotFoundCompanyReviewException::new);
+            List<CompanyReviewTag> companyReviewTags = companyReviewTagRepository.findAllByCompanyReview(companyReview);
+            for (CompanyReviewTag j : companyReviewTags) {
+                i.getCompanyReviewTags().add(j.getTag().getTagName());
+            }
+        }
+        return companyReviewResDtos;
+    }
+
     //작성자 권한 체크 Method
     public void UserWriteCheck(Long idx) {
         Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);

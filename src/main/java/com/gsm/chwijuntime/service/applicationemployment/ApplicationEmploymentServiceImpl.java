@@ -4,7 +4,6 @@ import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
-import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
 import com.gsm.chwijuntime.model.*;
 import com.gsm.chwijuntime.repository.ApplicationEmploymentRepository;
 import com.gsm.chwijuntime.repository.EmploymentAnnouncementRepository;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +37,27 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
         applicationEmploymentRepository.save(applicationemploymentSaveDto.toEntityByApplicationEmployment(findMember, findMyEmploymentAnnouncement));
     }
 
+    @Override
+    public List<FindAllApplicationResDto> findByMember() {
+        List<FindAllApplicationResDto> findAllApplicationResDtos = new ArrayList<>();
+        Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        List<ApplicationEmployment> applicationEmploymentStatus = applicationEmploymentRepository.findByMember(findMember);
+        for (ApplicationEmployment applicationEmployment : applicationEmploymentStatus) {
+            Member member = applicationEmployment.getMember();
+            EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();
+            FindAllApplicationResDto build = FindAllApplicationResDto.builder()
+                    .applicationEmploymentIdx(applicationEmployment.getApplicationEmploymentIdx())
+                    .applicationEmploymentStatus(applicationEmployment.getApplicationEmploymentStatus())
+                    .memberClassNumber(member.getMemberClassNumber())
+                    .gitHubURL(applicationEmployment.getGitHubURL())
+                    .employmentAnnouncementName(employmentAnnouncement.getEmploymentAnnouncementName())
+                    .recruitmentField(employmentAnnouncement.getRecruitmentField())
+                    .build();
+            findAllApplicationResDtos.add(build);
+        }
+        return findAllApplicationResDtos;
+    }
+
     private void compareToDate(int compare) {
         if(compare >= 0) {
             throw new ApplicationDateExpirationException();
@@ -48,8 +67,6 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Override
     public FindAllApplicationDetailResDto applicationDetail(Long idx) {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findByApplicationEmploymentIdx(idx);
-        EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();
-
         return FindAllApplicationDetailResDto.builder()
                 .applicationEmployment(applicationEmployment)
                 .build();

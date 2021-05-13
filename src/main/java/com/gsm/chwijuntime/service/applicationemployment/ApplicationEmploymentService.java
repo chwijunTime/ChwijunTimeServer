@@ -3,14 +3,15 @@ package com.gsm.chwijuntime.service.applicationemployment;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
-import com.gsm.chwijuntime.model.ApplicationEmployment;
-import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
 
 import java.util.List;
 
 public interface ApplicationEmploymentService {
     // 공고 신청하기 => 사용자
     void application(Long employmentAnnouncementIdx, ApplicationEmploymentSaveDto applicationemploymentSaveDto);
+
+    // 내가 신청한 공고 검색
+    List<FindAllApplicationResDto> findByMember();
 
     // 공고 요청 수락 하기 => 관리자
     void acceptApplication(Long idx) throws Exception;
