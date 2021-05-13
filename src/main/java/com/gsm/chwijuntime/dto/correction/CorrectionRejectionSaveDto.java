@@ -12,11 +12,13 @@ import lombok.*;
 public class CorrectionRejectionSaveDto {
 
     private String reasonForRejection;
+    private String classNumber;
 
     public Correction toEntityByApproval(CorrectionApply correctionApply){
         return Correction.builder()
                 .correctionApply(correctionApply)
                 .reasonForRejection(this.reasonForRejection)
+                .classNumber(this.classNumber)
                 .build();
     }
 

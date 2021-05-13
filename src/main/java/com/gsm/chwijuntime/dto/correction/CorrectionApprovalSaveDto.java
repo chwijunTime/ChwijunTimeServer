@@ -11,12 +11,14 @@ import lombok.*;
 @Builder
 public class CorrectionApprovalSaveDto {
 
+    private String classNumber;
     private String correctionContent;
 
     public Correction toEntityByApproval(CorrectionApply correctionApply){
         return Correction.builder()
                 .correctionContent(this.correctionContent)
                 .correctionApply(correctionApply)
+                .classNumber(this.classNumber)
                 .build();
     }
 }

@@ -23,12 +23,15 @@ public class CorrectionApply {
     private CorrectionType correctionType;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "memberPortfolioIdx")
     private MemberPortfolio memberPortfolio;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "memberResumeIdx")
     private MemberResume memberResume;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "memberIdx")
     private Member member;
 
     public void changeApproval(){

@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface CorrectionRepository extends JpaRepository<Correction, Long> {
 
-    List<Correction> findByMember(Member member);
+    List<Correction> findByClassNumber(String classNumber);
 
 }
