@@ -73,4 +73,15 @@ public class EmploymentConfirmationController {
         employmentConfirmationService.updateEmploymentConfirmation(employmentConfirmationIdx, employmentConfirmationUpdateDto);
         return responseService.getSuccessResult();
     }
+
+    @ApiOperation(value = "취업 확정 현황 삭제", notes = "관리자가 취업 확정 현황을 삭제한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @DeleteMapping("/employment-confirmation/{employmentConfirmationIdx}")
+    public CommonResult deleteByIdx(@PathVariable Long employmentConfirmationIdx) {
+        employmentConfirmationService.deleteEmploymentConfirmation(employmentConfirmationIdx);
+        return responseService.getSuccessResult();
+    }
 }

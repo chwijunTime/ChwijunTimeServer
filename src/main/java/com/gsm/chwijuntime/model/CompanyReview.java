@@ -37,7 +37,7 @@ public class CompanyReview {
     private int companyCost;
 
     // =============== 외래키(연관관계 주인) ================= //
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MemberIdx")
     private Member member;
 

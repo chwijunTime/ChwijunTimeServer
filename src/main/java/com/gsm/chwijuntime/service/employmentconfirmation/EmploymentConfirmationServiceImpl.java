@@ -104,6 +104,15 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
         }
     }
 
+    @Transactional
+    @Override
+    public void deleteEmploymentConfirmation(Long idx) {
+        UserWriteCheck(idx);
+        EmploymentConfirmation byEmploymentConfirmationIdx = employmentConfirmationRepository.findByEmploymentConfirmationIdx(idx);
+        employmentConfirmationTagRepository.deleteAllByEmploymentConfirmation(byEmploymentConfirmationIdx);
+        employmentConfirmationRepository.deleteById(idx);
+    }
+
     //작성자 권한 체크 Method
     public void UserWriteCheck(Long idx) {
         Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);

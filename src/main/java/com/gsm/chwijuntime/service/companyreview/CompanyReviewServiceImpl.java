@@ -109,6 +109,8 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
     @Override
     public void deleteByIdx(Long idx) {
         UserWriteCheck(idx);
+        CompanyReview companyReview = companyReviewRepository.findById(idx).orElseThrow(null);
+        companyReviewTagRepository.deleteAllByCompanyReview(companyReview);
         companyReviewRepository.deleteById(idx);
     }
 

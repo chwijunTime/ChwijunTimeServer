@@ -86,6 +86,7 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
     public void deleteContractingCompanyIdx(Long idx) {
         ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(NotFoundContractingCompanyException::new);
         UserWriteCheck(contractingCompany);
+        contractingCompanyTagRepository.deleteAllByContractingCompany(contractingCompany);
         contractingCompanyRepository.delete(contractingCompany);
     }
 

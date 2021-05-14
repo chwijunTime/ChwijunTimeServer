@@ -11,5 +11,6 @@ import java.util.List;
 public interface ContractingCompanyTagRepository extends JpaRepository<ContractingCompanyTag, Long> {
 
     List<ContractingCompanyTag> findAllByContractingCompany(ContractingCompany contractingCompany);
+    void deleteAllByContractingCompany(ContractingCompany contractingCompany);
 
 }

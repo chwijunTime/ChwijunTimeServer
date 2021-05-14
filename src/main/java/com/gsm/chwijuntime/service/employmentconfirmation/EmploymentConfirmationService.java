@@ -12,4 +12,5 @@ public interface EmploymentConfirmationService {
     EmploymentConfirmationResDto findByIdx(Long idx);
     List<EmploymentConfirmationResDto> findAll();
     void updateEmploymentConfirmation(Long idx, EmploymentConfirmationUpdateDto employmentConfirmationUpdateDto);
+    void deleteEmploymentConfirmation(Long idx);
 }

@@ -120,6 +120,7 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
     public void deleteEmploymentAnnouncement(Long idx) {
         EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(NotFoundEmploymentAnnouncementException::new);
         UserWriteCheck(employmentAnnouncement);
+        employmentAnnouncementTagRepository.deleteAllByEmploymentAnnouncement(employmentAnnouncement);
         employmentAnnouncementRepository.deleteById(idx);
     }
 
