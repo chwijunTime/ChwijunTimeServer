@@ -11,4 +11,7 @@ import java.util.List;
 @Repository
 public interface ConsultingAdminRepository extends JpaRepository<ConsultingAdmin, Long> {
 
+    @Query("select c from ConsultingAdmin c join fetch c.member order by c.consultingIdx desc")
+    List<ConsultingAdmin> findAll();
+
 }

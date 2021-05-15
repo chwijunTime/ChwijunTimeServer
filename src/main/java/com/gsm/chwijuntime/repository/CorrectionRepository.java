@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CorrectionRepository extends JpaRepository<Correction, Long> {
 
-    @Query("select c from Correction c join fetch c.correctionApply where c.classNumber = :classNumber")
+    @Query("select c from Correction c join fetch c.correctionApply where c.classNumber = :classNumber order by c.correctionIdx desc")
     List<Correction> findByClassNumber(String classNumber);
 
 }

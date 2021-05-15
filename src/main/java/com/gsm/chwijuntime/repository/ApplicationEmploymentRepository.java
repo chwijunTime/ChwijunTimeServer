@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ApplicationEmploymentRepository extends JpaRepository<ApplicationEmployment, Long> {
 
-    @Query("select a from ApplicationEmployment a join fetch a.member join fetch a.employmentAnnouncement")
+    @Query("select a from ApplicationEmployment a join fetch a.member join fetch a.employmentAnnouncement order by a.applicationEmploymentIdx desc")
     List<ApplicationEmployment> findAll();
 
     @Query("select a from ApplicationEmployment a join fetch a.member join fetch a.employmentAnnouncement where a.applicationEmploymentIdx = :idx")
