@@ -15,7 +15,7 @@ public class EmploymentConfirmationResDto {
     private Long employmentConfirmationIdx;
     private String employmentConfirmationName;
     private String employmentConfirmationAreas;
-    private String employmentConfirmationClassNumber;
+    private String employmentConfirmationJockeyr;
     private String employmentConfirmationAddress;
     private String employmentConfirmationSite;
     private String employmentConfirmationEtc;

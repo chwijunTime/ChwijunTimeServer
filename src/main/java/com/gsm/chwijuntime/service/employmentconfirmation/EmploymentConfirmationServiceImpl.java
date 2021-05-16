@@ -71,14 +71,7 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
                 .map(m -> mapper.map(m, EmploymentConfirmationResDto.class))
                 .collect(Collectors.toList());
         //태그 보여주기
-        for (EmploymentConfirmationResDto i : employmentConfirmationResDtos) {
-            EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findById(i.getEmploymentConfirmationIdx()).orElseThrow(NotFoundEmploymentConfirmationException::new);
-            List<EmploymentConfirmationTag> employmentConfirmationTags = employmentConfirmationTagRepository.findAllByEmploymentConfirmation(employmentConfirmation);
-            for (EmploymentConfirmationTag j : employmentConfirmationTags) {
-                i.getEmploymentConfirmationTags().add(j.getTag().getTagName());
-            }
-        }
-        return employmentConfirmationResDtos;
+        return getEmploymentConfirmationResDtos(employmentConfirmationResDtos);
     }
 
     @Transactional
@@ -111,6 +104,25 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
         EmploymentConfirmation byEmploymentConfirmationIdx = employmentConfirmationRepository.findByEmploymentConfirmationIdx(idx);
         employmentConfirmationTagRepository.deleteAllByEmploymentConfirmation(byEmploymentConfirmationIdx);
         employmentConfirmationRepository.deleteById(idx);
+    }
+
+    @Override
+    public List<EmploymentConfirmationResDto> findByEmploymentConfirmationNameOREmploymentConfirmationAreasOREmploymentConfirmationJockey(String keyword) {
+        List<EmploymentConfirmationResDto> collect = employmentConfirmationRepository.searchByEmploymentConfirmationNameOREmploymentConfirmationAreasOREmploymentConfirmationJockey(keyword).stream()
+                .map(m -> mapper.map(m, EmploymentConfirmationResDto.class))
+                .collect(Collectors.toList());
+        return getEmploymentConfirmationResDtos(collect);
+    }
+
+    private List<EmploymentConfirmationResDto> getEmploymentConfirmationResDtos(List<EmploymentConfirmationResDto> collect) {
+        for (EmploymentConfirmationResDto i : collect) {
+            EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findById(i.getEmploymentConfirmationIdx()).orElseThrow(NotFoundEmploymentConfirmationException::new);
+            List<EmploymentConfirmationTag> employmentConfirmationTags = employmentConfirmationTagRepository.findAllByEmploymentConfirmation(employmentConfirmation);
+            for (EmploymentConfirmationTag j : employmentConfirmationTags) {
+                i.getEmploymentConfirmationTags().add(j.getTag().getTagName());
+            }
+        }
+        return collect;
     }
 
     //작성자 권한 체크 Method

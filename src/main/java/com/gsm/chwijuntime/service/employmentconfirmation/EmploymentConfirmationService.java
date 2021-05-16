@@ -13,4 +13,7 @@ public interface EmploymentConfirmationService {
     List<EmploymentConfirmationResDto> findAll();
     void updateEmploymentConfirmation(Long idx, EmploymentConfirmationUpdateDto employmentConfirmationUpdateDto);
     void deleteEmploymentConfirmation(Long idx);
+
+    // 회사 이름 OR 지역 검색 OR 기수 검색
+    List<EmploymentConfirmationResDto> findByEmploymentConfirmationNameOREmploymentConfirmationAreasOREmploymentConfirmationJockey(String keyword);
 }

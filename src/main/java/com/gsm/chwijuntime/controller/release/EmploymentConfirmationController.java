@@ -84,4 +84,15 @@ public class EmploymentConfirmationController {
         employmentConfirmationService.deleteEmploymentConfirmation(employmentConfirmationIdx);
         return responseService.getSuccessResult();
     }
+
+    @ApiOperation(value = "취업 확정 현황 키워드 검색(회사 이름, 기수, 지역)", notes = "사용자가 키워드를 검색한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @GetMapping("/employment-confirmation-keyword")
+    public ListResult<EmploymentConfirmationResDto> findByKeyword(@RequestParam String keyword) {
+        List<EmploymentConfirmationResDto> byEmploymentConfirmationNameOREmploymentConfirmationAreasOREmploymentConfirmationJockey = employmentConfirmationService.findByEmploymentConfirmationNameOREmploymentConfirmationAreasOREmploymentConfirmationJockey(keyword);
+        return responseService.getListResult(byEmploymentConfirmationNameOREmploymentConfirmationAreasOREmploymentConfirmationJockey);
+    }
 }
