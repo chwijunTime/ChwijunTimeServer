@@ -146,5 +146,16 @@ public class EmploymentAnnouncementController {
         List<FindAllApplicationResDto> byStatus = applicationEmploymentService.findByStatus(status);
         return responseService.getListResult(byStatus);
     }
+
+    @ApiOperation(value = "사용자 키워드 검색 (이름, 지역, 직군)", notes = "사용자가 키워드 검색을 한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @GetMapping("/application-keyword")
+    public ListResult<EmploymentAnnouncementResponseDto> findByKeyword(@RequestParam String keyword) {
+        List<EmploymentAnnouncementResponseDto> byEmploymentAnnouncementNameORRecruitmentFieldOREmploymentAnnouncementAddress = employmentAnnouncementService.findByEmploymentAnnouncementNameORRecruitmentFieldOREmploymentAnnouncementAddress(keyword);
+        return responseService.getListResult(byEmploymentAnnouncementNameORRecruitmentFieldOREmploymentAnnouncementAddress);
+    }
 }
 

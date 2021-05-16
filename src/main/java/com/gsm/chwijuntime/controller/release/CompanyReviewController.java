@@ -94,7 +94,7 @@ public class CompanyReviewController {
     })
     @ResponseBody
     @GetMapping("/companyreview-keyword")
-    public ListResult<CompanyReviewResDto> deletebByIdx(@RequestParam String companyNameKeyword) {
+    public ListResult<CompanyReviewResDto> findByKeyword(@RequestParam String companyNameKeyword) {
         List<CompanyReviewResDto> byCompanyNameKeyword = companyReviewService.findByCompanyNameKeyword(companyNameKeyword);
         return responseService.getListResult(byCompanyNameKeyword);
     }

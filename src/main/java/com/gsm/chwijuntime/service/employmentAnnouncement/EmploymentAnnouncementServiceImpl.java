@@ -82,14 +82,7 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
             }
         }
         //태그 보여주기
-        for (EmploymentAnnouncementResponseDto i : responseDtoList) {
-            EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(i.getEmploymentAnnouncementIdx()).orElseThrow(NotFoundEmploymentAnnouncementException::new);
-            List<EmploymentAnnouncementTag> employmentAnnouncementTags = employmentAnnouncementTagRepository.findAllByEmploymentAnnouncement(employmentAnnouncement);
-            for (EmploymentAnnouncementTag j : employmentAnnouncementTags) {
-                i.getEmploymentAnnouncementTags().add(j.getTag().getTagName());
-            }
-        }
-        return responseDtoList;
+        return getEmploymentAnnouncementResponseDtos(responseDtoList);
     }
 
     @Transactional
@@ -122,6 +115,25 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
         UserWriteCheck(employmentAnnouncement);
         employmentAnnouncementTagRepository.deleteAllByEmploymentAnnouncement(employmentAnnouncement);
         employmentAnnouncementRepository.deleteById(idx);
+    }
+
+    @Override
+    public List<EmploymentAnnouncementResponseDto> findByEmploymentAnnouncementNameORRecruitmentFieldOREmploymentAnnouncementAddress(String keyword) {
+        List<EmploymentAnnouncementResponseDto> employmentAnnouncementResponseDtos = employmentAnnouncementRepository.searchByEmploymentAnnouncementNameORRecruitmentFieldOREmploymentAnnouncementAddressLike(keyword).stream()
+                .map(m -> mapper.map(m, EmploymentAnnouncementResponseDto.class))
+                .collect(Collectors.toList());
+        return getEmploymentAnnouncementResponseDtos(employmentAnnouncementResponseDtos);
+    }
+
+    private List<EmploymentAnnouncementResponseDto> getEmploymentAnnouncementResponseDtos(List<EmploymentAnnouncementResponseDto> employmentAnnouncementResponseDtos) {
+        for (EmploymentAnnouncementResponseDto i : employmentAnnouncementResponseDtos) {
+            EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(i.getEmploymentAnnouncementIdx()).orElseThrow(NotFoundEmploymentAnnouncementException::new);
+            List<EmploymentAnnouncementTag> employmentAnnouncementTags = employmentAnnouncementTagRepository.findAllByEmploymentAnnouncement(employmentAnnouncement);
+            for (EmploymentAnnouncementTag j : employmentAnnouncementTags) {
+                i.getEmploymentAnnouncementTags().add(j.getTag().getTagName());
+            }
+        }
+        return employmentAnnouncementResponseDtos;
     }
 
     // 작성자 권한 체크 Method
