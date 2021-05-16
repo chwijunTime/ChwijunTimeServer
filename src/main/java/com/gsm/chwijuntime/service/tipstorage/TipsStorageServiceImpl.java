@@ -119,6 +119,23 @@ public class TipsStorageServiceImpl implements TipsStorageService {
         tipsStorageRepository.deleteById(idx);
     }
 
+    @Override
+    public List<TipsStorageResDto> findByWorkCompanyName(String keyword) {
+        List<TipsStorageResDto> collect = tipsStorageRepository.searchByWorkCompanyName(keyword).stream()
+                .map(m -> mapper.map(m, TipsStorageResDto.class))
+                .collect(Collectors.toList());
+        return getTipsStorageResDtos(collect);
+    }
+
+    @Override
+    public List<TipsStorageResDto> findByMember() {
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        List<TipsStorageResDto> collect = tipsStorageRepository.findByMember(member).stream()
+                .map(m -> mapper.map(m, TipsStorageResDto.class))
+                .collect(Collectors.toList());
+        return getTipsStorageResDtos(collect);
+    }
+
     //작성자 권한 체크 Method
     private void userWriteCheck(Long idx) {
         Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);

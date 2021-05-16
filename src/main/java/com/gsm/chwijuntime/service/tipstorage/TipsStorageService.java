@@ -24,4 +24,9 @@ public interface TipsStorageService {
     // 삭제
     void deleteTipsStorage(Long idx);
 
+    //회사 이름 검색
+    List<TipsStorageResDto> findByWorkCompanyName(String keyword);
+
+    //내가 등록한 게시물 보기
+    List<TipsStorageResDto> findByMember();
 }
