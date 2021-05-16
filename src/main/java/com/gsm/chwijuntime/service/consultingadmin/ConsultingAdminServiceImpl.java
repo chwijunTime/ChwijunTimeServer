@@ -44,9 +44,7 @@ public class ConsultingAdminServiceImpl implements ConsultingAdminService {
         List<ConsultingAdminResDto> collect = consultingAdminRepository.findAll().stream()
                 .map(m -> mapper.map(m, ConsultingAdminResDto.class))
                 .collect(Collectors.toList());
-
-
-        //날짜가 지난 것을을 걸러 준다.
+        //날짜가 지난 상담은 걸러주기
 
 
         return collect;
