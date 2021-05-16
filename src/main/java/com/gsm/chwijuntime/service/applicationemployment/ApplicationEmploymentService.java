@@ -3,6 +3,7 @@ package com.gsm.chwijuntime.service.applicationemployment;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
+import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
 
 import java.util.List;
 
@@ -23,5 +24,5 @@ public interface ApplicationEmploymentService {
     FindAllApplicationDetailResDto applicationDetail(Long idx);
 
     // Body로 대기, 거절, 승인 보내서 조회하기 => (학번, 이름, 깃허브, 회사 이름)
-    List<FindAllApplicationResDto> findByStatus(String status);
+    List<FindAllApplicationResDto> findByStatus(ApplicationEmploymentStatus status);
 }

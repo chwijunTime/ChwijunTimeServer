@@ -66,7 +66,7 @@ public class CompanyReviewController {
         return responseService.getListResult(companyReviewResDtos);
     }
 
-    @ApiOperation(value = "사용자 면접 후기 전체 삭제", notes = "사용자가 면접 후기를 단일 삭제한다.")
+    @ApiOperation(value = "사용자 면접 후기 삭제", notes = "사용자가 면접 후기를 단일 삭제한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })

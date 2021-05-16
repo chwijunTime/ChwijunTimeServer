@@ -42,20 +42,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
         List<FindAllApplicationResDto> findAllApplicationResDtos = new ArrayList<>();
         Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         List<ApplicationEmployment> applicationEmploymentStatus = applicationEmploymentRepository.findByMember(findMember);
-        for (ApplicationEmployment applicationEmployment : applicationEmploymentStatus) {
-            Member member = applicationEmployment.getMember();
-            EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();
-            FindAllApplicationResDto build = FindAllApplicationResDto.builder()
-                    .applicationEmploymentIdx(applicationEmployment.getApplicationEmploymentIdx())
-                    .applicationEmploymentStatus(applicationEmployment.getApplicationEmploymentStatus())
-                    .memberClassNumber(member.getMemberClassNumber())
-                    .gitHubURL(applicationEmployment.getGitHubURL())
-                    .employmentAnnouncementName(employmentAnnouncement.getEmploymentAnnouncementName())
-                    .recruitmentField(employmentAnnouncement.getRecruitmentField())
-                    .build();
-            findAllApplicationResDtos.add(build);
-        }
-        return findAllApplicationResDtos;
+        return getFindAllApplicationResDtos(findAllApplicationResDtos, applicationEmploymentStatus);
     }
 
     private void compareToDate(int compare) {
@@ -73,19 +60,23 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     }
 
     @Override
-    public List<FindAllApplicationResDto> findByStatus(String status) {
+    public List<FindAllApplicationResDto> findByStatus(ApplicationEmploymentStatus status) {
         List<FindAllApplicationResDto> findAllApplicationResDtos = new ArrayList<>();
         List<ApplicationEmployment> applicationEmploymentStatus = new ArrayList<>();
-        if (status.equals("Approve")){
+        if (status.equals(ApplicationEmploymentStatus.Approve)){
             applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Approve);
-        } else if(status.equals("Wait")) {
+        } else if(status.equals(ApplicationEmploymentStatus.Wait)) {
             applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Wait);
-        } else if(status.equals("Reject")) {
+        } else if(status.equals(ApplicationEmploymentStatus.Reject)) {
             applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Reject);
-        } else if(status.equals("All")){
+        } else if(status.equals(ApplicationEmploymentStatus.All)){
             applicationEmploymentStatus = applicationEmploymentRepository.findAll();
         }
 
+        return getFindAllApplicationResDtos(findAllApplicationResDtos, applicationEmploymentStatus);
+    }
+
+    private List<FindAllApplicationResDto> getFindAllApplicationResDtos(List<FindAllApplicationResDto> findAllApplicationResDtos, List<ApplicationEmployment> applicationEmploymentStatus) {
         for (ApplicationEmployment applicationEmployment : applicationEmploymentStatus) {
             Member member = applicationEmployment.getMember();
             EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();

@@ -7,6 +7,7 @@ import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementResponseDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementSaveDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementUpdateDto;
+import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ListResult;
@@ -142,7 +143,7 @@ public class EmploymentAnnouncementController {
     })
     @ResponseBody
     @GetMapping("/application-status")
-    public ListResult<FindAllApplicationResDto> findByStatus(@RequestParam String status) {
+    public ListResult<FindAllApplicationResDto> findByStatus(@RequestParam ApplicationEmploymentStatus status) {
         List<FindAllApplicationResDto> byStatus = applicationEmploymentService.findByStatus(status);
         return responseService.getListResult(byStatus);
     }
