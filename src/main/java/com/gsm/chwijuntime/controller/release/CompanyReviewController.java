@@ -87,4 +87,15 @@ public class CompanyReviewController {
         companyReviewService.update(companyreviewIdx, companyUpdateDto);
         return responseService.getSuccessResult();
     }
+
+    @ApiOperation(value = "사용자 면접 후기 회사 이름 키워드 검색", notes = "사용자가 면접 후기 회사 이름 키워드로 검색한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @GetMapping("/companyreview-keyword")
+    public ListResult<CompanyReviewResDto> deletebByIdx(@RequestParam String companyNameKeyword) {
+        List<CompanyReviewResDto> byCompanyNameKeyword = companyReviewService.findByCompanyNameKeyword(companyNameKeyword);
+        return responseService.getListResult(byCompanyNameKeyword);
+    }
 }

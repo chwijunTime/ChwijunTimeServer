@@ -85,4 +85,15 @@ public class ContractingCompanyController {
         contractingCompanyService.updateContractingCompany(companyidx, contractionCompanyUpdateDto);
         return responseService.getSuccessResult();
     }
+
+    @ApiOperation(value = "관리자 협약 업체 키워드 검색 (이름 및 지역)", notes = "사용자가 키워드 검색을 한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @GetMapping("/contracting-company-keyword")
+    public ListResult<ContractingCompanyResDto> updateByIdx(@RequestParam String keyword) {
+        List<ContractingCompanyResDto> byContractingBusinessAreasORContractingCompanyName = contractingCompanyService.findByContractingBusinessAreasORContractingCompanyName(keyword);
+        return responseService.getListResult(byContractingBusinessAreasORContractingCompanyName);
+    }
 }

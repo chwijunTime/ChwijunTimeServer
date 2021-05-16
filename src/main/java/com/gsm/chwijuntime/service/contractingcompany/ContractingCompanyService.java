@@ -13,5 +13,8 @@ public interface ContractingCompanyService {
     ContractingCompanyResDto findByContractingCompanyIdx(Long idx);
     void deleteContractingCompanyIdx(Long idx);
     void updateContractingCompany(Long idx, ContractionCompanyUpdateDto contractionCompanyUpdateDto);
+
+    //지역 OR 회사 이름 검색
+    List<ContractingCompanyResDto> findByContractingBusinessAreasORContractingCompanyName(String keyword);
 }
 

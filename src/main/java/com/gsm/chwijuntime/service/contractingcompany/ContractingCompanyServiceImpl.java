@@ -59,14 +59,7 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
         List<ContractingCompanyResDto> contractingCompanyResDtos = contractingCompanyRepository.findAll().stream()
                 .map(m -> mapper.map(m, ContractingCompanyResDto.class))
                 .collect(Collectors.toList());
-        for (ContractingCompanyResDto i : contractingCompanyResDtos) {
-            ContractingCompany contractingCompany = contractingCompanyRepository.findById(i.getContractingCompanyIdx()).orElseThrow(NotFoundContractingCompanyException::new);
-            List<ContractingCompanyTag> contractingCompanyTags = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
-            for (ContractingCompanyTag j : contractingCompanyTags) {
-                i.getContractingCompanyTags().add(j.getTag().getTagName());
-            }
-        }
-        return contractingCompanyResDtos;
+        return getContractingCompanyResDtos(contractingCompanyResDtos);
     }
 
     @Override
@@ -111,6 +104,25 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
             contractionCompanyUpdateDto.MappingTag_ContractingCompany(tag, contractingCompany);
             contractingCompanyTagRepository.save(contractionCompanyUpdateDto.ToEntityByContractingCompanyTag());
         }
+    }
+
+    @Override
+    public List<ContractingCompanyResDto> findByContractingBusinessAreasORContractingCompanyName(String keyword) {
+        List<ContractingCompanyResDto> contractingCompanyResDtos = contractingCompanyRepository.searchByContractingBusinessAreasORContractingCompanyNameLike(keyword).stream()
+                .map(m -> mapper.map(m, ContractingCompanyResDto.class))
+                .collect(Collectors.toList());
+        return getContractingCompanyResDtos(contractingCompanyResDtos);
+    }
+
+    private List<ContractingCompanyResDto> getContractingCompanyResDtos(List<ContractingCompanyResDto> contractingCompanyResDtos) {
+        for (ContractingCompanyResDto i : contractingCompanyResDtos) {
+            ContractingCompany contractingCompany = contractingCompanyRepository.findById(i.getContractingCompanyIdx()).orElseThrow(NotFoundContractingCompanyException::new);
+            List<ContractingCompanyTag> contractingCompanyTags = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
+            for (ContractingCompanyTag j : contractingCompanyTags) {
+                i.getContractingCompanyTags().add(j.getTag().getTagName());
+            }
+        }
+        return contractingCompanyResDtos;
     }
 
     //작성자 권한 체크 Method

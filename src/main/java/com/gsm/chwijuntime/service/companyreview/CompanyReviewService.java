@@ -15,4 +15,5 @@ public interface CompanyReviewService {
     void deleteByIdx(Long idx);
     void update(Long idx, CompanyUpdateDto companyUpdateDto);
     List<CompanyReviewResDto> findByMember();
+    List<CompanyReviewResDto> findByCompanyNameKeyword(String companyNameKeyword);
 }

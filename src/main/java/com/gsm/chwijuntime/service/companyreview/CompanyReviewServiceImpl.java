@@ -105,6 +105,14 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         return getCompanyReviewResDtos(companyReviewResDtos);
     }
 
+    @Override
+    public List<CompanyReviewResDto> findByCompanyNameKeyword(String companyNameKeyword) {
+        List<CompanyReviewResDto> collect = companyReviewRepository.searchByCompanyNameKeywordLike(companyNameKeyword).stream()
+                .map(m -> mapper.map(m, CompanyReviewResDto.class))
+                .collect(Collectors.toList());
+        return getCompanyReviewResDtos(collect);
+    }
+
     @Transactional
     @Override
     public void deleteByIdx(Long idx) {
