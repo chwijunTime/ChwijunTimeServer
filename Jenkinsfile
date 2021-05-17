@@ -41,8 +41,6 @@ pipeline {
                 withDockerRegistry([ credentialsId: 'KshDocker', url: "" ]) {
                     sh 'sudo docker push ksh030506/chwijuntime:latest'
                 }
-                echo 'Clean docker image'
-                sh "sudo docker rmi ksh030506/chwijuntime:latest"
             }
         }
 
@@ -56,7 +54,7 @@ pipeline {
                 sh 'sudo docker rmi -f ksh030506/chwijuntime:latest'
 
                 echo 'run'
-                sh 'sudo docker run -d -p 8081:8081 ksh030506/chwijuntime:latest'
+                sh 'sudo docker run -d -p 8082:8082 ksh030506/chwijuntime:latest'
             }
         }
     }
