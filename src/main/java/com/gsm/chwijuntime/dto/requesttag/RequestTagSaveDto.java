@@ -18,7 +18,7 @@ public class RequestTagSaveDto {
 
     public RequestTag toEntityRequestTag(Member member) {
         return RequestTag.builder()
-                .rTagName(this.tagName)
+                .tagName(this.tagName)
                 .member(member)
                 .build();
     }

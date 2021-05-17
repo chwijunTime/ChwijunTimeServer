@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,11 +31,11 @@ public class RequestTagServiceImpl implements RequestTagService {
     @Transactional
     @Override
     public void saveTag(RequestTagSaveDto requestTagSaveDto) {
+        requestTagSaveDto.setTagName(requestTagSaveDto.getTagName().toLowerCase(Locale.ROOT));
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
-
         // 중복 처리
-        Optional<RequestTag> byRTagName = requestTagRepository.findByRTagName(requestTagSaveDto.getTagName());
-        if(byRTagName.isEmpty()) {
+        RequestTag byRTagName = requestTagRepository.findByTagName(requestTagSaveDto.getTagName());
+        if(byRTagName == null) {
             requestTagRepository.save(requestTagSaveDto.toEntityRequestTag(member));
         } else {
             System.out.println("태그 중복");

@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class RequestTagResDto {
 
-    private Long rTagIdx;
-    private String rTagName;
+    private Long tagIdx;
+    private String tagName;
 
 }

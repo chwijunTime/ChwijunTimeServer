@@ -15,10 +15,10 @@ import javax.persistence.*;
 public class RequestTag {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long rTagIdx;
+    private Long tagIdx;
 
     @Column(nullable = false)
-    private String rTagName;
+    private String tagName;
 
     // =================== 외래키(연관관계 주인) ================== //
     @ManyToOne(fetch = FetchType.EAGER)

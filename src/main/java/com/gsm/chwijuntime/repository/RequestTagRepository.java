@@ -6,14 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface RequestTagRepository extends JpaRepository<RequestTag, Long> {
 
-    @Query("select r from RequestTag r order by r.rTagIdx desc")
+    @Query("select r from RequestTag r order by r.tagIdx desc")
     List<RequestTag> searchAll();
 
-
-    Optional<RequestTag> findByRTagName(String name);
+    RequestTag findByTagName(String name);
 }
