@@ -47,14 +47,14 @@ pipeline {
         stage('Docker Deploy') {
             agent any
             steps {
-                echo 'stop'
-                sh 'sudo docker stop ksh030506/chwijuntime:latest'
+//                 echo 'stop'
+//                 sh 'sudo docker stop chwijuntime'
 
                 echo 'rmi'
                 sh 'sudo docker rmi -f ksh030506/chwijuntime:latest'
 
                 echo 'run'
-                sh 'sudo docker run -d -p 8082:8082 ksh030506/chwijuntime:latest'
+                sh 'sudo docker run -d -p 8082:8082 --name chwijuntime ksh030506/chwijuntime:latest'
             }
         }
     }
