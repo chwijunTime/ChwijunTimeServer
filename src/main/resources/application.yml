@@ -36,6 +36,20 @@ spring:
     show-sql: true
     open-in-view: false
 
+  # Gmail SMTP Server Settings
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: s19066@gsm.hs.kr
+    password: enppuniapzbbodvk
+    properties:
+      mail:
+        smtp:
+          timeout: 5000
+          auth: true
+          starttls:
+            enable: true
+
   #Redis
   cache:
     type: redis
