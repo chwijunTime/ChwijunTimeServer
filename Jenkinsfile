@@ -2,10 +2,6 @@ pipeline {
     // 스테이지 별로 다른 거
     agent any
 
-    environment {
-            registryCredential = credentials('KshDocker')
-    }
-
     triggers {
         pollSCM('*/3 * * * *')
     }
