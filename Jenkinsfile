@@ -63,13 +63,11 @@ pipeline {
             agent any
             steps {
                 echo 'Build & Deploy docker image'
-                dir ('./'){
-                    sh 'sudo docker build -t $registry:latest .'
-                    withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
-                        sh 'sudo docker push $registry:latest'
-                    }
-                    sh "sudo docker rmi $registry"
+                sh 'sudo docker build -t $registry:latest .'
+                withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
+                    sh 'sudo docker push $registry:latest'
                 }
+                sh "sudo docker rmi $registry"
             }
 
             post {
