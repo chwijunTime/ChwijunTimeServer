@@ -11,5 +11,5 @@ import java.util.List;
 public interface EmploymentConfirmationTagRepository extends JpaRepository<EmploymentConfirmationTag, Long> {
 
     List<EmploymentConfirmationTag> findAllByEmploymentConfirmation(EmploymentConfirmation employmentConfirmation);
-
+    void deleteAllByEmploymentConfirmation(EmploymentConfirmation employmentConfirmation);
 }

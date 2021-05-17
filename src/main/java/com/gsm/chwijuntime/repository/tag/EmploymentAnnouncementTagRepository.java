@@ -11,5 +11,6 @@ import java.util.List;
 public interface EmploymentAnnouncementTagRepository extends JpaRepository<EmploymentAnnouncementTag, Long> {
 
     List<EmploymentAnnouncementTag> findAllByEmploymentAnnouncement(EmploymentAnnouncement employmentAnnouncement);
+    void deleteAllByEmploymentAnnouncement(EmploymentAnnouncement employmentAnnouncement);
 
 }

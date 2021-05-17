@@ -1,11 +1,9 @@
 package com.gsm.chwijuntime.service.contractingcompany;
 
-import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
-import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
-import com.gsm.chwijuntime.advice.exception.DuplicateContractingCompanyException;
-import com.gsm.chwijuntime.advice.exception.NotFoundContractingCompanyException;
+import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanyResDto;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
+import com.gsm.chwijuntime.dto.contractingcompany.ContractionCompanyUpdateDto;
 import com.gsm.chwijuntime.model.ContractingCompany;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
@@ -44,6 +42,9 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
             contractingCompanyRepository.save(contractingCompanySaveDto.ToEntityByContractingCompany(member));
             for (String i : contractingCompanySaveDto.getTagName()) {
                 Tag tag = tagRepository.findByTagName(i);
+                if(tag == null) {
+                    throw new NotFoundTagException();
+                }
                 ContractingCompany contractingCompany = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
                 contractingCompanySaveDto.MappingTag_ContractingCompany(tag, contractingCompany);
                 contractingCompanyTagRepository.save(contractingCompanySaveDto.ToEntityByContractingCompanyTag());
@@ -58,14 +59,7 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
         List<ContractingCompanyResDto> contractingCompanyResDtos = contractingCompanyRepository.findAll().stream()
                 .map(m -> mapper.map(m, ContractingCompanyResDto.class))
                 .collect(Collectors.toList());
-        for (ContractingCompanyResDto i : contractingCompanyResDtos) {
-            ContractingCompany contractingCompany = contractingCompanyRepository.findById(i.getContractingCompanyIdx()).orElseThrow(NotFoundContractingCompanyException::new);
-            List<ContractingCompanyTag> contractingCompanyTags = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
-            for (ContractingCompanyTag j : contractingCompanyTags) {
-                i.getContractingCompanyTags().add(j.getTag().getTagName());
-            }
-        }
-        return contractingCompanyResDtos;
+        return getContractingCompanyResDtos(contractingCompanyResDtos);
     }
 
     @Override
@@ -85,7 +79,54 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
     public void deleteContractingCompanyIdx(Long idx) {
         ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(NotFoundContractingCompanyException::new);
         UserWriteCheck(contractingCompany);
+        contractingCompanyTagRepository.deleteAllByContractingCompany(contractingCompany);
         contractingCompanyRepository.delete(contractingCompany);
+    }
+
+    @Transactional
+    @Override
+    public void updateContractingCompany(Long idx, ContractionCompanyUpdateDto contractionCompanyUpdateDto) {
+        ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(NotFoundContractingCompanyException::new);
+        UserWriteCheck(contractingCompany);
+        // 회사 이름 중복 판별
+        if(contractingCompany.getContractingCompanyName().equals(contractionCompanyUpdateDto.getContractingCompanyName())) {
+            throw new DuplicateContractingCompanyException();
+        }
+        // 1번째 수정
+        contractingCompany.changeContractingCompany(contractionCompanyUpdateDto);
+        // 관련된 태그 전체 지움
+        List<ContractingCompanyTag> allByContractingCompany = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
+        for (ContractingCompanyTag contractingCompanyTag : allByContractingCompany) {
+            contractingCompanyTagRepository.delete(contractingCompanyTag);
+        }
+        // 태그 저장
+        for (String i : contractionCompanyUpdateDto.getTagName()) {
+            Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
+            contractionCompanyUpdateDto.MappingTag_ContractingCompany(tag, contractingCompany);
+            contractingCompanyTagRepository.save(contractionCompanyUpdateDto.ToEntityByContractingCompanyTag());
+        }
+    }
+
+    @Override
+    public List<ContractingCompanyResDto> findByContractingBusinessAreasORContractingCompanyName(String keyword) {
+        List<ContractingCompanyResDto> contractingCompanyResDtos = contractingCompanyRepository.searchByContractingBusinessAreasORContractingCompanyNameLike(keyword).stream()
+                .map(m -> mapper.map(m, ContractingCompanyResDto.class))
+                .collect(Collectors.toList());
+        return getContractingCompanyResDtos(contractingCompanyResDtos);
+    }
+
+    private List<ContractingCompanyResDto> getContractingCompanyResDtos(List<ContractingCompanyResDto> contractingCompanyResDtos) {
+        for (ContractingCompanyResDto i : contractingCompanyResDtos) {
+            ContractingCompany contractingCompany = contractingCompanyRepository.findById(i.getContractingCompanyIdx()).orElseThrow(NotFoundContractingCompanyException::new);
+            List<ContractingCompanyTag> contractingCompanyTags = contractingCompanyTagRepository.findAllByContractingCompany(contractingCompany);
+            for (ContractingCompanyTag j : contractingCompanyTags) {
+                i.getContractingCompanyTags().add(j.getTag().getTagName());
+            }
+        }
+        return contractingCompanyResDtos;
     }
 
     //작성자 권한 체크 Method

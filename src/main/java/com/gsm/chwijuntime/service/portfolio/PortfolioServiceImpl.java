@@ -1,6 +1,7 @@
 package com.gsm.chwijuntime.service.portfolio;
 
 import com.gsm.chwijuntime.advice.exception.NotFoundPortfolioException;
+import com.gsm.chwijuntime.advice.exception.URLValidationException;
 import com.gsm.chwijuntime.dto.portfolio.PortfolioSaveDto;
 import com.gsm.chwijuntime.dto.portfolio.PortfolioUpdateDto;
 import com.gsm.chwijuntime.model.Member;
@@ -9,6 +10,7 @@ import com.gsm.chwijuntime.repository.MemberPortfolioRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class PortfolioServiceImpl implements PortfolioService {
 
+    private final UrlValidator urlValidator;
     private final GetUserEmailUtil getUserEmailUtil;
     private final MemberRepository memberRepository;
     private final MemberPortfolioRepository memberPortfolioRepository;
@@ -27,7 +30,14 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     public void savePortfolio(PortfolioSaveDto portfolioSaveDto) {
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(NotFoundPortfolioException::new);
+        urlValidator(portfolioSaveDto.getNotionPortfolioURL());
         memberPortfolioRepository.save(portfolioSaveDto.toEntityByPortfolio(member));
+    }
+
+    private void urlValidator(String url) {
+        if (!urlValidator.isValid(url)){
+            throw new URLValidationException();
+        }
     }
 
     @Override

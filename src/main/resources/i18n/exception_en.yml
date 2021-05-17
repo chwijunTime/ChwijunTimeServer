@@ -57,3 +57,15 @@ NotFoundPortfolioException:
 NotFoundResumeException:
   code: "-18"
   msg: "선택하신 이력서를 찾을 수 없습니다."
+ConstraintViolationException:
+  code: "-19"
+  msg: "관련된 데이터가 남아 있습니다. 관련된 데이터를 삭제해주세요."
+ApplicationDateExpirationException:
+  code: "-20"
+  msg: "신청이 만료되었습니다."
+URLValidationException:
+  code: "-21"
+  msg: "URL 형식으로 입력해주세요."
+HttpMessageNotReadableException:
+  code: "-22"
+  msg: "시간 타입을 입력해주세요"

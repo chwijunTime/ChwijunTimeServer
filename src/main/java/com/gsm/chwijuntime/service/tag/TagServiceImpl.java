@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 
 @RequiredArgsConstructor
 @Service
@@ -20,7 +21,14 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public void insertTag(TagSaveDto tagSaveDto) {
-        tagRepository.save(tagSaveDto.toEntity());
+        tagSaveDto.setTagName(tagSaveDto.getTagName().toLowerCase(Locale.ROOT));
+        Tag byTagName = tagRepository.findByTagName(tagSaveDto.getTagName());
+        if(byTagName == null) {
+            tagRepository.save(tagSaveDto.toEntity());
+        } else {
+            System.out.println("태그 중복");
+            return;
+        }
     }
 
     @Override
@@ -37,7 +45,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag updateTag(Long tagIdx, String tagName) {
         Tag tag = tagRepository.findById(tagIdx).orElseThrow(NotFoundTagException::new);
-        tag.ChangeTagName(tagName);
+        tag.changeTagName(tagName);
         return tag;
     }
 

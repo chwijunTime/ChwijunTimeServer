@@ -4,10 +4,7 @@ import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
-import com.gsm.chwijuntime.model.ApplicationEmployment;
-import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
-import com.gsm.chwijuntime.model.EmploymentAnnouncement;
-import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.*;
 import com.gsm.chwijuntime.repository.ApplicationEmploymentRepository;
 import com.gsm.chwijuntime.repository.EmploymentAnnouncementRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
@@ -18,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,44 +31,60 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Override
     public void application(Long employmentAnnouncementIdx, ApplicationEmploymentSaveDto applicationemploymentSaveDto) {
         EmploymentAnnouncement findMyEmploymentAnnouncement = employmentAnnouncementRepository.findById(employmentAnnouncementIdx).orElseThrow(NotFoundEmploymentAnnouncementException::new);
-
-        //공고 날짜/신청 날짜 비교
-        int compare = applicationemploymentSaveDto.getLocalDate().compareTo(findMyEmploymentAnnouncement.getDeadLine());
-        if(compare >= 0) {
-            System.out.println("신청 날짜 지남");
+        // 신청 여부 판별
+        Optional<ApplicationEmployment> byEmploymentAnnouncement = applicationEmploymentRepository.findByEmploymentAnnouncement(findMyEmploymentAnnouncement);
+        if (byEmploymentAnnouncement.isEmpty()) {
+            //공고 날짜/신청 날짜 비교
+            int compare = applicationemploymentSaveDto.getLocalDate().compareTo(findMyEmploymentAnnouncement.getDeadLine());
+            compareToDate(compare);
+            Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+            applicationEmploymentRepository.save(applicationemploymentSaveDto.toEntityByApplicationEmployment(findMember, findMyEmploymentAnnouncement));
+        } else {
+            System.out.println("중복 신청");
+            return;
         }
+    }
 
+    @Override
+    public List<FindAllApplicationResDto> findByMember() {
+        List<FindAllApplicationResDto> findAllApplicationResDtos = new ArrayList<>();
         Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
-        applicationEmploymentRepository.save(applicationemploymentSaveDto.toEntityByApplicationEmployment(findMember, findMyEmploymentAnnouncement));
+        List<ApplicationEmployment> applicationEmploymentStatus = applicationEmploymentRepository.findByMember(findMember);
+        return getFindAllApplicationResDtos(findAllApplicationResDtos, applicationEmploymentStatus);
+    }
+
+    private void compareToDate(int compare) {
+        if(compare >= 0) {
+            throw new ApplicationDateExpirationException();
+        }
     }
 
     @Override
     public FindAllApplicationDetailResDto applicationDetail(Long idx) {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findByApplicationEmploymentIdx(idx);
-        Member member = applicationEmployment.getMember();
-        EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();
-
         return FindAllApplicationDetailResDto.builder()
-                .member(member)
                 .applicationEmployment(applicationEmployment)
-                .employmentAnnouncement(employmentAnnouncement)
                 .build();
     }
 
     @Override
-    public List<FindAllApplicationResDto> findByStatus(String status) {
+    public List<FindAllApplicationResDto> findByStatus(ApplicationEmploymentStatus status) {
         List<FindAllApplicationResDto> findAllApplicationResDtos = new ArrayList<>();
         List<ApplicationEmployment> applicationEmploymentStatus = new ArrayList<>();
-        if (status.equals("Approve")){
+        if (status.equals(ApplicationEmploymentStatus.Approve)){
             applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Approve);
-        } else if(status.equals("Wait")) {
+        } else if(status.equals(ApplicationEmploymentStatus.Wait)) {
             applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Wait);
-        } else if(status.equals("Reject")) {
+        } else if(status.equals(ApplicationEmploymentStatus.Reject)) {
             applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Reject);
-        } else if(status.equals("All")){
+        } else if(status.equals(ApplicationEmploymentStatus.All)){
             applicationEmploymentStatus = applicationEmploymentRepository.findAll();
         }
 
+        return getFindAllApplicationResDtos(findAllApplicationResDtos, applicationEmploymentStatus);
+    }
+
+    private List<FindAllApplicationResDto> getFindAllApplicationResDtos(List<FindAllApplicationResDto> findAllApplicationResDtos, List<ApplicationEmployment> applicationEmploymentStatus) {
         for (ApplicationEmployment applicationEmployment : applicationEmploymentStatus) {
             Member member = applicationEmployment.getMember();
             EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();

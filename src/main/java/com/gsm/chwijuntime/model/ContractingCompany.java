@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.model;
 
+import com.gsm.chwijuntime.dto.contractingcompany.ContractionCompanyUpdateDto;
 import com.gsm.chwijuntime.model.tagmapping.ContractingCompanyTag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,5 +41,11 @@ public class ContractingCompany {
     @JoinColumn(name = "MemberIdx")
     private Member member;
 
-
+    public void changeContractingCompany(ContractionCompanyUpdateDto contractionCompanyUpdateDto){
+        this.contractingCompanyName = contractionCompanyUpdateDto.getContractingCompanyName();
+        this.contractingBusinessAreas = contractionCompanyUpdateDto.getContractingBusinessAreas();
+        this.contractingCompanyAddress = contractionCompanyUpdateDto.getContractingCompanyAddress();
+        this.contractingCompanyAboutUs = contractionCompanyUpdateDto.getContractingCompanyAboutUs();
+        this.contractingCompanyAverageAnnualSalary = contractionCompanyUpdateDto.getContractingCompanyAverageAnnualSalary();
+    }
 }

@@ -3,6 +3,7 @@ package com.gsm.chwijuntime.service.employmentAnnouncement;
 import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.advice.exception.NotFoundEmploymentAnnouncementException;
+import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementResponseDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementSaveDto;
 import com.gsm.chwijuntime.dto.employmentAnnouncement.EmploymentAnnouncementUpdateDto;
@@ -44,6 +45,9 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
         employmentAnnouncementRepository.save(employmentAnnouncementSaveDto.toEntityByEmploymentAnnouncement(member));
         for(String i : employmentAnnouncementSaveDto.getTagName()){
             Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
             List<EmploymentAnnouncement> allByEmploymentAnnouncementName = employmentAnnouncementRepository.findAllByEmploymentAnnouncementName(employmentAnnouncementSaveDto.getEmploymentAnnouncementName());
             int size = allByEmploymentAnnouncementName.size() - 1;
             employmentAnnouncementSaveDto.MappingTagByEmploymentAnnouncement(tag, allByEmploymentAnnouncementName.get(size));
@@ -78,14 +82,7 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
             }
         }
         //태그 보여주기
-        for (EmploymentAnnouncementResponseDto i : responseDtoList) {
-            EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(i.getEmploymentAnnouncementIdx()).orElseThrow(NotFoundEmploymentAnnouncementException::new);
-            List<EmploymentAnnouncementTag> employmentAnnouncementTags = employmentAnnouncementTagRepository.findAllByEmploymentAnnouncement(employmentAnnouncement);
-            for (EmploymentAnnouncementTag j : employmentAnnouncementTags) {
-                i.getEmploymentAnnouncementTags().add(j.getTag().getTagName());
-            }
-        }
-        return responseDtoList;
+        return getEmploymentAnnouncementResponseDtos(responseDtoList);
     }
 
     @Transactional
@@ -93,7 +90,22 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
     public void updateEmploymentAnnouncement(Long idx, EmploymentAnnouncementUpdateDto employmentAnnouncementUpdateDto) {
         EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(NotFoundEmploymentAnnouncementException::new);
         UserWriteCheck(employmentAnnouncement);
+        //1차 수정
         employmentAnnouncement.update(employmentAnnouncementUpdateDto);
+        //태그 삭제
+        List<EmploymentAnnouncementTag> employmentAnnouncementTags = employmentAnnouncementTagRepository.findAllByEmploymentAnnouncement(employmentAnnouncement);
+        for (EmploymentAnnouncementTag employmentAnnouncementTag : employmentAnnouncementTags) {
+            employmentAnnouncementTagRepository.delete(employmentAnnouncementTag);
+        }
+        //태그 저장
+        for(String i : employmentAnnouncementUpdateDto.getTagName()){
+            Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
+            employmentAnnouncementUpdateDto.MappingTagByEmploymentAnnouncement(tag, employmentAnnouncement);
+            employmentAnnouncementTagRepository.save(employmentAnnouncementUpdateDto.ToEntityByEmploymentAnnouncementTag());
+        }
     }
 
     @Transactional
@@ -101,7 +113,27 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
     public void deleteEmploymentAnnouncement(Long idx) {
         EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(idx).orElseThrow(NotFoundEmploymentAnnouncementException::new);
         UserWriteCheck(employmentAnnouncement);
+        employmentAnnouncementTagRepository.deleteAllByEmploymentAnnouncement(employmentAnnouncement);
         employmentAnnouncementRepository.deleteById(idx);
+    }
+
+    @Override
+    public List<EmploymentAnnouncementResponseDto> findByEmploymentAnnouncementNameORRecruitmentFieldOREmploymentAnnouncementAddress(String keyword) {
+        List<EmploymentAnnouncementResponseDto> employmentAnnouncementResponseDtos = employmentAnnouncementRepository.searchByEmploymentAnnouncementNameORRecruitmentFieldOREmploymentAnnouncementAddressLike(keyword).stream()
+                .map(m -> mapper.map(m, EmploymentAnnouncementResponseDto.class))
+                .collect(Collectors.toList());
+        return getEmploymentAnnouncementResponseDtos(employmentAnnouncementResponseDtos);
+    }
+
+    private List<EmploymentAnnouncementResponseDto> getEmploymentAnnouncementResponseDtos(List<EmploymentAnnouncementResponseDto> employmentAnnouncementResponseDtos) {
+        for (EmploymentAnnouncementResponseDto i : employmentAnnouncementResponseDtos) {
+            EmploymentAnnouncement employmentAnnouncement = employmentAnnouncementRepository.findById(i.getEmploymentAnnouncementIdx()).orElseThrow(NotFoundEmploymentAnnouncementException::new);
+            List<EmploymentAnnouncementTag> employmentAnnouncementTags = employmentAnnouncementTagRepository.findAllByEmploymentAnnouncement(employmentAnnouncement);
+            for (EmploymentAnnouncementTag j : employmentAnnouncementTags) {
+                i.getEmploymentAnnouncementTags().add(j.getTag().getTagName());
+            }
+        }
+        return employmentAnnouncementResponseDtos;
     }
 
     // 작성자 권한 체크 Method

@@ -2,10 +2,8 @@ package com.gsm.chwijuntime.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.gsm.chwijuntime.dto.member.UpdateMemberProfileDto;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +21,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Member extends BaseTimeEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +42,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Column
     private String memberETC;
-
 
     private LocalDateTime memberCreated;
 
@@ -104,8 +102,12 @@ public class Member extends BaseTimeEntity implements UserDetails {
         return authorityIterator.next().toString();
     }
 
-    public void Change_profile(String memberPhoneNumber, String memberETC){
+    public void change_profile(String memberPhoneNumber, String memberETC){
         this.memberPhoneNumber = memberPhoneNumber;
         this.memberETC = memberETC;
+    }
+
+    public void change_password(String password){
+        this.memberPassword = password;
     }
 }

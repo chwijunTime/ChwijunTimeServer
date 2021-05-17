@@ -1,7 +1,9 @@
 package com.gsm.chwijuntime.service.employmentconfirmation;
 
+import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.advice.exception.NotFoundEmploymentConfirmationException;
+import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationResDto;
 import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationSaveDto;
 import com.gsm.chwijuntime.dto.employmentconfirmation.EmploymentConfirmationUpdateDto;
@@ -41,6 +43,9 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
         employmentConfirmationRepository.save(employmentConfirmationSaveDto.toEntityByEmploymentConfirmation(member));
         for(String i : employmentConfirmationSaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
             List<EmploymentConfirmation> allByEmploymentConfirmationName = employmentConfirmationRepository.findAllByEmploymentConfirmationName(employmentConfirmationSaveDto.getEmploymentConfirmationName());
             int size = allByEmploymentConfirmationName.size() - 1;
             employmentConfirmationSaveDto.mappingTagEmploymentConfirmation(tag, allByEmploymentConfirmationName.get(size));
@@ -66,27 +71,66 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
                 .map(m -> mapper.map(m, EmploymentConfirmationResDto.class))
                 .collect(Collectors.toList());
         //태그 보여주기
-        for (EmploymentConfirmationResDto i : employmentConfirmationResDtos) {
+        return getEmploymentConfirmationResDtos(employmentConfirmationResDtos);
+    }
+
+    @Transactional
+    @Override
+    public void updateEmploymentConfirmation(Long idx, EmploymentConfirmationUpdateDto employmentConfirmationUpdateDto) {
+        UserWriteCheck(idx);
+        EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findById(idx).orElseThrow(NotFoundEmploymentConfirmationException::new);
+        //1차 수정
+        employmentConfirmation.changeEmploymentConfirmation(employmentConfirmationUpdateDto);
+        //태그 삭제
+        List<EmploymentConfirmationTag> employmentConfirmationTags = employmentConfirmationTagRepository.findAllByEmploymentConfirmation(employmentConfirmation);
+        for (EmploymentConfirmationTag employmentConfirmationTag : employmentConfirmationTags) {
+            employmentConfirmationTagRepository.delete(employmentConfirmationTag);
+        }
+        // 태그 저장
+        for(String i : employmentConfirmationUpdateDto.getTagName()) {
+            Tag tag = tagRepository.findByTagName(i);
+            if(tag == null) {
+                throw new NotFoundTagException();
+            }
+            employmentConfirmationUpdateDto.mappingTagEmploymentConfirmation(tag, employmentConfirmation);
+            employmentConfirmationTagRepository.save(employmentConfirmationUpdateDto.toEntityByEmploymentConfirmationTag());
+        }
+    }
+
+    @Transactional
+    @Override
+    public void deleteEmploymentConfirmation(Long idx) {
+        UserWriteCheck(idx);
+        EmploymentConfirmation byEmploymentConfirmationIdx = employmentConfirmationRepository.findByEmploymentConfirmationIdx(idx);
+        employmentConfirmationTagRepository.deleteAllByEmploymentConfirmation(byEmploymentConfirmationIdx);
+        employmentConfirmationRepository.deleteById(idx);
+    }
+
+    @Override
+    public List<EmploymentConfirmationResDto> findByEmploymentConfirmationNameOREmploymentConfirmationAreasOREmploymentConfirmationJockey(String keyword) {
+        List<EmploymentConfirmationResDto> collect = employmentConfirmationRepository.searchByEmploymentConfirmationNameOREmploymentConfirmationAreasOREmploymentConfirmationJockey(keyword).stream()
+                .map(m -> mapper.map(m, EmploymentConfirmationResDto.class))
+                .collect(Collectors.toList());
+        return getEmploymentConfirmationResDtos(collect);
+    }
+
+    private List<EmploymentConfirmationResDto> getEmploymentConfirmationResDtos(List<EmploymentConfirmationResDto> collect) {
+        for (EmploymentConfirmationResDto i : collect) {
             EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findById(i.getEmploymentConfirmationIdx()).orElseThrow(NotFoundEmploymentConfirmationException::new);
             List<EmploymentConfirmationTag> employmentConfirmationTags = employmentConfirmationTagRepository.findAllByEmploymentConfirmation(employmentConfirmation);
             for (EmploymentConfirmationTag j : employmentConfirmationTags) {
                 i.getEmploymentConfirmationTags().add(j.getTag().getTagName());
             }
         }
-        return employmentConfirmationResDtos;
+        return collect;
     }
 
-    @Transactional
-    @Override
-    public void updateEmploymentConfirmation(Long idx, EmploymentConfirmationUpdateDto employmentConfirmationUpdateDto) {
-        EmploymentConfirmation employmentConfirmation = employmentConfirmationRepository.findById(idx).orElseThrow(NotFoundEmploymentConfirmationException::new);
-        employmentConfirmation.changeEmploymentConfirmation(employmentConfirmationUpdateDto);
+    //작성자 권한 체크 Method
+    public void UserWriteCheck(Long idx) {
+        Member CurrentUser = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        Member WriteMember = employmentConfirmationRepository.findById(idx).orElseThrow(CAuthenticationEntryPointException::new).getMember();
+        if (!CurrentUser.getMemberEmail().equals(WriteMember.getMemberEmail())) {
+            throw new AuthorNotCertifiedException();
+        }
     }
-
-    @Transactional
-    @Override
-    public void deleteEmploymentConfirmation(Long idx) {
-        //삭제는 없음 (에러 걸림)
-    }
-
 }

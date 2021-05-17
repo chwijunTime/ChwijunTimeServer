@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 @Getter
@@ -31,6 +32,7 @@ public class MemberJoinDto {
     private String memberClassNumber;
     public Member ToEntityByMember() {
         return Member.builder()
+                .memberCreated(LocalDateTime.now())
                 .memberEmail(this.memberEmail)
                 .memberPassword(this.memberPassword)
                 .memberClassNumber(this.memberClassNumber)

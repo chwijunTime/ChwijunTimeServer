@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.model;
 
+import com.gsm.chwijuntime.dto.companyreview.CompanyUpdateDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,11 +37,18 @@ public class CompanyReview {
     private int companyCost;
 
     // =============== 외래키(연관관계 주인) ================= //
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MemberIdx")
     private Member member;
 
 
     // ============== 비즈니스 로직 ==================== //
-
+    public void changeCompanyReview(CompanyUpdateDto companyUpdateDto){
+        this.companyName = companyUpdateDto.getCompanyName();
+        this.companyDateofApplication = companyUpdateDto.getCompanyDateofApplication();
+        this.companyAddress = companyUpdateDto.getCompanyAddress();
+        this.companyReviews = companyUpdateDto.getCompanyReviews();
+        this.companyFrequentlyAskedQuestions = companyUpdateDto.getCompanyFrequentlyAskedQuestions();
+        this.companyCost = companyUpdateDto.getCompanyCost();
+    }
 }

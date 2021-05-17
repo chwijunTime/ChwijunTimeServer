@@ -11,5 +11,5 @@ import java.util.List;
 public interface CompanyReviewTagRepository extends JpaRepository<CompanyReviewTag, Long> {
 
     List<CompanyReviewTag> findAllByCompanyReview(CompanyReview companyReview);
-
+    void deleteAllByCompanyReview(CompanyReview companyReview);
 }
