@@ -3,7 +3,6 @@ pipeline {
     agent any
 
     environment {
-            registry = "ksh030506/chwijuntime"
             registryCredential = credentials('KshDocker')
     }
 
@@ -40,15 +39,15 @@ pipeline {
         stage('Build & Deploy & clean docker image') {
             agent any
             steps {
-                echo 'Build & Deploy docker image'
-                sh 'sudo docker build -t ksh030506/${registry} .'
+                echo 'Build docker image'
+                sh 'sudo docker build -t ksh030506/chwijuntime:latest .'
+                echo 'Deploy docker image'
                 withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
-                    sh 'sudo docker push ksh030506/${registry}'
+                    sh 'sudo docker push ksh030506/chwijuntime:latest'
                 }
-                sh "sudo docker rmi ksh030506/$registry"
+                echo 'Clean docker image'
+                sh "sudo docker rmi ksh030506/chwijuntime:latest"
             }
-
-
         }
     }
 
