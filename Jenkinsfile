@@ -4,6 +4,7 @@ pipeline {
 
     environment {
             registry = "ksh030506/chwijuntime"
+            registryCredential = 'jupjupdocker'
     }
 
     triggers {
@@ -54,6 +55,27 @@ pipeline {
                 //이거 안넣어 주면 다음 파이프라안으로 넘어감
                 failure {
                     error 'This pipeline stops here...'
+                }
+            }
+        }
+
+        stage('Build & Deploy & clean docker image') {
+            agent any
+            steps {
+                echo 'Build & Deploy docker image'
+                dir ('./'){
+                    sh 'docker build -t $registry:latest .'
+                    withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
+                        sh 'docker push $registry:latest'
+                    }
+                    sh "docker rmi $registry"
+                }
+            }
+
+            post {
+            //이거 안넣어 주면 다음 파이프라안으로 넘어감
+            failure {
+                error 'This pipeline stops here...'
                 }
             }
         }
