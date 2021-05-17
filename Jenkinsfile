@@ -65,7 +65,7 @@ pipeline {
                 echo 'Build & Deploy docker image'
                 sh 'sudo docker build -t $registry:latest .'
                 withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
-                    sh 'sudo docker push $registry:latest'
+                    sh 'sudo docker push ksh030506/$registry:latest'
                 }
                 sh "sudo docker rmi $registry"
             }
