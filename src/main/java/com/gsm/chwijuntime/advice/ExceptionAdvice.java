@@ -58,7 +58,7 @@ public class ExceptionAdvice {
     }
 
     //유저 이메일을 찾지 못할 경우
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(EmailNotFoundException.class)
     public CommonResult EmailNotFoundException(HttpServletRequest request, EmailNotFoundException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("EmailNotFoundException.code")), getMessage("EmailNotFoundException.msg"));

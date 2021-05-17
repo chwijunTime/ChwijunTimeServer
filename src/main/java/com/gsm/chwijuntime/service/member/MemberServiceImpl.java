@@ -11,6 +11,7 @@ import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.repository.TagRepository;
 import com.gsm.chwijuntime.repository.tag.MemberTagRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
+import com.gsm.chwijuntime.util.JwtTokenProvider;
 import com.gsm.chwijuntime.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +32,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberTagRepository memberTagRepository;
     private final TagRepository tagRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
     private final GetUserEmailUtil getUserEmailUtil;
 
     @Transactional
@@ -46,15 +48,25 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    @MemoryCheck @TimeCheck
     @Override
-    public Member findMember(MemberLoginDto memberLoginDto) {
+    public MemberLoginResDto findMember(MemberLoginDto memberLoginDto) {
+        String accessToken = null;
+        String refreshToken = null;
+        String roles = null;
+        MemberLoginResDto memberLoginResDto = null;
         Member member = memberRepository.findByMemberEmail(memberLoginDto.getMemberEmail()).orElseThrow(EmailNotFoundException::new);
-        boolean check = passwordEncoder.matches(memberLoginDto.getMemberPassword(), member.getMemberPassword());
-        if(!check) {
-            throw new IncorrectPasswordException();
+        if (member != null) {
+            boolean check = passwordEncoder.matches(memberLoginDto.getMemberPassword(), member.getMemberPassword());
+            if(!check) {
+                throw new IncorrectPasswordException();
+            }
+            accessToken = jwtTokenProvider.generateToken(member);
+            refreshToken = jwtTokenProvider.generateRefreshToken(member);
+            roles = member.String_Role(member);
+            redisUtil.setDataExpire(member.getUsername(), refreshToken, jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
+            memberLoginResDto = MemberLoginResDto.mapping(member.getMemberEmail(), member.getMemberClassNumber(), roles, accessToken);
         }
-        return member;
+        return memberLoginResDto;
     }
 
     @Override
@@ -66,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member UserInfo() {
         String UserEmail = getUserEmailUtil.getUserEmail();
-        return memberRepository.findByMemberEmail(UserEmail).orElseThrow(CAuthenticationEntryPointException::new);
+        return memberRepository.findByMemberEmail(UserEmail).orElseThrow(EmailNotFoundException::new);
     }
 
     @Transactional
