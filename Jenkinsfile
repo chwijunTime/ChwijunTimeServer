@@ -64,11 +64,11 @@ pipeline {
             steps {
                 echo 'Build & Deploy docker image'
                 dir ('./'){
-                    sh 'docker build -t $registry:latest .'
+                    sh 'sudo docker build -t $registry:latest .'
                     withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
-                        sh 'docker push $registry:latest'
+                        sh 'sudo docker push $registry:latest'
                     }
-                    sh "docker rmi $registry"
+                    sh "sudo docker rmi $registry"
                 }
             }
 
