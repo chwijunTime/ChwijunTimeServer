@@ -50,11 +50,15 @@ pipeline {
                 echo 'stop'
                 sh 'sudo docker stop chwijuntime'
 
-                echo 'rmi'
+                echo 'rm'
+                sh 'sudo docker container rm chwijuntime'
+
+                echo "rmi"
                 sh 'sudo docker rmi -f ksh030506/chwijuntime:latest'
 
                 echo 'run'
                 sh 'sudo docker run -d -p 8082:8082 --name chwijuntime ksh030506/chwijuntime:latest'
+
             }
         }
     }

@@ -8,7 +8,7 @@ public interface MemberService {
     void InsertMember(MemberJoinDto memberJoinDto);
 
     // 로그인
-    Member findMember(MemberLoginDto memberLoginDto);
+    MemberLoginResDto findMember(MemberLoginDto memberLoginDto);
 
     // 로그아웃
     void logoutMember();

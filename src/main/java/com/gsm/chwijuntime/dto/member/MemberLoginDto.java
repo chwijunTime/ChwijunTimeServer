@@ -14,9 +14,9 @@ public class MemberLoginDto {
 
     @Email(message = "이메일 형식으로 입력해주세요.")
     @NotBlank(message = "이메일을 입력해주세요.")
-    private String MemberEmail;
+    private String memberEmail;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
-    private String MemberPassword;
+    private String memberPassword;
 
 }

@@ -59,13 +59,8 @@ public class MemberController {
     @ResponseBody
     @PostMapping("/login")
     public SingleResult<MemberLoginResDto> login(@Valid @RequestBody MemberLoginDto memberLoginDto) throws Exception {
-        Member member = memberService.findMember(memberLoginDto);
-        String accessToken = jwtTokenProvider.generateToken(member);
-        String refreshToken = jwtTokenProvider.generateRefreshToken(member);
-        String roles = member.String_Role(member);
-        redisUtil.setDataExpire(member.getUsername(), refreshToken, jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
-        MemberLoginResDto memberLoginResDto = MemberLoginResDto.mapping(member.getMemberEmail(), member.getMemberClassNumber(), roles, accessToken);
-        return responseService.getSingleResult(memberLoginResDto);
+        MemberLoginResDto member = memberService.findMember(memberLoginDto);
+        return responseService.getSingleResult(member);
     }
 
     @ApiOperation(value = "로그아웃", notes = "사용자가 로그아웃한다.")

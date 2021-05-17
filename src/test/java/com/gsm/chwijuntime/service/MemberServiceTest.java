@@ -59,8 +59,8 @@ public class MemberServiceTest {
         log.info("이메일 틀림");
         //give
         MemberLoginDto memberLoginDto = MemberLoginDto.builder()
-                .MemberEmail("1234")
-                .MemberPassword("1234")
+                .memberEmail("1234")
+                .memberPassword("1234")
                 .build();
         //when
         memberService.findMember(memberLoginDto);
@@ -74,8 +74,8 @@ public class MemberServiceTest {
         log.info("비밀번호 틀림");
         //give
         MemberLoginDto memberLoginDto = MemberLoginDto.builder()
-                .MemberEmail("llmm030506@gmail.com")
-                .MemberPassword("12345")
+                .memberEmail("llmm030506@gmail.com")
+                .memberPassword("12345")
                 .build();
         //when
         memberService.findMember(memberLoginDto);

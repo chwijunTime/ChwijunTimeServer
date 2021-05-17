@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.repository;
 
+import com.gsm.chwijuntime.dto.member.MemberLoginResDto;
 import com.gsm.chwijuntime.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
