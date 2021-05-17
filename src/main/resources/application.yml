@@ -41,11 +41,11 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: s19066@gsm.hs.kr
-    password: enppuniapzbbodvk
+    password: iiqrerusxvwowahk
     properties:
       mail:
         smtp:
-          timeout: 5000
+          timeout: 9999
           auth: true
           starttls:
             enable: true

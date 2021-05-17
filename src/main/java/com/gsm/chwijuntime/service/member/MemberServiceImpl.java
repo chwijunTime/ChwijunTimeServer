@@ -117,6 +117,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     @Override
+    public void change_password(MemberPasswordChangeDto memberPasswordChangeDto) {
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        String pw = passwordEncoder.encode(memberPasswordChangeDto.getMemberPassword());
+        member.change_password(pw);
+    }
+
+    @Transactional
+    @Override
     public MemberTagResDto viewMember() {
         List<String> tags = new ArrayList<>();
         String userEmail = getUserEmailUtil.getUserEmail();

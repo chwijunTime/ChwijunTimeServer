@@ -142,4 +142,15 @@ public class MemberController {
         sendEmailService.mailSend(dto);
         return responseService.getSuccessResult();
     }
+
+    @ApiOperation(value = "비밀번호 변경하기", notes = "유저가 비밀번호를 변경한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @ResponseBody
+    @PutMapping("/password-change")
+    public CommonResult passwordChange(@Valid @RequestBody MemberPasswordChangeDto memberPasswordChangeDto) {
+        memberService.change_password(memberPasswordChangeDto);
+        return responseService.getSuccessResult();
+    }
 }

@@ -27,4 +27,7 @@ public interface MemberService {
 
     // 이메일 중복
     void userEmailCheck(String email);
+
+    //비밀번호 변경
+    void change_password(MemberPasswordChangeDto memberPasswordChangeDto);
 }

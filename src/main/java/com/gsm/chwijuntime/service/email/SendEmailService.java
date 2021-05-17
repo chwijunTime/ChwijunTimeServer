@@ -37,7 +37,6 @@ public class SendEmailService {
     @Async
     @Transactional
     public void mailSend(MailDto mailDto){
-        System.out.println("이멜 전송 완료!");
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(mailDto.getAddress());
         message.setFrom(SendEmailService.FROM_ADDRESS);
@@ -49,7 +48,7 @@ public class SendEmailService {
     @Transactional
     public void updatePassword(String str,String userEmail){
         String pw = passwordEncoder.encode(str);
-        Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(CAuthenticationEntryPointException::new);
+        Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(null);
         member.change_password(pw);
     }
 
