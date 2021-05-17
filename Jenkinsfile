@@ -3,8 +3,7 @@ pipeline {
     agent any
 
     environment {
-            registry = 'ksh030506/chwijuntime'
-            registryCredential = 'jupjupdocker'
+            registry = "ksh030506/chwijuntime"
     }
 
     triggers {
@@ -56,18 +55,6 @@ pipeline {
                 failure {
                     error 'This pipeline stops here...'
                 }
-            }
-        }
-
-        stage('Build docker image') {
-             agent any
-             steps {
-                sh 'docker build -t $registry:latest .'
-        }
-
-        stage('Deploy docker image') {
-            withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
-                sh 'docker push $registry:latest'
             }
         }
     }
