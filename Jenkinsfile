@@ -47,8 +47,8 @@ pipeline {
         stage('Docker Deploy') {
             agent any
             steps {
-//                 echo 'stop'
-//                 sh 'sudo docker stop chwijuntime'
+                echo 'stop'
+                sh 'sudo docker stop chwijuntime'
 
                 echo 'rmi'
                 sh 'sudo docker rmi -f ksh030506/chwijuntime:latest'
