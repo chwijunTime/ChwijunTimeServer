@@ -2,6 +2,7 @@ package com.gsm.chwijuntime.dto.employmentconfirmation;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,8 @@ public class EmploymentConfirmationResDto {
     private Long employmentConfirmationIdx;
     private String employmentConfirmationName;
     private String employmentConfirmationAreas;
-    private String employmentConfirmationJockeyr;
+    private String studentName;
+    private String employmentConfirmationJockey;
     private String employmentConfirmationAddress;
     private String employmentConfirmationSite;
     private String employmentConfirmationEtc;

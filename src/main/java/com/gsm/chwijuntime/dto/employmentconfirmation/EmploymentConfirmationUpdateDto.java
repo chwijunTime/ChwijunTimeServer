@@ -26,6 +26,9 @@ public class EmploymentConfirmationUpdateDto {
     @NotBlank(message = "회사 위치를 입력해주세요.")
     private String employmentConfirmationAreas;
 
+    @NotBlank(message = "학생 이름을 입력해주세요.")
+    private String studentName;
+
     @NotBlank(message = "회사 주소를 입력해주세요.")
     private String employmentConfirmationAddress;
 

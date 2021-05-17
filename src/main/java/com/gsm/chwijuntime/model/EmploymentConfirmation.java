@@ -26,6 +26,9 @@ public class EmploymentConfirmation {
     private String employmentConfirmationAreas;
 
     @Column(nullable = false)
+    private String studentName;
+
+    @Column(nullable = false)
     private String employmentConfirmationJockey;
 
     @Column(nullable = false)

@@ -23,6 +23,9 @@ public class EmploymentConfirmationSaveDto {
     @NotBlank(message = "회사 위치를 입력해주세요.")
     private String employmentConfirmationAreas;
 
+    @NotBlank(message = "학생 이름을 입력해주세요.")
+    private String studentName;
+
     @NotBlank(message = "합격한 학생의 기수을 입력해주세요.")
     private String employmentConfirmationJockey;
 
@@ -50,6 +53,7 @@ public class EmploymentConfirmationSaveDto {
                 .employmentConfirmationAddress(this.employmentConfirmationAddress)
                 .employmentConfirmationSite(this.employmentConfirmationSite)
                 .employmentConfirmationEtc(this.employmentConfirmationEtc)
+                .studentName(this.studentName)
                 .member(member)
                 .build();
     }
