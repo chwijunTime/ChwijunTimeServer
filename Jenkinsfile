@@ -4,7 +4,7 @@ pipeline {
 
     environment {
             registry = "ksh030506/chwijuntime"
-            registryCredential = 'jupjupdocker'
+            registryCredential = 'kshdocker'
     }
 
     triggers {
