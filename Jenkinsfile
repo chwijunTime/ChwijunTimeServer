@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        stage('Build & Deploy & clean docker image') {
+        stage('Build & Push & clean docker image') {
             agent any
             steps {
                 echo 'Build docker image'
@@ -43,6 +43,20 @@ pipeline {
                 }
                 echo 'Clean docker image'
                 sh "sudo docker rmi ksh030506/chwijuntime:latest"
+            }
+        }
+
+        stage('Docker Deploy') {
+            agent any
+            steps {
+                echo 'stop'
+                sh 'sudo docker stop ksh030506/chwijuntime:latest'
+
+                echo 'rmi'
+                sh 'sudo docker rmi -f ksh030506/chwijuntime:latest'
+
+                echo 'run'
+                sh 'sudo docker run -d -p 8081:8081 ksh030506/chwijuntime:latest'
             }
         }
     }
