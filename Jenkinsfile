@@ -4,7 +4,8 @@ pipeline {
 
     environment {
             registry = "ksh030506/chwijuntime"
-            registryCredential = 'kshdocker'
+            registryCredential = 'KshDocker'
+            dockerImage = ''
     }
 
     triggers {
@@ -58,6 +59,7 @@ pipeline {
                 }
             }
         }
+
 
         stage('Build & Deploy & clean docker image') {
             agent any
