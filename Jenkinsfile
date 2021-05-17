@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        stage('Build & Push & clean docker image') {
+        stage('Build & Push docker image') {
             agent any
             steps {
                 echo 'Build docker image'
