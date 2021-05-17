@@ -41,9 +41,9 @@ pipeline {
             agent any
             steps {
                 echo 'Build & Deploy docker image'
-                sh 'sudo docker build -t ksh030506/$registry .'
+                sh 'sudo docker build -t ksh030506/${registry} .'
                 withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
-                    sh 'sudo docker push ksh030506/$registry'
+                    sh 'sudo docker push ksh030506/${registry}'
                 }
                 sh "sudo docker rmi ksh030506/$registry"
             }
