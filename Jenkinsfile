@@ -4,8 +4,7 @@ pipeline {
 
     environment {
             registry = "ksh030506/chwijuntime"
-            registryCredential = 'KshDocker'
-            dockerImage = ''
+            registryCredential = credentials('KshDocker')
     }
 
     triggers {
@@ -49,7 +48,7 @@ pipeline {
                 sh "sudo docker rmi ksh030506/$registry"
             }
 
-      
+
         }
     }
 
