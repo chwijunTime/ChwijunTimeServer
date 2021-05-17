@@ -6,13 +6,6 @@ pipeline {
         pollSCM('*/3 * * * *')
     }
 
-    environment {
-      AWS_ACCESS_KEY_ID = credentials('awsAccessKeyId')
-      AWS_SECRET_ACCESS_KEY = credentials('awsSecretAccessKey')
-      AWS_DEFAULT_REGION = 'ap-northeast-2'
-      HOME = '.' // Avoid npm root owned
-    }
-
     stages {
 
         // 레포지토리를 다운로드 받음
