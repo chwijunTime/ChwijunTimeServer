@@ -2,6 +2,11 @@ pipeline {
     // 스테이지 별로 다른 거
     agent any
 
+    environment {
+            registry = 'ksh030506/chwijuntime'
+            registryCredential = 'jupjupdocker'
+    }
+
     triggers {
         pollSCM('*/3 * * * *')
     }
@@ -51,6 +56,18 @@ pipeline {
                 failure {
                     error 'This pipeline stops here...'
                 }
+            }
+        }
+
+        stage('Build docker image') {
+             agent any
+             steps {
+                sh 'docker build -t $registry:latest .'
+        }
+
+        stage('Deploy docker image') {
+            withDockerRegistry([ credentialsId: registryCredential, url: "" ]) {
+                sh 'docker push $registry:latest'
             }
         }
     }
