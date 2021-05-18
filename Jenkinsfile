@@ -40,7 +40,7 @@ pipeline {
                 '''
                 withDockerRegistry([ credentialsId: "KshDocker", url: "https://registry.hub.docker.com"]) {
                     sh 'sudo docker build -t ksh030506/chwijuntime:latest .'
-                    sh 'sudo docker push ksh030506/chwijuntime:latest'
+                    bat 'sudo docker push ksh030506/chwijuntime:latest'
                 }
             }
         }
