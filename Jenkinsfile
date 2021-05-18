@@ -21,7 +21,7 @@
 
      stage('Code Deploy') {
         sh '''sudo docker stop chwijuntime || true && sudo docker rm chwijuntime || true'''
-        sh '''sudo docker rmi -f ksh030506/chwijuntime:latest'''
+        sh ''' sudo docker rmi -f `docker images | awk '$1 ~ /chwijuntime/ {print $3}'`'''
         sh '''sudo docker run -d -p 8082:8082 --name chwijuntime ksh030506/chwijuntime:latest'''
      }
 }
