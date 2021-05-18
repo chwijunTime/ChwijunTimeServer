@@ -10,7 +10,7 @@
      }
 
      stage('Build image') {
-        app = docker.build("ksh030506/chwijuntime:latest")
+        app = docker.build("${REPOSITORY_NAME}/${CONTAINER_NAME}:latest")
      }
 
      stage('Push image') {
@@ -20,8 +20,8 @@
      }
 
      stage('Code Deploy') {
-        sh '''sudo docker stop chwijuntime || true && sudo docker rm chwijuntime || true'''
-        sh ''' sudo docker rmi -f `docker images | awk '$1 ~ /chwijuntime/ {print $3}'`'''
-        sh '''sudo docker run -d -p 8082:8082 --name chwijuntime ksh030506/chwijuntime:latest'''
+        sh '''sudo docker stop ${CONTAINER_NAME} || true && sudo docker rm ${CONTAINER_NAME} || true'''
+        sh '''sudo docker rmi -f `docker images | awk '$1 ~ /${CONTAINER_NAME}/ {print $3}'`'''
+        sh '''sudo docker run -d -p 8082:8082 --name ${CONTAINER_NAME} ${REPOSITORY_NAME}/${CONTAINER_NAME}:latest'''
      }
 }
