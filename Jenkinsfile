@@ -44,14 +44,10 @@ pipeline {
         stage('Docker Deploy') {
             agent any
             steps {
+                echo 'Stop And Remove Container'
+                'sudo docker stop chwijuntime || true && sudo docker rm chwijuntime || true'
 
-                echo 'stop'
-                sh 'sudo docker stop chwijuntime'
-
-                echo 'rm'
-                sh 'sudo docker container rm chwijuntime'
-
-                echo "rmi"
+                echo "Remove Image"
                 sh 'sudo docker rmi -f ksh030506/chwijuntime:latest'
 
                 echo 'run'
