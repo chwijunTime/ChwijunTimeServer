@@ -5,7 +5,6 @@ pipeline {
         pollSCM('*/3 * * * *')
     }
 
-    def registryCredential = "KshDocker"
 
     stages {
 
@@ -36,7 +35,10 @@ pipeline {
             steps {
                 echo 'Build docker image'
                 echo 'Deploy docker image'
-                withDockerRegistry([ credentialsId: "$registryCredential", url: "https://registry.hub.docker.com"]) {
+                sh '''
+                sudo docker login
+                '''
+                withDockerRegistry([ credentialsId: "KshDocker", url: "https://registry.hub.docker.com"]) {
                     sh 'sudo docker build -t ksh030506/chwijuntime:latest .'
                     sh 'sudo docker push ksh030506/chwijuntime:latest'
                 }
