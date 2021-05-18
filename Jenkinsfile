@@ -27,11 +27,6 @@ pipeline {
                     '''
                 }
             }
-            post {
-                failure {
-                    echo 'I failed'
-                }
-            }
         }
 
         stage('Build & Push docker image') {
@@ -44,29 +39,24 @@ pipeline {
                     sh 'sudo docker push ksh030506/chwijuntime:latest'
                 }
             }
-            post {
-                failure {
-                    echo 'I failed'
-                }
-            }
         }
 
         stage('Docker Deploy') {
             agent any
             steps {
-                echo 'Stop & Remove container'
-                sh 'sudo docker stop chwijuntime || true && sudo docker rm chwijuntime || true'
 
-                echo "Remove Image"
+                echo 'stop'
+                sh 'sudo docker stop chwijuntime'
+
+                echo 'rm'
+                sh 'sudo docker container rm chwijuntime'
+
+                echo "rmi"
                 sh 'sudo docker rmi -f ksh030506/chwijuntime:latest'
 
                 echo 'run'
                 sh 'sudo docker run -d -p 8082:8082 --name chwijuntime ksh030506/chwijuntime:latest'
-            }
-            post {
-                failure {
-                    echo 'I failed'
-                }
+
             }
         }
     }
