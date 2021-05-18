@@ -45,13 +45,13 @@ pipeline {
             agent any
             steps {
                 echo 'Stop And Remove Container'
-                'sudo docker stop chwijuntime || true && sudo docker rm chwijuntime || true'
+                '''sudo docker stop chwijuntime || true && sudo docker rm chwijuntime || true'''
 
                 echo "Remove Image"
-                sh 'sudo docker rmi -f ksh030506/chwijuntime:latest'
+                sh '''sudo docker rmi -f ksh030506/chwijuntime:latest'''
 
                 echo 'run'
-                sh 'sudo docker run -d -p 8082:8082 --name chwijuntime ksh030506/chwijuntime:latest'
+                sh '''sudo docker run -d -p 8082:8082 --name chwijuntime ksh030506/chwijuntime:latest'''
 
             }
         }
