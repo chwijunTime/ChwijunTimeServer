@@ -1,5 +1,4 @@
 pipeline {
-    // 스테이지 별로 다른 거
     agent any
 
     triggers {
@@ -8,19 +7,17 @@ pipeline {
 
     stages {
 
-        // 레포지토리를 다운로드 받음
         stage('Prepare') {
             agent any
             steps {
                 echo 'Clonning Repository'
                 git url: 'https://github.com/chwijunTime/ChwijunTimeServer.git',
                 branch: 'main',
-                //Global credentials에 입력한 ID
                 credentialsId: 'KshGitHub'
             }
         }
 
-        stage('Build Backend') {
+        stage('Build & Compile & Package') {
             agent any
             steps {
                 echo 'Build Backend'
@@ -28,6 +25,11 @@ pipeline {
                     sh'''
                     mvn clean compile package
                     '''
+                }
+            }
+            post {
+                failure {
+                    echo 'I failed'
                 }
             }
         }
@@ -42,23 +44,29 @@ pipeline {
                     sh 'sudo docker push ksh030506/chwijuntime:latest'
                 }
             }
+            post {
+                failure {
+                    echo 'I failed'
+                }
+            }
         }
 
         stage('Docker Deploy') {
             agent any
             steps {
-                echo 'stop'
-                sh 'sudo docker stop chwijuntime'
+                echo 'Stop & Remove container'
+                sh 'sudo docker stop chwijuntime || true && sudo docker rm chwijuntime || true'
 
-                echo 'rm'
-                sh 'sudo docker container rm chwijuntime'
-
-                echo "rmi"
+                echo "Remove Image"
                 sh 'sudo docker rmi -f ksh030506/chwijuntime:latest'
 
                 echo 'run'
                 sh 'sudo docker run -d -p 8082:8082 --name chwijuntime ksh030506/chwijuntime:latest'
-
+            }
+            post {
+                failure {
+                    echo 'I failed'
+                }
             }
         }
     }
