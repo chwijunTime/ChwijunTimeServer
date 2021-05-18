@@ -10,12 +10,12 @@
      }
 
      stage('Build image') {
-         app = docker.build("ksh030506/chwijuntime")
+         app = docker.build("ksh030506/chwijuntime:latest")
      }
 
      stage('Push image') {
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
-            app.push("latest")
+            app.push()
         }
      }
 
