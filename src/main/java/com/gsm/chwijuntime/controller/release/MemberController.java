@@ -79,7 +79,7 @@ public class MemberController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PostMapping("/userinfo")
+    @GetMapping("/userinfo")
     public SingleResult<Member> userinfo() {
         Member member = memberService.UserInfo();
         return responseService.getSingleResult(member);
@@ -102,7 +102,7 @@ public class MemberController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PostMapping("/view-profile")
+    @GetMapping("/view-profile")
     public SingleResult<MemberTagResDto> view_profile() {
         MemberTagResDto viewMember = memberService.viewMember();
         return responseService.getSingleResult(viewMember);
