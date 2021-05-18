@@ -1,4 +1,7 @@
 pipeline {
+
+    def app
+
     agent any
 
     triggers {
@@ -35,7 +38,7 @@ pipeline {
                 echo 'Build docker image'
                 sh 'sudo docker build -t ksh030506/chwijuntime:latest .'
                 echo 'Deploy docker image'
-                withDockerRegistry(['https://registry.hub.docker.com', 'KshDocker']) {
+                docker.withDockerRegistry(['https://registry.hub.docker.com', 'KshDocker']) {
                     sh 'sudo docker push ksh030506/chwijuntime:latest'
                 }
             }
