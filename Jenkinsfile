@@ -10,6 +10,7 @@
      }
 
      stage('Build image') {
+            docker.rmi('ksh030506/chwijuntime:latest')
          app = docker.build("ksh030506/chwijuntime:latest")
      }
 
