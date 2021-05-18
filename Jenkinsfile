@@ -35,12 +35,12 @@ pipeline {
             steps {
                 echo 'Build docker image'
                 echo 'Deploy docker image'
-                sh '''
-                sudo docker login
-                '''
-                withDockerRegistry([ credentialsId: "KshDocker", url: "https://registry.hub.docker.com"]) {
-                    sh 'sudo docker build -t ksh030506/chwijuntime:latest .'
-                    bat 'sudo docker push ksh030506/chwijuntime:latest'
+                withCredentials([usernamePassword( credentialsId: 'KshDocker', usernameVariable: 'ksh030506', passwordVariable: 'ksh03050621!')]) {
+                    bat "docker login -u ksh030506 -p ksh03050621! https://registry.hub.docker.com/"
+                    withDockerRegistry([url: "https://registry.hub.docker.com" ,credentialsId: "KshDocker"]) {
+                        sh 'sudo docker build -t ksh030506/chwijuntime:latest .'
+                        sh 'sudo docker push ksh030506/chwijuntime:latest'
+                    }
                 }
             }
         }
