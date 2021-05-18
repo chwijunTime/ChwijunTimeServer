@@ -35,9 +35,10 @@ pipeline {
                 echo 'Build docker image'
                 sh 'sudo docker build -t ksh030506/chwijuntime:latest .'
                 echo 'Deploy docker image'
-                withDockerRegistry([ credentialsId: 'KshDocker', url: "https://registry.hub.docker.com"]) {
-                    sh 'sudo docker push ksh030506/chwijuntime:latest'
-                }
+                sh 'sudo docker push ksh030506/chwijuntime:latest'
+//                 withDockerRegistry([ credentialsId: 'KshDocker', url: "https://registry.hub.docker.com"]) {
+//
+//                 }
             }
         }
 
