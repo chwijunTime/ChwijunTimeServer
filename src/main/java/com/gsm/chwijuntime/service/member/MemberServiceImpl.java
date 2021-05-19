@@ -3,6 +3,7 @@ package com.gsm.chwijuntime.service.member;
 import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.aop.memorycheck.MemoryCheck;
 import com.gsm.chwijuntime.aop.timecheck.TimeCheck;
+import com.gsm.chwijuntime.config.CustomUserDetailService;
 import com.gsm.chwijuntime.dto.member.*;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
@@ -14,19 +15,26 @@ import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import com.gsm.chwijuntime.util.JwtTokenProvider;
 import com.gsm.chwijuntime.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 @Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
 
+    private final CustomUserDetailService customUserDetailService;
     private final RedisUtil redisUtil;
     private final MemberRepository memberRepository;
     private final MemberTagRepository memberTagRepository;
@@ -63,8 +71,8 @@ public class MemberServiceImpl implements MemberService {
             accessToken = jwtTokenProvider.generateToken(member);
             refreshToken = jwtTokenProvider.generateRefreshToken(member);
             roles = member.String_Role(member);
-            redisUtil.setDataExpire(member.getUsername(), refreshToken, jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
-            memberLoginResDto = MemberLoginResDto.mapping(member.getMemberEmail(), member.getMemberClassNumber(), roles, accessToken);
+            redisUtil.setDataExpire(refreshToken, member.getUsername(), jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
+            memberLoginResDto = MemberLoginResDto.mapping(member.getMemberEmail(), member.getMemberClassNumber(), roles, accessToken, refreshToken);
         }
         return memberLoginResDto;
     }
@@ -134,6 +142,26 @@ public class MemberServiceImpl implements MemberService {
         String pw = passwordEncoder.encode(memberPasswordChangeDto.getMemberPassword());
         member.change_password(pw);
     }
+
+    @Override
+    public String authRefresh(AuthRefreshDto authRefreshDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        // 요청 받은 리프레쉬 토큰을 레디스에 가져와진 리프레쉬 토큰이랑 비교한다.
+        String newAccessToken = null;
+        String RefreshTokenUserEmail = jwtTokenProvider.getUserEmail(authRefreshDto.getRefreshToken());
+        String RedisRefreshJwt = redisUtil.getData(RefreshTokenUserEmail);  //현재 데이터베이스에 저장되어 있는 리프레쉬 토큰
+
+        if(RedisRefreshJwt.equals(authRefreshDto.getRefreshToken())){
+            UserDetails userDetails = customUserDetailService.loadUserByUsername(RefreshTokenUserEmail);
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+            usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            Member member = customUserDetailService.findMember(RefreshTokenUserEmail);
+            newAccessToken = jwtTokenProvider.generateToken(member);
+            System.out.println(getUserEmailUtil.getUserEmail());
+        }
+        return newAccessToken;
+    }
+
 
     @Transactional
     @Override

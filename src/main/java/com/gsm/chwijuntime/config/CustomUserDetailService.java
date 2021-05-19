@@ -18,4 +18,8 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return memberRepository.findByMemberEmail(email).orElseThrow(null);
     }
+
+    public Member findMember(String email){
+        return memberRepository.findByMemberEmail(email).orElseThrow(null);
+    }
 }
