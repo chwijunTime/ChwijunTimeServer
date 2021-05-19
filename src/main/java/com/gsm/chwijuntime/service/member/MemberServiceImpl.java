@@ -145,19 +145,17 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String authRefresh(AuthRefreshDto authRefreshDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        // 요청 받은 리프레쉬 토큰을 레디스에 가져와진 리프레쉬 토큰이랑 비교한다.
         String newAccessToken = null;
         String RefreshTokenUserEmail = jwtTokenProvider.getUserEmail(authRefreshDto.getRefreshToken());
-        String RedisRefreshJwt = redisUtil.getData(RefreshTokenUserEmail);  //현재 데이터베이스에 저장되어 있는 리프레쉬 토큰
+        String RedisRefreshJwt = redisUtil.getData(RefreshTokenUserEmail);  //현재 Redis에 저장되어 있는 리프레쉬 토큰
 
         if(RedisRefreshJwt.equals(authRefreshDto.getRefreshToken())){
             UserDetails userDetails = customUserDetailService.loadUserByUsername(RefreshTokenUserEmail);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            Member member = customUserDetailService.findMember(RefreshTokenUserEmail);
+            Member member = customUserDetailService.findMember( RefreshTokenUserEmail);
             newAccessToken = jwtTokenProvider.generateToken(member);
-            System.out.println(getUserEmailUtil.getUserEmail());
         }
         return newAccessToken;
     }

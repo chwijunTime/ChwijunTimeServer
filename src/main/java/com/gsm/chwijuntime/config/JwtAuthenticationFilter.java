@@ -1,5 +1,7 @@
 package com.gsm.chwijuntime.config;
 
+import com.gsm.chwijuntime.advice.exception.CExpiredJwtException;
+import com.gsm.chwijuntime.advice.exception.NotFoundBearer;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.util.CookieUtil;
 import com.gsm.chwijuntime.util.JwtTokenProvider;
@@ -41,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 jwtToken = jwtToken.substring(7);
                 userEmail = jwtTokenProvider.getUserEmail(jwtToken);
             } else {
-                System.out.println("Bearer 를 입력해주세요");
+                throw new NotFoundBearer();
             }
             if(userEmail != null){
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(userEmail);
@@ -53,7 +55,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (ExpiredJwtException e){   // 만약 유효기간을 넘겼다면??
-            throw new Exception("토큰 만료");
+            throw new CExpiredJwtException();
+
         }
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);

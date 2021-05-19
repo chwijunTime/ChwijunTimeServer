@@ -196,4 +196,18 @@ public class ExceptionAdvice {
     public CommonResult HttpMessageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("HttpMessageNotReadableException.code")), getMessage("HttpMessageNotReadableException.msg"));
     }
+
+    // 토큰 만료 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(CExpiredJwtException.class)
+    public CommonResult CExpiredJwtException(HttpServletRequest request, CExpiredJwtException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("CExpiredJwtException.code")), getMessage("CExpiredJwtException.msg"));
+    }
+
+    // Bearer 토큰을 찾지 못함
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(NotFoundBearer.class)
+    public CommonResult NotFoundBearer(HttpServletRequest request, NotFoundBearer e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundBearer.code")), getMessage("NotFoundBearer.msg"));
+    }
 }
