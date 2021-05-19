@@ -1,6 +1,7 @@
 package com.gsm.chwijuntime.service.consultinguser;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.NotFoundConsultingAdminException;
 import com.gsm.chwijuntime.dto.consultinguser.ConsultingUserResDto;
 import com.gsm.chwijuntime.dto.consultinguser.ConsultingUserSaveDto;
 import com.gsm.chwijuntime.model.ConsultingAdmin;
@@ -33,7 +34,7 @@ public class ConsultingUserServiceImpl implements ConsultingUserService {
     @Override
     public void saveConsultingUser(Long idx, ConsultingUserSaveDto consultingUserSaveDto) {
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
-        ConsultingAdmin consultingAdmin = consultingAdminRepository.findById(idx).orElseThrow(null);
+        ConsultingAdmin consultingAdmin = consultingAdminRepository.findById(idx).orElseThrow(NotFoundConsultingAdminException::new);
         consultingAdmin.changeConsultingStatus();
         consultingUserRepository.save(consultingUserSaveDto.toEntityByConsultingUser(consultingAdmin, member));
     }

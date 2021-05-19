@@ -1,6 +1,7 @@
 package com.gsm.chwijuntime.service.consultingadmin;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.NotFoundConsultingAdminException;
 import com.gsm.chwijuntime.dto.consultingadmin.ConsultingAdminResDto;
 import com.gsm.chwijuntime.dto.consultingadmin.ConsultingAdminSaveDto;
 import com.gsm.chwijuntime.model.Member;
@@ -35,7 +36,7 @@ public class ConsultingAdminServiceImpl implements ConsultingAdminService {
     @Override
     public ConsultingAdminResDto findByIdx(Long idx) {
         ConsultingAdminResDto consultingAdminResDto = consultingAdminRepository.findById(idx)
-                .map(m -> mapper.map(m, ConsultingAdminResDto.class)).orElseThrow(null);
+                .map(m -> mapper.map(m, ConsultingAdminResDto.class)).orElseThrow(NotFoundConsultingAdminException::new);
         return consultingAdminResDto;
     }
 

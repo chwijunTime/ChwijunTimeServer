@@ -17,7 +17,6 @@ public class UserService {
     public boolean userEmailCheck(String userEmail, String classNumber) {
         Optional<Member> byMemberEmailAndMemberClassNumber = memberRepository.findByMemberEmailAndMemberClassNumber(userEmail, classNumber);
         if(byMemberEmailAndMemberClassNumber.isEmpty()){
-            System.out.println("유저 정보가 없습니다.");
             return false;
         } else {
             return true;
