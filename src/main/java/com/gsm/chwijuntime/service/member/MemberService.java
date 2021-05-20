@@ -3,6 +3,11 @@ package com.gsm.chwijuntime.service.member;
 import com.gsm.chwijuntime.dto.member.*;
 import com.gsm.chwijuntime.model.Member;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
+
 public interface MemberService {
     // 회원가입
     void InsertMember(MemberJoinDto memberJoinDto);
@@ -30,4 +35,7 @@ public interface MemberService {
 
     //비밀번호 변경
     void change_password(MemberPasswordChangeDto memberPasswordChangeDto);
+
+    // 새로운 AccessToken 발급
+    String authRefresh(AuthRefreshDto authRefreshDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
 }

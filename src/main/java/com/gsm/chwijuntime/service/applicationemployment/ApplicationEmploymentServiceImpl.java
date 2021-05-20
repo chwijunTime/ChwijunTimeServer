@@ -40,8 +40,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
             Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
             applicationEmploymentRepository.save(applicationemploymentSaveDto.toEntityByApplicationEmployment(findMember, findMyEmploymentAnnouncement));
         } else {
-            System.out.println("중복 신청");
-            return;
+            throw new RedundantApplicationException();
         }
     }
 
