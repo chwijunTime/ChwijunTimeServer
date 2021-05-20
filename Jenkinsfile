@@ -12,7 +12,6 @@
      stage('Build image') {
         sh '''
             sudo chmod 666 /var/run/docker.sock
-            pwd
         '''
         app = docker.build("${REPOSITORY_NAME}/${CONTAINER_NAME}:latest")
      }
