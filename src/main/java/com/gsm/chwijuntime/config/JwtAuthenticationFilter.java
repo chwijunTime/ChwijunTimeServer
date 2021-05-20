@@ -3,6 +3,7 @@ package com.gsm.chwijuntime.config;
 import com.gsm.chwijuntime.advice.exception.CExpiredJwtException;
 import com.gsm.chwijuntime.advice.exception.NotFoundBearer;
 import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.response.ResponseService;
 import com.gsm.chwijuntime.util.CookieUtil;
 import com.gsm.chwijuntime.util.JwtTokenProvider;
 import com.gsm.chwijuntime.util.RedisUtil;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jce.exception.ExtIOException;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,9 +45,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if(jwtToken != null && jwtToken.startsWith("Bearer ")){
                 jwtToken = jwtToken.substring(7);
                 userEmail = jwtTokenProvider.getUserEmail(jwtToken);
-            } else {
-                throw new NotFoundBearer();
             }
+
             if(userEmail != null){
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(userEmail);
 
@@ -55,8 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (ExpiredJwtException e){   // 만약 유효기간을 넘겼다면??
-            throw new CExpiredJwtException();
-
+            httpServletResponse.setHeader("message", e.getMessage());
         }
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
