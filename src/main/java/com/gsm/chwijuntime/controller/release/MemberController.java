@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,9 +65,6 @@ public class MemberController {
     }
 
     @ApiOperation(value = "로그아웃", notes = "사용자가 로그아웃한다.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
-    })
     @ResponseBody
     @PostMapping("/logout")
     public CommonResult logout() {
@@ -146,6 +144,15 @@ public class MemberController {
     @PutMapping("/password-change")
     public CommonResult passwordChange(@Valid @RequestBody MemberPasswordChangeDto memberPasswordChangeDto) {
         memberService.change_password(memberPasswordChangeDto);
+        return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value = "새로운 토큰 요청하기", notes = "유저가 비밀번호를 변경한다.")
+    @ResponseBody
+    @PostMapping("/auth/refresh")
+    public CommonResult AuthRefresh(@RequestBody AuthRefreshDto authRefreshDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        String newToken = memberService.authRefresh(authRefreshDto, httpServletRequest, httpServletResponse);
+        httpServletResponse.addHeader("newToekn", newToken);
         return responseService.getSuccessResult();
     }
 }

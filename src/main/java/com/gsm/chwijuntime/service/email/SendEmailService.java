@@ -48,7 +48,7 @@ public class SendEmailService {
     @Transactional
     public void updatePassword(String str,String userEmail){
         String pw = passwordEncoder.encode(str);
-        Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(null);
+        Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(CAuthenticationEntryPointException::new);
         member.change_password(pw);
     }
 

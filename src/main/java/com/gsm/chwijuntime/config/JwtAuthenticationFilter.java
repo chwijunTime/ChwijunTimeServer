@@ -1,12 +1,19 @@
 package com.gsm.chwijuntime.config;
 
+import com.gsm.chwijuntime.advice.exception.CExpiredJwtException;
+import com.gsm.chwijuntime.advice.exception.NotFoundBearer;
 import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.response.ResponseService;
 import com.gsm.chwijuntime.util.CookieUtil;
 import com.gsm.chwijuntime.util.JwtTokenProvider;
 import com.gsm.chwijuntime.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.jce.exception.ExtIOException;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,20 +34,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomUserDetailService customUserDetailService;
-    private final RedisUtil redisUtil;
 
+    @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String jwtToken = httpServletRequest.getHeader("Authorization");
-
         String userEmail = null;
-        String refreshJwt = null;
-        String refreshUName = null;
 
         try{
-            if(jwtToken != null){
+            if(jwtToken != null && jwtToken.startsWith("Bearer ")){
+                jwtToken = jwtToken.substring(7);
                 userEmail = jwtTokenProvider.getUserEmail(jwtToken);
             }
+
             if(userEmail != null){
                 UserDetails userDetails = customUserDetailService.loadUserByUsername(userEmail);
 
@@ -50,35 +56,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             }
-        }catch (ExpiredJwtException e){
-            if(refreshJwt != null){
-                refreshJwt = redisUtil.getData(refreshJwt);
-            }
-        }catch(Exception e){
-
+        } catch (ExpiredJwtException e){   // 만약 유효기간을 넘겼다면??
+            httpServletResponse.setHeader("message", e.getMessage());
         }
 
-        //reFresh Token 발급하기
-        try{
-            if(refreshJwt != null){
-                refreshUName = redisUtil.getData(refreshJwt);
-
-                if(refreshUName.equals(jwtTokenProvider.getUserEmail(refreshJwt))){
-                    UserDetails userDetails = customUserDetailService.loadUserByUsername(refreshUName);
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
-                    Member member = new Member();
-                    member.Change_Email(refreshUName);
-                    String newToken = jwtTokenProvider.generateToken(member);
-                    redisUtil.setDataExpire(member.getUsername(), newToken, jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
-                }
-            }
-        }catch(ExpiredJwtException e){
-
-        }
-
-        filterChain.doFilter(httpServletRequest,httpServletResponse);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }
