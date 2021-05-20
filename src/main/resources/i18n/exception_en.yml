@@ -69,3 +69,24 @@ URLValidationException:
 HttpMessageNotReadableException:
   code: "-22"
   msg: "시간 타입을 입력해주세요"
+CExpiredJwtException:
+  code: "-23"
+  msg: "토큰이 만료되었습니다."
+NotFoundBearer:
+  code: "-24"
+  msg: "Bearer 토큰을 찾을 수 없습니다."
+RedundantApplicationException:
+  code: "-25"
+  msg: "중복 신청입니다."
+NotFoundConsultingAdminException:
+  code: "-26"
+  msg: "어드민 신청을 찾을 수 없습니다."
+NotFoundCorrectionApply:
+  code: "-27"
+  msg: "첨삭 신청을 찾을 수 없습니다."
+NotFoundRequestTagException:
+  code: "-28"
+  msg: "요청하신 태그를 찾을 수 없습니다."
+NotFoundTipsStorageException:
+  sode: "-29"
+  msg: "요청하신 팁을 찾을 수 없습니다."

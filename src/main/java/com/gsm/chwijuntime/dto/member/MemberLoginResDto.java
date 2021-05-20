@@ -15,12 +15,14 @@ public class MemberLoginResDto {
     private String memberClassNumber;
     private String roles;
     private String accessToken;
+    private String refreshToken;
 
-    public static MemberLoginResDto mapping(String memberEmail, String memberClassNumber, String roles, String accessToken) {
+    public static MemberLoginResDto mapping(String memberEmail, String memberClassNumber, String roles, String accessToken, String refreshToken) {
         return MemberLoginResDto.builder()
                 .memberEmail(memberEmail)
                 .memberClassNumber(memberClassNumber)
                 .roles(roles)
+                .refreshToken(refreshToken)
                 .accessToken(accessToken)
                 .build();
     }

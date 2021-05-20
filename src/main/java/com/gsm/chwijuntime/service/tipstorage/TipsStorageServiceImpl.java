@@ -1,9 +1,6 @@
 package com.gsm.chwijuntime.service.tipstorage;
 
-import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
-import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
-import com.gsm.chwijuntime.advice.exception.NotFoundCompanyReviewException;
-import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
+import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
 import com.gsm.chwijuntime.dto.tipstorage.TipsStorageResDto;
 import com.gsm.chwijuntime.dto.tipstorage.TipsStorageSaveDto;
@@ -66,7 +63,7 @@ public class TipsStorageServiceImpl implements TipsStorageService {
 
     private List<TipsStorageResDto> getTipsStorageResDtos(List<TipsStorageResDto> tipsStorageResDtos) {
         for (TipsStorageResDto i : tipsStorageResDtos) {
-            TipsStorage tipsStorage = tipsStorageRepository.findById(i.getTipsStorageIdx()).orElseThrow(null);
+            TipsStorage tipsStorage = tipsStorageRepository.findById(i.getTipsStorageIdx()).orElseThrow(NotFoundTipsStorageException::new);
             List<TipsStorageTag> allByTipsStorage = tipsStorageTagRepository.findAllByTipsStorage(tipsStorage);
             for (TipsStorageTag j : allByTipsStorage) {
                 i.getTagName().add(j.getTag().getTagName());
@@ -77,8 +74,8 @@ public class TipsStorageServiceImpl implements TipsStorageService {
 
     @Override
     public TipsStorageResDto findByIdx(Long idx) {
-        TipsStorageResDto tipsStorageResDto = tipsStorageRepository.findById(idx).map(m -> mapper.map(m, TipsStorageResDto.class)).orElseThrow(null);
-        TipsStorage tipsStorage = tipsStorageRepository.findById(idx).orElseThrow(null);
+        TipsStorageResDto tipsStorageResDto = tipsStorageRepository.findById(idx).map(m -> mapper.map(m, TipsStorageResDto.class)).orElseThrow(NotFoundTipsStorageException::new);
+        TipsStorage tipsStorage = tipsStorageRepository.findById(idx).orElseThrow(NotFoundTipsStorageException::new);
         List<TipsStorageTag> allByTipsStorage = tipsStorageTagRepository.findAllByTipsStorage(tipsStorage);
         for (TipsStorageTag i : allByTipsStorage) {
             tipsStorageResDto.getTagName().add(i.getTag().getTagName());
@@ -91,7 +88,7 @@ public class TipsStorageServiceImpl implements TipsStorageService {
     @Override
     public void updateTipsStorage(Long idx, TipsStorageUpdateDto tipsStorageUpdateDto) {
         userWriteCheck(idx);
-        TipsStorage tipsStorage = tipsStorageRepository.findById(idx).orElseThrow(null);
+        TipsStorage tipsStorage = tipsStorageRepository.findById(idx).orElseThrow(NotFoundTipsStorageException::new);
         // 1번째 수정
         tipsStorage.update(tipsStorageUpdateDto);
         List<TipsStorageTag> allByTipsStorage = tipsStorageTagRepository.findAllByTipsStorage(tipsStorage);
@@ -114,7 +111,7 @@ public class TipsStorageServiceImpl implements TipsStorageService {
     @Override
     public void deleteTipsStorage(Long idx) {
         userWriteCheck(idx);
-        TipsStorage tipsStorage = tipsStorageRepository.findById(idx).orElseThrow(null);
+        TipsStorage tipsStorage = tipsStorageRepository.findById(idx).orElseThrow(NotFoundTipsStorageException::new);
         tipsStorageTagRepository.deleteAllByTipsStorage(tipsStorage);
         tipsStorageRepository.deleteById(idx);
     }

@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.config;
 
+import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,10 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return memberRepository.findByMemberEmail(email).orElseThrow(null);
+        return memberRepository.findByMemberEmail(email).orElseThrow(CAuthenticationEntryPointException::new);
+    }
+
+    public Member findMember(String email){
+        return memberRepository.findByMemberEmail(email).orElseThrow(CAuthenticationEntryPointException::new);
     }
 }

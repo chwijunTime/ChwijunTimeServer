@@ -196,4 +196,46 @@ public class ExceptionAdvice {
     public CommonResult HttpMessageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("HttpMessageNotReadableException.code")), getMessage("HttpMessageNotReadableException.msg"));
     }
+
+    // 토큰 만료 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(CExpiredJwtException.class)
+    public CommonResult CExpiredJwtException(HttpServletRequest request, CExpiredJwtException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("CExpiredJwtException.code")), getMessage("CExpiredJwtException.msg"));
+    }
+
+    // Bearer 토큰을 찾지 못함
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(NotFoundBearer.class)
+    public CommonResult NotFoundBearer(HttpServletRequest request, NotFoundBearer e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundBearer.code")), getMessage("NotFoundBearer.msg"));
+    }
+
+    // 중복 신청
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(RedundantApplicationException.class)
+    public CommonResult RedundantApplicationException(HttpServletRequest request, RedundantApplicationException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("RedundantApplicationException.code")), getMessage("RedundantApplicationException.msg"));
+    }
+
+    // 어드민 신청을 찾지 못함
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundConsultingAdminException.class)
+    public CommonResult NotFoundConsultingAdminException(HttpServletRequest request, NotFoundConsultingAdminException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundConsultingAdminException.code")), getMessage("NotFoundConsultingAdminException.msg"));
+    }
+
+    // 첨삭 신청을 찾지 못함
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundCorrectionApply.class)
+    public CommonResult NotFoundCorrectionApply(HttpServletRequest request, NotFoundCorrectionApply e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundCorrectionApply.code")), getMessage("NotFoundCorrectionApply.msg"));
+    }
+
+    // 요청 태그를 찾지 못함
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundRequestTagException.class)
+    public CommonResult NotFoundRequestTagException(HttpServletRequest request, NotFoundRequestTagException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundRequestTagException.code")), getMessage("NotFoundRequestTagException.msg"));
+    }
 }

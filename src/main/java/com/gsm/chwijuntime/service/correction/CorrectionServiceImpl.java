@@ -1,6 +1,7 @@
 package com.gsm.chwijuntime.service.correction;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.NotFoundCorrectionApply;
 import com.gsm.chwijuntime.advice.exception.NotFoundPortfolioException;
 import com.gsm.chwijuntime.advice.exception.NotFoundResumeException;
 import com.gsm.chwijuntime.dto.correction.CorrectionApplySaveDto;
@@ -63,7 +64,7 @@ public class CorrectionServiceImpl implements CorrectionService {
     @Override
     public void requestApproval(Long idx, CorrectionApprovalSaveDto correctionApprovalSaveDto) throws Exception {
         checkAdmin(idx);
-        CorrectionApply correctionApply = correctionApplyRepository.findById(idx).orElseThrow(null);
+        CorrectionApply correctionApply = correctionApplyRepository.findById(idx).orElseThrow(NotFoundCorrectionApply::new);
         correctionApply.changeApproval();
         correctionRepository.save(correctionApprovalSaveDto.toEntityByApproval(correctionApply));
     }
@@ -73,7 +74,7 @@ public class CorrectionServiceImpl implements CorrectionService {
     @Override
     public void requestRejection(Long idx, CorrectionRejectionSaveDto correctionRejectionSaveDto) throws Exception {
         checkAdmin(idx);
-        CorrectionApply correctionApply = correctionApplyRepository.findById(idx).orElseThrow(null);
+        CorrectionApply correctionApply = correctionApplyRepository.findById(idx).orElseThrow(NotFoundCorrectionApply::new);
         correctionApply.changeRejection();
         correctionRepository.save(correctionRejectionSaveDto.toEntityByApproval(correctionApply));
     }
@@ -110,7 +111,7 @@ public class CorrectionServiceImpl implements CorrectionService {
     // 관리자가 신청 단일 조회하기
     @Override
     public CorrectionApply findByIdx(Long idx) {
-        return correctionApplyRepository.findById(idx).orElseThrow(null);
+        return correctionApplyRepository.findById(idx).orElseThrow(NotFoundCorrectionApply::new);
     }
 
     // 관리자가 신청한 모든 사람 보기

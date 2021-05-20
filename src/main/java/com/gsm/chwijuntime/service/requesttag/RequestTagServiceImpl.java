@@ -1,6 +1,7 @@
 package com.gsm.chwijuntime.service.requesttag;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.NotFoundRequestTagException;
 import com.gsm.chwijuntime.dto.requesttag.RequestTagResDto;
 import com.gsm.chwijuntime.dto.requesttag.RequestTagSaveDto;
 import com.gsm.chwijuntime.model.Member;
@@ -59,7 +60,7 @@ public class RequestTagServiceImpl implements RequestTagService {
 
     @Override
     public RequestTagResDto findByIdx(Long idx) {
-        RequestTagResDto requestTagResDto = requestTagRepository.findById(idx).map(m -> mapper.map(m, RequestTagResDto.class)).orElseThrow(null);
+        RequestTagResDto requestTagResDto = requestTagRepository.findById(idx).map(m -> mapper.map(m, RequestTagResDto.class)).orElseThrow(NotFoundRequestTagException::new);
         return requestTagResDto;
     }
 }
