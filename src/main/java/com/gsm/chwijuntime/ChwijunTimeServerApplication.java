@@ -9,15 +9,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableJpaAuditing
 public class ChwijunTimeServerApplication {
-
-    String PROPERTIES = "spring.config.location=classpath:/application.yml"
-            +",classpath:/key.yml";
-
     public static void main(String[] args) {
-        //SpringApplication.run(ChwijunTimeServerApplication.class, args);
+        String PROPERTIES = "spring.config.location=classpath:/application.yml"
+                +",classpath:/key.yml";
         new SpringApplicationBuilder(ChwijunTimeServerApplication.class)
                 .properties(PROPERTIES)
                 .run(args);
     }
-
 }
