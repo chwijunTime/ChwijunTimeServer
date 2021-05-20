@@ -54,7 +54,7 @@ spring:
   cache:
     type: redis
   redis:
-    host: localhost
+    host: 10.120.71.242
     port: 6379
   data:
     redis:
