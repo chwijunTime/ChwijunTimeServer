@@ -4,6 +4,6 @@ ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jar
 
 
-ENV H2PATH="h2-console"
+ENV H2PATH="/h2-console"
 
 ENTRYPOINT ["java", "-Dspring.profiles.active=real", "-jar", "/app.jar", "--spring.h2.console.path=${H2PATH}"]
