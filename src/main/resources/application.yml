@@ -15,7 +15,7 @@ spring:
   h2:
     console:
       enabled: true
-      path: ${spring.h2.console.path}
+      path: /h2-console
       settings:
         web-allow-others: true
 
@@ -51,36 +51,28 @@ spring:
     basename: i18n/exception
     encoding: UTF-8
 
-
-
 ---
 
 spring:
   profiles: real
 
   # 데이터 베이스 설정
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true
-
   datasource:
-    url: jdbc:h2:mem:chwijuntime
-    driver-class-name: org.h2.Driver
-    username: sa
+    url: jdbc:mysql://localhost:3306/testdb?useSSL=false&serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 12345678
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
       hibernate:
-        format_sql: true
         temp:
           use_jdbc_metadata_defaults: false
         hbm2ddl:
           auto: create
     show-sql: true
-    open-in-view: false
+    generate-ddl: true
+    database: mysql
 
   #Redis
   cache:
