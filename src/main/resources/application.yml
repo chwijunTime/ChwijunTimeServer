@@ -58,7 +58,7 @@ spring:
 
   # 데이터 베이스 설정
   datasource:
-    url: jdbc:mysql://localhost:3306/chwijuntime?useSSL=false&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://10.120.71.242:3306/chwijuntime?useSSL=false&serverTimezone=Asia/Seoul
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: ksh03050621
