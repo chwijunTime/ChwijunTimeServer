@@ -1,4 +1,4 @@
-# exception_ko.yml
+# exception_en.yml
 unKnown:
   code: "-9999"
 MethodArgumentNotValidException:

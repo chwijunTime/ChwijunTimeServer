@@ -1,7 +1,7 @@
 spring:
   # JWT key 설정
   jwt:
-    secret: goelepel@%&*(&(*&()^%&^*jhadsklfh*&^*&(^ds8af76(*&^ads8fsadf879asd6f*(A&^AFSads987f6asd897f6(*&ASF^ads9876fsad897f6(A*&SF^ads897fg6asd9f876*(&AFS^ads987gf6adfs8976
+    secret: KimdddsIdDidkSidjdpSJd937sdjdfjKJFudDjksdfdfi435k34tjHDKHd8iudsfFHkf8D8fKF9FDkl43ewlsdaf8dsafjk23KDF99dfF8fd6FDjDFasdfkkweqrk89DFuhsdfklsdaf98sdf98FDS89dfsjkHJK98DS98KFHD
 
   # Gmail SMTP Server Settings
   mail:
