@@ -15,7 +15,7 @@ create table member (member_idx bigint not null auto_increment, created_date dat
 create table member_roles (member_member_idx bigint not null, roles varchar(255)) engine=InnoDB
 create table member_portfolio (member_portfolio_idx bigint not null auto_increment, notion_portfoliourl varchar(255) not null, member_idx bigint, primary key (member_portfolio_idx)) engine=InnoDB
 create table member_portfolio_tag (member_portfolio_tag_idx bigint not null auto_increment, member_portfolio_idx bigint, tag_idx bigint, primary key (member_portfolio_tag_idx)) engine=InnoDB
-create table membember_resume_idx bigint not null auto_increment, resume_fileurl varchar(255) not null, member_idx bigint, primary key (member_resume_idx)) engine=InnoDB
+create table member_resume (member_resume_idx bigint not null auto_increment, resume_fileurl varchar(255) not null, member_idx bigint, primary key (member_resume_idx)) engine=InnoDB
 create table member_resume_tag (member_resume_tag_idx bigint not null auto_increment, member_resume_idx bigint, tag_idx bigint, primary key (member_resume_tag_idx)) engine=InnoDB
 create table member_tag (member_tag_idx bigint not null auto_increment, member_idx bigint, tag_idx bigint, primary key (member_tag_idx)) engine=InnoDB
 create table notice (notice_idx bigint not null auto_increment, content varchar(255) not null, create_dated datetime, title varchar(255) not null, member_idx bigint, primary key (notice_idx)) engine=InnoDB
@@ -46,8 +46,8 @@ alter table employment_confirmation_tag add constraint FK3jvhb789925emi13fbg13rm
 alter table employment_confirmation_tag add constraint FKetpcsgrf52someey01oce9vus foreign key (tag_idx) references tag (tag_idx)
 alter table member_roles add constraint FKd15dfxeg82iixxcd6xjobujo1 foreign key (member_member_idx) references member (member_idx)
 alter table member_portfolio add constraint FK8nc66m5ghokk01l7k2cvf3k02 foreign key (member_idx) references member (member_idx)
-alter table member_portfolio_tag add constraint FKdal5d8200hp391kfyki5mb8rf foreign key (member_portfolio_idx) references member_portfolio (member_portfolio_idx)
 alter table member_portfolio_tag add constraint FKrf1cek8pn9hll54slwm32hmfv foreign key (tag_idx) references tag (tag_idx)
+alter table member_portfolio_tag add constraint FKdal5d8200hp391kfyki5mb8rf foreign key (member_portfolio_idx) references member_portfolio (member_portfolio_idx)
 alter table member_resume add constraint FK62yhj8763exc140rrvv8f8lae foreign key (member_idx) references member (member_idx)
 alter table member_resume_tag add constraint FK5o878nmu06p60kpnoyhyfehd foreign key (member_resume_idx) references member_resume (member_resume_idx)
 alter table member_resume_tag add constraint FK5axxmx8n8jkrq4evtgbpme7r2 foreign key (tag_idx) references tag (tag_idx)

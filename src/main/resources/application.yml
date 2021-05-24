@@ -58,10 +58,10 @@ spring:
 
   # 데이터 베이스 설정
   datasource:
-    url: jdbc:mysql://localhost:3306/testdb?useSSL=false&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/chwijuntime?useSSL=false&serverTimezone=Asia/Seoul
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 12345678
+    password: ksh03050621
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
@@ -69,7 +69,7 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
         hbm2ddl:
-          auto: create
+          auto: none
     show-sql: true
     generate-ddl: true
     database: mysql
