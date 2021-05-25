@@ -35,6 +35,7 @@ spring:
     show-sql: true
     open-in-view: false
 
+
   #Redis
   cache:
     type: redis
@@ -57,28 +58,22 @@ spring:
   profiles: real
 
   # 데이터 베이스 설정
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true
-
   datasource:
-    url: jdbc:h2:mem:chwijuntime
-    driver-class-name: org.h2.Driver
-    username: sa
+    url: jdbc:mysql://localhost:3306/chwijuntime?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: ksh03050621
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    generate-ddl: true
+    database: mysql
     properties:
       hibernate:
-        format_sql: true
         temp:
           use_jdbc_metadata_defaults: false
         hbm2ddl:
-          auto: create
-    show-sql: true
-    open-in-view: false
+          auto: none
 
   #Redis
   cache:
