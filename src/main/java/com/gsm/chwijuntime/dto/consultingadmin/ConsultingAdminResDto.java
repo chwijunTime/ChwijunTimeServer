@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class ConsultingAdminResDto {
 
     private Long consultingIdx;
-    private LocalDate applicationDate;
+    private String applicationDate;
     private ConsultingStatus consultingStatus;
 
 }
