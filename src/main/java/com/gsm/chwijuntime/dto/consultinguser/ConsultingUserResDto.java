@@ -2,8 +2,6 @@ package com.gsm.chwijuntime.dto.consultinguser;
 
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @AllArgsConstructor

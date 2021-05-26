@@ -1,12 +1,10 @@
 package com.gsm.chwijuntime.dto.resume;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.MemberResume;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter

@@ -5,7 +5,10 @@ import com.gsm.chwijuntime.model.EmploymentConfirmation;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.model.tagmapping.EmploymentConfirmationTag;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;

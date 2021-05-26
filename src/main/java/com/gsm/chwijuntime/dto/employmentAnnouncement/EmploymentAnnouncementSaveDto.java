@@ -1,7 +1,6 @@
 package com.gsm.chwijuntime.dto.employmentAnnouncement;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gsm.chwijuntime.model.ContractingCompany;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;

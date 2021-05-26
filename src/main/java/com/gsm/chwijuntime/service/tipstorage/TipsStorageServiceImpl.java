@@ -1,15 +1,15 @@
 package com.gsm.chwijuntime.service.tipstorage;
 
-import com.gsm.chwijuntime.advice.exception.*;
-import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
+import com.gsm.chwijuntime.advice.exception.AuthorNotCertifiedException;
+import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
+import com.gsm.chwijuntime.advice.exception.NotFoundTipsStorageException;
 import com.gsm.chwijuntime.dto.tipstorage.TipsStorageResDto;
 import com.gsm.chwijuntime.dto.tipstorage.TipsStorageSaveDto;
 import com.gsm.chwijuntime.dto.tipstorage.TipsStorageUpdateDto;
-import com.gsm.chwijuntime.model.CompanyReview;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.model.TipsStorage;
-import com.gsm.chwijuntime.model.tagmapping.CompanyReviewTag;
 import com.gsm.chwijuntime.model.tagmapping.TipsStorageTag;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.repository.TagRepository;

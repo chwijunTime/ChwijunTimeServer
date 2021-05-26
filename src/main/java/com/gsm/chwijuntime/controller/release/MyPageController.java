@@ -12,7 +12,6 @@ import com.gsm.chwijuntime.model.response.ListResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import com.gsm.chwijuntime.service.applicationemployment.ApplicationEmploymentService;
 import com.gsm.chwijuntime.service.companyreview.CompanyReviewService;
-import com.gsm.chwijuntime.service.consultingadmin.ConsultingAdminService;
 import com.gsm.chwijuntime.service.consultinguser.ConsultingUserService;
 import com.gsm.chwijuntime.service.correction.CorrectionService;
 import com.gsm.chwijuntime.service.portfolio.PortfolioService;

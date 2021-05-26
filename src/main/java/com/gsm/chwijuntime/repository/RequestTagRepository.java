@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface RequestTagRepository extends JpaRepository<RequestTag, Long> {
-
     @Query("select r from RequestTag r order by r.tagIdx desc")
     List<RequestTag> searchAll();
 

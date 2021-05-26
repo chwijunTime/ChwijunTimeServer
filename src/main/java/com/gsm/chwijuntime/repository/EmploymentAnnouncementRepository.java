@@ -1,6 +1,5 @@
 package com.gsm.chwijuntime.repository;
 
-import com.gsm.chwijuntime.model.ContractingCompany;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,8 +10,6 @@ import java.util.List;
 
 @Repository
 public interface EmploymentAnnouncementRepository extends JpaRepository<EmploymentAnnouncement, Long> {
-
-
     List<EmploymentAnnouncement> findAllByEmploymentAnnouncementName(String name);
 
     @Query("select e from EmploymentAnnouncement e join fetch e.member order by e.employmentAnnouncementIdx desc")

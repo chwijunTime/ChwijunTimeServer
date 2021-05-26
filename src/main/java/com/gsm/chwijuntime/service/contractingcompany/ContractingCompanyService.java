@@ -3,7 +3,6 @@ package com.gsm.chwijuntime.service.contractingcompany;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanyResDto;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractingCompanySaveDto;
 import com.gsm.chwijuntime.dto.contractingcompany.ContractionCompanyUpdateDto;
-import com.gsm.chwijuntime.model.ContractingCompany;
 
 import java.util.List;
 

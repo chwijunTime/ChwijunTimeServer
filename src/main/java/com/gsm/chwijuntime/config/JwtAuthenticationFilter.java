@@ -1,19 +1,10 @@
 package com.gsm.chwijuntime.config;
 
-import com.gsm.chwijuntime.advice.exception.CExpiredJwtException;
-import com.gsm.chwijuntime.advice.exception.NotFoundBearer;
-import com.gsm.chwijuntime.model.Member;
-import com.gsm.chwijuntime.model.response.ResponseService;
-import com.gsm.chwijuntime.util.CookieUtil;
 import com.gsm.chwijuntime.util.JwtTokenProvider;
-import com.gsm.chwijuntime.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.jce.exception.ExtIOException;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

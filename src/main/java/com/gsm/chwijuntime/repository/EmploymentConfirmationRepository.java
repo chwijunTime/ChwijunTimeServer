@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface EmploymentConfirmationRepository extends JpaRepository<EmploymentConfirmation, Long> {
-
     @Query("select e from EmploymentConfirmation e join fetch e.member order by e.employmentConfirmationIdx desc")
     List<EmploymentConfirmation> findAll();
 
