@@ -107,11 +107,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Override
     public void acceptApplication(Long idx) {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(NotFoundApplicationEmploymentException::new);
-        if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
-            throw new RequestAlreadyApprovedException("이미 승인된 요청입니다.");
-        } else if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Reject)){
-            throw new RequestAlreadyRejectedException("이미 거절된 요청입니다.");
-        }
+        requestCheck(applicationEmployment);
         applicationEmployment.changeApplicationEmploymentStatusApprove();
     }
 
@@ -119,11 +115,15 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Override
     public void rejectApplication(Long idx) {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(NotFoundApplicationEmploymentException::new);
+        requestCheck(applicationEmployment);
+        applicationEmployment.changeApplicationEmploymentStatusApproveReject();
+    }
+
+    private void requestCheck(ApplicationEmployment applicationEmployment){
         if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
             throw new RequestAlreadyApprovedException("이미 승인된 요청입니다.");
         } else if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Reject)){
             throw new RequestAlreadyRejectedException("이미 거절된 요청입니다.");
         }
-        applicationEmployment.changeApplicationEmploymentStatusApproveReject();
     }
 }
