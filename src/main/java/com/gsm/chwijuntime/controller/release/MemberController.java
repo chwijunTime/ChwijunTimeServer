@@ -66,6 +66,9 @@ public class MemberController {
 
     @ApiOperation(value = "로그아웃", notes = "사용자가 로그아웃한다.")
     @ResponseBody
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @PostMapping("/logout")
     public CommonResult logout() {
         memberService.logoutMember();
