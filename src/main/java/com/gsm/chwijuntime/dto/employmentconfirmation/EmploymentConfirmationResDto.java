@@ -2,7 +2,6 @@ package com.gsm.chwijuntime.dto.employmentconfirmation;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 

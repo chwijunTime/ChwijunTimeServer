@@ -4,8 +4,6 @@ package com.gsm.chwijuntime.dto.consultingadmin;
 import com.gsm.chwijuntime.model.ConsultingStatus;
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,7 +12,7 @@ import java.time.LocalDate;
 public class ConsultingAdminResDto {
 
     private Long consultingIdx;
-    private LocalDate applicationDate;
+    private String applicationDate;
     private ConsultingStatus consultingStatus;
 
 }

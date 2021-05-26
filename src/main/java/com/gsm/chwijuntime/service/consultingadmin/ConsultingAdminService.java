@@ -2,7 +2,6 @@ package com.gsm.chwijuntime.service.consultingadmin;
 
 import com.gsm.chwijuntime.dto.consultingadmin.ConsultingAdminResDto;
 import com.gsm.chwijuntime.dto.consultingadmin.ConsultingAdminSaveDto;
-import com.gsm.chwijuntime.model.ConsultingAdmin;
 
 import java.util.List;
 

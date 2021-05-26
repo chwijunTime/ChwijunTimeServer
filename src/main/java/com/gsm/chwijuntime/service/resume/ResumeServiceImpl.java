@@ -11,9 +11,9 @@ import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.repository.MemberResumeRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.validator.routines.UrlValidator;
 
 import java.util.List;
 

@@ -1,13 +1,11 @@
 package com.gsm.chwijuntime.dto.consultingadmin;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gsm.chwijuntime.model.ConsultingAdmin;
 import com.gsm.chwijuntime.model.ConsultingStatus;
 import com.gsm.chwijuntime.model.Member;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
 
 @Getter
 @Setter

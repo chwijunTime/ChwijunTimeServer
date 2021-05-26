@@ -1,6 +1,5 @@
 package com.gsm.chwijuntime.service.email;
 
-import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

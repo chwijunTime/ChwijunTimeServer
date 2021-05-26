@@ -3,7 +3,6 @@ package com.gsm.chwijuntime.controller.release;
 import com.gsm.chwijuntime.dto.requesttag.RequestTagResDto;
 import com.gsm.chwijuntime.dto.requesttag.RequestTagSaveDto;
 import com.gsm.chwijuntime.dto.tag.TagSaveDto;
-import com.gsm.chwijuntime.model.RequestTag;
 import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ListResult;

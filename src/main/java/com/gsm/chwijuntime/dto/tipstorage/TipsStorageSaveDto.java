@@ -1,11 +1,9 @@
 package com.gsm.chwijuntime.dto.tipstorage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gsm.chwijuntime.model.CompanyReview;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.model.TipsStorage;
-import com.gsm.chwijuntime.model.tagmapping.CompanyReviewTag;
 import com.gsm.chwijuntime.model.tagmapping.TipsStorageTag;
 import lombok.*;
 

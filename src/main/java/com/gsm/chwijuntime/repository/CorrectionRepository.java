@@ -1,7 +1,6 @@
 package com.gsm.chwijuntime.repository;
 
 import com.gsm.chwijuntime.model.Correction;
-import com.gsm.chwijuntime.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

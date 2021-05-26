@@ -1,11 +1,8 @@
 package com.gsm.chwijuntime.model;
 
-import com.gsm.chwijuntime.model.tagmapping.TipsStorageTag;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

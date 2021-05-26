@@ -2,18 +2,15 @@ package com.gsm.chwijuntime.dto.companyreview;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gsm.chwijuntime.model.CompanyReview;
-import com.gsm.chwijuntime.model.ContractingCompany;
+import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.Tag;
+import com.gsm.chwijuntime.model.tagmapping.CompanyReviewTag;
+import lombok.*;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Positive;
-
-import com.gsm.chwijuntime.model.Member;
-import com.gsm.chwijuntime.model.Tag;
-import com.gsm.chwijuntime.model.tagmapping.CompanyReviewTag;
-import com.gsm.chwijuntime.model.tagmapping.ContractingCompanyTag;
-import lombok.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

@@ -88,10 +88,6 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
     public void updateContractingCompany(Long idx, ContractionCompanyUpdateDto contractionCompanyUpdateDto) {
         ContractingCompany contractingCompany = contractingCompanyRepository.findById(idx).orElseThrow(NotFoundContractingCompanyException::new);
         UserWriteCheck(contractingCompany);
-        // 회사 이름 중복 판별
-        if(contractingCompany.getContractingCompanyName().equals(contractionCompanyUpdateDto.getContractingCompanyName())) {
-            throw new DuplicateContractingCompanyException();
-        }
         // 1번째 수정
         contractingCompany.changeContractingCompany(contractionCompanyUpdateDto);
         // 관련된 태그 전체 지움

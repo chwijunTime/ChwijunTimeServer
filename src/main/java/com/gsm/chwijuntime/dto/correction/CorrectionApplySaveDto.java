@@ -1,7 +1,6 @@
 package com.gsm.chwijuntime.dto.correction;
 
 import com.gsm.chwijuntime.model.*;
-import lombok.*;
 import org.springframework.stereotype.Component;
 
 

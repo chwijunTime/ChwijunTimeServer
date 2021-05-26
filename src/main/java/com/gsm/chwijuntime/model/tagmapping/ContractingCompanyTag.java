@@ -1,7 +1,6 @@
 package com.gsm.chwijuntime.model.tagmapping;
 
 import com.gsm.chwijuntime.model.ContractingCompany;
-import com.gsm.chwijuntime.model.EmploymentAnnouncement;
 import com.gsm.chwijuntime.model.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

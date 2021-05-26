@@ -1,6 +1,5 @@
 package com.gsm.chwijuntime.repository;
 
-import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
 import com.gsm.chwijuntime.model.CompanyReview;
 import com.gsm.chwijuntime.model.Member;
 import io.lettuce.core.dynamic.annotation.Param;

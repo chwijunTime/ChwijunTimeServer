@@ -2,7 +2,6 @@ package com.gsm.chwijuntime.config;
 
 import com.gsm.chwijuntime.handler.CustomAccessDeniedHandler;
 import com.gsm.chwijuntime.handler.CustomAuthenticationEntryPointHandler;
-import com.gsm.chwijuntime.service.member.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

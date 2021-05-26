@@ -4,7 +4,10 @@ import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
-import com.gsm.chwijuntime.model.*;
+import com.gsm.chwijuntime.model.ApplicationEmployment;
+import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
+import com.gsm.chwijuntime.model.EmploymentAnnouncement;
+import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.repository.ApplicationEmploymentRepository;
 import com.gsm.chwijuntime.repository.EmploymentAnnouncementRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
@@ -104,11 +107,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Override
     public void acceptApplication(Long idx) {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(NotFoundApplicationEmploymentException::new);
-        if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
-            throw new RequestAlreadyApprovedException("이미 승인된 요청입니다.");
-        } else if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Reject)){
-            throw new RequestAlreadyRejectedException("이미 거절된 요청입니다.");
-        }
+        requestCheck(applicationEmployment);
         applicationEmployment.changeApplicationEmploymentStatusApprove();
     }
 
@@ -116,11 +115,15 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Override
     public void rejectApplication(Long idx) {
         ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(NotFoundApplicationEmploymentException::new);
+        requestCheck(applicationEmployment);
+        applicationEmployment.changeApplicationEmploymentStatusApproveReject();
+    }
+
+    private void requestCheck(ApplicationEmployment applicationEmployment){
         if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){
             throw new RequestAlreadyApprovedException("이미 승인된 요청입니다.");
         } else if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Reject)){
             throw new RequestAlreadyRejectedException("이미 거절된 요청입니다.");
         }
-        applicationEmployment.changeApplicationEmploymentStatusApproveReject();
     }
 }

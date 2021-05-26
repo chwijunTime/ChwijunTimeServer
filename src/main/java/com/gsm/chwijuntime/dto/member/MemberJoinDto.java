@@ -1,13 +1,12 @@
 package com.gsm.chwijuntime.dto.member;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gsm.chwijuntime.advice.exception.NotFoundApplicationEmploymentException;
 import com.gsm.chwijuntime.model.Member;
-import com.gsm.chwijuntime.model.Tag;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Collections;
 

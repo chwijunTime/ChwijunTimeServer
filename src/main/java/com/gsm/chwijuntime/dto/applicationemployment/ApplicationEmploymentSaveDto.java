@@ -8,10 +8,7 @@ import com.gsm.chwijuntime.model.Member;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter

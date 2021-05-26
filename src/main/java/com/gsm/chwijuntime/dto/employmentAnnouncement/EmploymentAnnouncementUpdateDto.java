@@ -2,7 +2,6 @@ package com.gsm.chwijuntime.dto.employmentAnnouncement;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
-import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.model.tagmapping.EmploymentAnnouncementTag;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
