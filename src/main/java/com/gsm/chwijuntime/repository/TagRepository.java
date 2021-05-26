@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
-
     Tag findByTagName(String tagName);
 
     @Query("select t from Tag t order by t.tagIdx desc")
