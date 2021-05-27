@@ -90,7 +90,7 @@ public class TipsStorageController {
     })
     @ResponseBody
     @ApiOperation(value = "꿀팁 키워드 검색(회사 이름)", notes = "사용자가 키워드를 검색한다.")
-    @GetMapping("/tips-storage-keyword}")
+    @GetMapping("/tips-storage-keyword")
     public ListResult<TipsStorageResDto> findByKeword(@RequestParam String keyword){
         List<TipsStorageResDto> byWorkCompanyName = tipsStorageService.findByWorkCompanyName(keyword);
         return responseService.getListResult(byWorkCompanyName);
