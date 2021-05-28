@@ -34,17 +34,11 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     @Override
     public void application(Long employmentAnnouncementIdx, ApplicationEmploymentSaveDto applicationemploymentSaveDto) {
         EmploymentAnnouncement findMyEmploymentAnnouncement = employmentAnnouncementRepository.findById(employmentAnnouncementIdx).orElseThrow(NotFoundEmploymentAnnouncementException::new);
-        // 신청 여부 판별
-        Optional<ApplicationEmployment> byEmploymentAnnouncement = applicationEmploymentRepository.findByEmploymentAnnouncement(findMyEmploymentAnnouncement);
-        if (byEmploymentAnnouncement.isEmpty()) {
-            //공고 날짜/신청 날짜 비교
-            int compare = applicationemploymentSaveDto.getLocalDate().compareTo(findMyEmploymentAnnouncement.getDeadLine());
-            compareToDate(compare);
-            Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
-            applicationEmploymentRepository.save(applicationemploymentSaveDto.toEntityByApplicationEmployment(findMember, findMyEmploymentAnnouncement));
-        } else {
-            throw new RedundantApplicationException();
-        }
+        //공고 날짜/신청 날짜 비교
+        int compare = applicationemploymentSaveDto.getLocalDate().compareTo(findMyEmploymentAnnouncement.getDeadLine());
+        compareToDate(compare);
+        Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        applicationEmploymentRepository.save(applicationemploymentSaveDto.toEntityByApplicationEmployment(findMember, findMyEmploymentAnnouncement));
     }
 
     @Override
