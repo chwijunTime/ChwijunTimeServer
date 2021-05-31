@@ -46,6 +46,7 @@ public class EmploymentConfirmation {
     private Member member;
 
     public void changeEmploymentConfirmation(EmploymentConfirmationUpdateDto employmentConfirmationUpdateDto){
+        this.studentName = employmentConfirmationUpdateDto.getStudentName();
         this.employmentConfirmationName = employmentConfirmationUpdateDto.getEmploymentConfirmationName();
         this.employmentConfirmationAreas = employmentConfirmationUpdateDto.getEmploymentConfirmationAreas();
         this.employmentConfirmationAddress = employmentConfirmationUpdateDto.getEmploymentConfirmationAddress();

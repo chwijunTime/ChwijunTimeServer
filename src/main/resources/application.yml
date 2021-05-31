@@ -45,13 +45,10 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
-        format_sql: true
         temp:
           use_jdbc_metadata_defaults: false
         hbm2ddl:
           auto: create
-    show-sql: true
-    open-in-view: false
 
   #Redis
   cache:

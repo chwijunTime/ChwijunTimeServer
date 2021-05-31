@@ -17,6 +17,7 @@ import com.gsm.chwijuntime.repository.TagRepository;
 import com.gsm.chwijuntime.repository.tag.EmploymentConfirmationTagRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class EmploymentConfirmationServiceImpl implements EmploymentConfirmationService {
 
     private final GetUserEmailUtil getUserEmailUtil;
@@ -40,6 +42,7 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
     @Override
     public void EmploymentConfirmationServiceSave(EmploymentConfirmationSaveDto employmentConfirmationSaveDto) {
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        log.info(employmentConfirmationSaveDto.getEmploymentConfirmationName());
         employmentConfirmationRepository.save(employmentConfirmationSaveDto.toEntityByEmploymentConfirmation(member));
         for(String i : employmentConfirmationSaveDto.getTagName()) {
             Tag tag = tagRepository.findByTagName(i);
