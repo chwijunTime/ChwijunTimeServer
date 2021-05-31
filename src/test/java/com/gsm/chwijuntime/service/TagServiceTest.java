@@ -20,7 +20,10 @@ import static org.junit.Assert.fail;
 
 @Slf4j
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(properties = "spring.config.location=" +
+        "classpath:/application.yml" +
+        ",classpath:/key.yml"
+)
 @Transactional
 public class TagServiceTest {
 
