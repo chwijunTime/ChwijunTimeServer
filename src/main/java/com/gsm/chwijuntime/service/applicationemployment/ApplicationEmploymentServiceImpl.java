@@ -76,7 +76,6 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
         } else if(status.equals(ApplicationEmploymentStatus.All)){
             applicationEmploymentStatus = applicationEmploymentRepository.findAll();
         }
-
         return getFindAllApplicationResDtos(findAllApplicationResDtos, applicationEmploymentStatus);
     }
 
