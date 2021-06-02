@@ -13,6 +13,6 @@ public interface CorrectionApplyRepository extends JpaRepository<CorrectionApply
 
     List<CorrectionApply> findByMember(Member member);
 
-    @Query("select c from Correction c join fetch c.correctionApply order by c.correctionIdx desc")
+    @Query("select c from CorrectionApply c order by c.correctionApplyIdx desc")
     List<CorrectionApply> findAll();
 }

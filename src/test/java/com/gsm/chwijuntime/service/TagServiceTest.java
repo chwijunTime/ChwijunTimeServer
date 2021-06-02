@@ -28,10 +28,7 @@ import static org.junit.Assert.fail;
 public class TagServiceTest {
 
     @Autowired
-    private TagRepository tagRepository;
-    @Autowired
     private TagService tagService;
-
 
     @Before
     public void 태그_저장() throws Exception {

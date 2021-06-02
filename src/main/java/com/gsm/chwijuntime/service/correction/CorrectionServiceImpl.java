@@ -33,7 +33,6 @@ public class CorrectionServiceImpl implements CorrectionService {
     @Transactional
     @Override
     public void saveCorrectionApply(Long idx, CorrectionType correctionType) throws Exception {
-        checkCorrectionApply(idx);
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         if (correctionType.equals(CorrectionType.Resume)) {
             MemberResume memberResume = memberResumeRepository.findById(idx).orElseThrow(NotFoundResumeException::new);
@@ -63,7 +62,6 @@ public class CorrectionServiceImpl implements CorrectionService {
     @Transactional
     @Override
     public void requestApproval(Long idx, CorrectionApprovalSaveDto correctionApprovalSaveDto) throws Exception {
-        checkAdmin(idx);
         CorrectionApply correctionApply = correctionApplyRepository.findById(idx).orElseThrow(NotFoundCorrectionApply::new);
         correctionApply.changeApproval();
         correctionRepository.save(correctionApprovalSaveDto.toEntityByApproval(correctionApply));
@@ -73,7 +71,6 @@ public class CorrectionServiceImpl implements CorrectionService {
     @Transactional
     @Override
     public void requestRejection(Long idx, CorrectionRejectionSaveDto correctionRejectionSaveDto) throws Exception {
-        checkAdmin(idx);
         CorrectionApply correctionApply = correctionApplyRepository.findById(idx).orElseThrow(NotFoundCorrectionApply::new);
         correctionApply.changeRejection();
         correctionRepository.save(correctionRejectionSaveDto.toEntityByApproval(correctionApply));

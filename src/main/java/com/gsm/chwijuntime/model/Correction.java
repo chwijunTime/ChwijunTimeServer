@@ -24,7 +24,7 @@ public class Correction {
 
     private String reasonForRejection;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "correctionApplyIdx")
     private CorrectionApply correctionApply;
 }
