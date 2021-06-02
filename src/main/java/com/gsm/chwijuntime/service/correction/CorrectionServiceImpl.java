@@ -43,25 +43,11 @@ public class CorrectionServiceImpl implements CorrectionService {
         }
     }
 
-    private void checkCorrectionApply(Long idx) throws Exception {
-        Optional<CorrectionApply> byId = correctionApplyRepository.findById(idx);
-        if (byId.isEmpty()){
-            return;
-        } else {
-            if(byId.get().getCorrectionStatus().equals(CorrectionStatus.Correction_Applying)){
-                throw new Exception("이미 신청 중입니다.");
-            } else if(byId.get().getCorrectionStatus().equals(CorrectionStatus.Correction_Rejection)) {
-                throw new Exception("이미 거절 되었습니다.");
-            } else if(byId.get().getCorrectionStatus().equals(CorrectionStatus.Correction_Successful)) {
-                throw new Exception("이미 첨삭 되었습니다.");
-            }
-        }
-    }
-
     // 관리자 요청 승인 & 첨삭
     @Transactional
     @Override
     public void requestApproval(Long idx, CorrectionApprovalSaveDto correctionApprovalSaveDto) throws Exception {
+        checkAdmin(idx);
         CorrectionApply correctionApply = correctionApplyRepository.findById(idx).orElseThrow(NotFoundCorrectionApply::new);
         correctionApply.changeApproval();
         correctionRepository.save(correctionApprovalSaveDto.toEntityByApproval(correctionApply));
@@ -71,6 +57,7 @@ public class CorrectionServiceImpl implements CorrectionService {
     @Transactional
     @Override
     public void requestRejection(Long idx, CorrectionRejectionSaveDto correctionRejectionSaveDto) throws Exception {
+        checkAdmin(idx);
         CorrectionApply correctionApply = correctionApplyRepository.findById(idx).orElseThrow(NotFoundCorrectionApply::new);
         correctionApply.changeRejection();
         correctionRepository.save(correctionRejectionSaveDto.toEntityByApproval(correctionApply));

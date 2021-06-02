@@ -1,6 +1,7 @@
 package com.gsm.chwijuntime.repository;
 
 import com.gsm.chwijuntime.model.CorrectionApply;
+import com.gsm.chwijuntime.model.CorrectionType;
 import com.gsm.chwijuntime.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +16,6 @@ public interface CorrectionApplyRepository extends JpaRepository<CorrectionApply
 
     @Query("select c from CorrectionApply c order by c.correctionApplyIdx desc")
     List<CorrectionApply> findAll();
+
+    CorrectionApply findByCorrectionApplyIdxAndCorrectionType(Long idx, CorrectionType correctionType);
 }
