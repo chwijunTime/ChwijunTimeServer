@@ -1,9 +1,6 @@
 package com.gsm.chwijuntime.service.correction;
 
-import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
-import com.gsm.chwijuntime.advice.exception.NotFoundCorrectionApply;
-import com.gsm.chwijuntime.advice.exception.NotFoundPortfolioException;
-import com.gsm.chwijuntime.advice.exception.NotFoundResumeException;
+import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.correction.CorrectionApplySaveDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionApprovalSaveDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionRejectionSaveDto;
@@ -79,15 +76,15 @@ public class CorrectionServiceImpl implements CorrectionService {
         return byClassNumber;
     }
 
-    private void checkAdmin(Long idx) throws Exception {
+    private void checkAdmin(Long idx) {
         Optional<CorrectionApply> byId = correctionApplyRepository.findById(idx);
         if (byId.isEmpty()){
             return;
         } else {
             if(byId.get().getCorrectionStatus().equals(CorrectionStatus.Correction_Rejection)) {
-                throw new Exception("이미 거절 되었습니다.");
+                throw new RequestAlreadyRejectedException();
             } else if(byId.get().getCorrectionStatus().equals(CorrectionStatus.Correction_Successful)) {
-                throw new Exception("이미 첨삭 되었습니다.");
+                throw new RequestAlreadyApprovedException();
             }
         }
     }
