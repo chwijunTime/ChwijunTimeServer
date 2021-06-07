@@ -11,12 +11,12 @@ spring:
   profiles:
     active: dev
 
-#  # 데이터 베이스 설정
+# 데이터 베이스 설정
 #  datasource:
-#    url: jdbc:mysql://192.168.0.9:3306/chwijuntime
+#    url: jdbc:mysql://10.120.71.242:3306/chwijuntime
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-#    username: userId
-#    password: pwd12345
+#    username: root
+#    password: ksh03050621
 #  jpa:
 #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 #    show-sql: true
@@ -29,7 +29,7 @@ spring:
 #        hbm2ddl:
 #          auto: none
 
-  # 데이터 베이스 설정
+# 데이터 베이스 설정
   h2:
     console:
       enabled: true
