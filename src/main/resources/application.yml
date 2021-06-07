@@ -103,7 +103,7 @@ spring:
   cache:
     type: redis
   redis:
-    host: localhost
+    host: 10.53.68.170
     port: 6379
   data:
     redis:
