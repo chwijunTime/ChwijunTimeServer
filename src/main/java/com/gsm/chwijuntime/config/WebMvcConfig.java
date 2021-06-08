@@ -1,6 +1,5 @@
 package com.gsm.chwijuntime.config;
 
-import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -29,7 +28,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-
         converters.add(htmlEscapingConverter());
     }
 
@@ -40,15 +38,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Bean
     public HttpMessageConverter htmlEscapingConverter() {
-
         ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.getFactory().setCharacterEscapes(new HTMLCharacterEscapes()); //  xss 처리 문자 세팅
-
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-        MappingJackson2HttpMessageConverter htmlEscapingConverter =
-                new MappingJackson2HttpMessageConverter();
+        MappingJackson2HttpMessageConverter htmlEscapingConverter = new MappingJackson2HttpMessageConverter();
         htmlEscapingConverter.setObjectMapper(objectMapper);
         return htmlEscapingConverter;
     }
