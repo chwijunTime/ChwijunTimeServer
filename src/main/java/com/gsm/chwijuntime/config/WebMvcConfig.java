@@ -25,17 +25,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .exposedHeaders("Authorization");	//make client read header("Authorization")
     }
 
-//    @Override
-//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        converters.add(escapingConverter());
-//    }
-//
-//    @Bean
-//    public HttpMessageConverter escapingConverter() {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.getFactory().setCharacterEscapes(new HTMLCharacterEscapes());
-//        MappingJackson2HttpMessageConverter escapingConverter = new MappingJackson2HttpMessageConverter();
-//        escapingConverter.setObjectMapper(objectMapper);
-//        return escapingConverter;
-//    }
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(escapingConverter());
+    }
+
+    @Bean
+    public HttpMessageConverter escapingConverter() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.getFactory().setCharacterEscapes(new HTMLCharacterEscapes());
+        MappingJackson2HttpMessageConverter escapingConverter = new MappingJackson2HttpMessageConverter();
+        escapingConverter.setObjectMapper(objectMapper);
+        return escapingConverter;
+    }
 }
