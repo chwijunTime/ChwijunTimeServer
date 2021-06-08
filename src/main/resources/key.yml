@@ -1,0 +1,38 @@
+spring:
+  # JWT key 설정
+  jwt:
+    secret: KimdddsIdDidkSidjdpSJd937sdjdfjKJFudDjksdfdfi435k34tjHDKHd8iudsfFHkf8D8fKF9FDkl43ewlsdaf8dsafjk23KDF99dfF8fd6FDjDFasdfkkweqrk89DFuhsdfklsdaf98sdf98FDS89dfsjkHJK98DS98KFHD
+
+  # Gmail SMTP Server Settings
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: s19066@gsm.hs.kr
+    password: iiqrerusxvwowahk
+    properties:
+      mail:
+        smtp:
+          timeout: 9999
+          auth: true
+          starttls:
+            enable: true
+
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
+
+bucket4j:
+  enabled: true
+  filters[0]:
+    cache-name: buckets
+    filter-method: servlet
+    url: .*
+    filters[0]:
+      rate-limits[0]:
+        bandwidths[0]:
+          capacity: 10
+          time: 1
+          unit: minutes
+          fixed-refill-interval: 0
+          fixed-refill-interval-unit: minutes
+        expression: getRemoteAddress()
