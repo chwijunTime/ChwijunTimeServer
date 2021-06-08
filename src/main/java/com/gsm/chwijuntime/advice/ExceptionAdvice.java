@@ -37,7 +37,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(Exception.class)
     protected CommonResult defaultException(HttpServletRequest request, Exception e) {
-        return responseService.getFailResult(Integer.valueOf(getMessage("unKnown.code")), e.getMessage());
+        return responseService.getFailResult(Integer.parseInt(getMessage("unKnown.code")), e.getMessage());
     }
 
     // 로그인이 안됬을 경우
