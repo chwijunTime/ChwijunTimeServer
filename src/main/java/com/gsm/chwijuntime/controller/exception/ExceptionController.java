@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ExceptionController {
 
-    private final ResponseService responseService;
-
     @GetMapping("/accessdenied")
     public CommonResult AccessDenied() {
         throw new AccessDeniedException("");
