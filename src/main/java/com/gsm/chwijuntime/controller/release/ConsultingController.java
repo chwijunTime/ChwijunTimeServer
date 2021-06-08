@@ -92,7 +92,7 @@ public class ConsultingController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @GetMapping("/consulting-user")
+    @GetMapping("/admin/consulting-user")
     public ListResult<ConsultingUserResDto> findAll() {
         List<ConsultingUserResDto> all = consultingUserService.findAll();
         return responseService.getListResult(all);
