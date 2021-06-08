@@ -34,6 +34,12 @@ public class ExceptionAdvice {
         return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(Exception.class)
+    protected CommonResult defaultException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("unKnown.code")), e.getMessage());
+    }
+
     // 로그인이 안됬을 경우
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(CAuthenticationEntryPointException.class)
