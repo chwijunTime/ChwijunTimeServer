@@ -1,10 +1,12 @@
 package com.gsm.chwijuntime.controller.exception;
 
+import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +24,11 @@ public class ExceptionController {
 
     @GetMapping("/accessdenied")
     public CommonResult AccessDenied() {
-        return responseService.getFailResult(403, "관리자의 권한이 필요합니다.");
+        throw new AccessDeniedException("");
     }
     
     @GetMapping("/entrypoint")
-    public CommonResult EntryPoint() {
-        return responseService.getFailResult(401, "로그인이 필요합니다.");
+    public void EntryPoint() {
+        throw new CAuthenticationEntryPointException();
     }
 }
