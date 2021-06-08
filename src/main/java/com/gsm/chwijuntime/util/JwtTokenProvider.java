@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -54,17 +55,19 @@ public class JwtTokenProvider {
     }
 
     public String generateToken(Member member) {
-        return doGenerateToken(member.getMemberEmail(), TOKEN_VALIDATION_SECOND);
+        return doGenerateToken(member.getMemberEmail(), member.getRoles(), member.getMemberClassNumber(), TOKEN_VALIDATION_SECOND);
     }
 
     public String generateRefreshToken(Member member) {
-        return doGenerateToken(member.getMemberEmail(), REFRESH_TOKEN_VALIDATION_SECOND);
+        return doGenerateToken(member.getMemberEmail(), member.getRoles(), member.getMemberClassNumber(), REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
-    public String doGenerateToken(String userEmail, long expireTime) {
+    public String doGenerateToken(String userEmail, List<String> roles, String classNumber, long expireTime) {
 
         Claims claims = Jwts.claims();
         claims.put("userEmail", userEmail);
+        claims.put("classNumber", classNumber);
+        claims.put("roles", roles);
 
         String jwt = Jwts.builder()
                 .setClaims(claims)
