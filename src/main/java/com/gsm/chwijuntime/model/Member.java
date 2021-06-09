@@ -8,10 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -107,5 +104,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     public void change_password(String password){
         this.memberPassword = password;
+    }
+
+    public void change_roles() {
+        this.roles = Collections.singletonList("ROLE_Admin");
     }
 }
