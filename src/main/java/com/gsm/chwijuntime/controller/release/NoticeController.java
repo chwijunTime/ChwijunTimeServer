@@ -34,7 +34,7 @@ public class NoticeController {
     })
     @ResponseBody
     @ApiOperation(value = "공지사항 저장", notes = "관리자가 공지사항를 저장한다.")
-    @PostMapping("/notice")
+    @PostMapping("/admin/notice")
     public CommonResult noticeSave(@Valid @RequestBody NoticeSaveDto noticeSaveDto){
         noticeService.save(noticeSaveDto);
         return responseService.getSuccessResult();
