@@ -242,4 +242,11 @@ public class ExceptionAdvice {
     public CommonResult NotFoundRequestTagException(HttpServletRequest request, NotFoundRequestTagException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundRequestTagException.code")), getMessage("NotFoundRequestTagException.msg"));
     }
+
+    // 태그 중복
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(DuplicateTagNameException.class)
+    public CommonResult DuplicateTagNameException(HttpServletRequest request, DuplicateTagNameException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("DuplicateTagNameException.code")), getMessage("DuplicateTagNameException.msg"));
+    }
 }

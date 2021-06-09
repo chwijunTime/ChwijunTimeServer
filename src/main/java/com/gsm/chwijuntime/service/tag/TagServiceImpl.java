@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.service.tag;
 
+import com.gsm.chwijuntime.advice.exception.DuplicateTagNameException;
 import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.dto.tag.TagSaveDto;
 import com.gsm.chwijuntime.model.Tag;
@@ -26,8 +27,7 @@ public class TagServiceImpl implements TagService {
         if(byTagName == null) {
             tagRepository.save(tagSaveDto.toEntity());
         } else {
-            System.out.println("태그 중복");
-            return;
+            throw new DuplicateTagNameException();
         }
     }
 

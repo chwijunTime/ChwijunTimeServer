@@ -37,7 +37,7 @@ public class ConsultingController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PostMapping("/consulting-admin")
+    @PostMapping("/admin/consulting-admin")
     public CommonResult saveConsulting(@RequestBody ConsultingAdminSaveDto consultingAdminSaveDto) {
         consultingAdminService.saveConsultingAdmin(consultingAdminSaveDto);
         return responseService.getSuccessResult();
@@ -70,7 +70,7 @@ public class ConsultingController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @DeleteMapping("/consulting-admin/{consultingIdx}")
+    @DeleteMapping("/admin/consulting-admin/{consultingIdx}")
     public CommonResult deleteByIdx(@PathVariable Long consultingIdx) {
         consultingAdminService.deleteConsultingAdmin(consultingIdx);
         return responseService.getSuccessResult();

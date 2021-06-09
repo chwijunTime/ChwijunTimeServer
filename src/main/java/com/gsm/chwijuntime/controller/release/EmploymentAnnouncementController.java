@@ -41,7 +41,7 @@ public class EmploymentAnnouncementController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PostMapping("/employment-announcement")
+    @PostMapping("/admin/employment-announcement")
     public CommonResult save(@Valid @RequestBody EmploymentAnnouncementSaveDto employmentAnnouncementSaveDto) {
         employmentAnnouncementService.EmploymentAnnouncementSave(employmentAnnouncementSaveDto);
         return responseService.getSuccessResult();
@@ -74,7 +74,7 @@ public class EmploymentAnnouncementController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PutMapping("/employment-announcement/{employmentAnnouncementIdx}")
+    @PutMapping("/admin/employment-announcement/{employmentAnnouncementIdx}")
     public CommonResult update(@PathVariable Long employmentAnnouncementIdx, @Valid @RequestBody EmploymentAnnouncementUpdateDto employmentAnnouncementUpdateDto) {
         employmentAnnouncementService.updateEmploymentAnnouncement(employmentAnnouncementIdx, employmentAnnouncementUpdateDto);
         return responseService.getSuccessResult();
@@ -85,7 +85,7 @@ public class EmploymentAnnouncementController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @DeleteMapping("/employment-announcement/{employmentAnnouncementIdx}")
+    @DeleteMapping("/admin/employment-announcement/{employmentAnnouncementIdx}")
     public CommonResult delete(@PathVariable Long employmentAnnouncementIdx) {
         employmentAnnouncementService.deleteEmploymentAnnouncement(employmentAnnouncementIdx);
         return responseService.getSuccessResult();
@@ -107,7 +107,7 @@ public class EmploymentAnnouncementController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @GetMapping("/application/{applicationIdx}")
+    @GetMapping("/admin/application/{applicationIdx}")
     public SingleResult<FindAllApplicationDetailResDto> FindAllApplicationByidx(@PathVariable Long applicationIdx) {
         FindAllApplicationDetailResDto findAllApplicationDetailResDto = applicationEmploymentService.applicationDetail(applicationIdx);
         return responseService.getSingleResult(findAllApplicationDetailResDto);
@@ -118,7 +118,7 @@ public class EmploymentAnnouncementController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PostMapping("/application-accept/{applicationIdx}")
+    @PostMapping("/admin/application-accept/{applicationIdx}")
     public CommonResult AcceptApplication(@PathVariable Long applicationIdx) throws Exception {
         applicationEmploymentService.acceptApplication(applicationIdx);
         return responseService.getSuccessResult();
@@ -129,7 +129,7 @@ public class EmploymentAnnouncementController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PostMapping("/application-reject/{applicationIdx}")
+    @PostMapping("/admin/application-reject/{applicationIdx}")
     public CommonResult Rejectpplication(@PathVariable Long applicationIdx) throws Exception {
         applicationEmploymentService.rejectApplication(applicationIdx);
         return responseService.getSuccessResult();
@@ -140,7 +140,7 @@ public class EmploymentAnnouncementController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @GetMapping("/application-status")
+    @GetMapping("/admin/application-status")
     public ListResult<FindAllApplicationResDto> findByStatus(@RequestParam ApplicationEmploymentStatus status) {
         List<FindAllApplicationResDto> byStatus = applicationEmploymentService.findByStatus(status);
         return responseService.getListResult(byStatus);

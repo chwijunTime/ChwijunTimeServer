@@ -28,7 +28,7 @@ public class DevController {
         return stringStringMap;
     }
 
-    @GetMapping("/duene/change/permissions")
+    @PostMapping("/duene/change/permissions")
     @ResponseBody
     public CommonResult ChangePermissions(@RequestParam String email){
         devService.ChangePermissions(email);

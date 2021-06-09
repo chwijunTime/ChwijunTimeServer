@@ -46,7 +46,7 @@ public class CorrectionController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PostMapping("/correction-rejection")
+    @PostMapping("/admin/correction-rejection")
     public CommonResult correctionRejection(@RequestParam Long idx, @RequestBody CorrectionRejectionSaveDto correctionRejectionSaveDto) throws Exception {
         correctionService.requestRejection(idx, correctionRejectionSaveDto);
         return responseService.getSuccessResult();
@@ -57,7 +57,7 @@ public class CorrectionController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PostMapping("/correction-approval")
+    @PostMapping("/admin/correction-approval")
     public CommonResult correctionApproval(@RequestParam Long idx, @RequestBody CorrectionApprovalSaveDto correctionApprovalSaveDto) throws Exception {
         correctionService.requestApproval(idx, correctionApprovalSaveDto);
         return responseService.getSuccessResult();
@@ -68,7 +68,7 @@ public class CorrectionController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @GetMapping("/correction/{idx}")
+    @GetMapping("/admin/correction/{idx}")
     public SingleResult<CorrectionApply> findByIdx(@PathVariable Long idx) {
         CorrectionApply byIdx = correctionService.findByIdx(idx);
         return responseService.getSingleResult(byIdx);
@@ -79,7 +79,7 @@ public class CorrectionController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @GetMapping("/correction")
+    @GetMapping("/admin/correction")
     public ListResult<CorrectionApply> findByAll() {
         List<CorrectionApply> all = correctionService.findAll();
         return responseService.getListResult(all);
