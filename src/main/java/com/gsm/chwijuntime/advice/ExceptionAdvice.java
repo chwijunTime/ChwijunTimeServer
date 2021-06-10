@@ -5,6 +5,7 @@ import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.DataException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -248,5 +249,12 @@ public class ExceptionAdvice {
     @ExceptionHandler(DuplicateTagNameException.class)
     public CommonResult DuplicateTagNameException(HttpServletRequest request, DuplicateTagNameException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("DuplicateTagNameException.code")), getMessage("DuplicateTagNameException.msg"));
+    }
+
+    // 글자 수 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(DataException.class)
+    public CommonResult DataException(HttpServletRequest request, DataException dataException) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("DataException.code")), getMessage("DataException.msg"));
     }
 }

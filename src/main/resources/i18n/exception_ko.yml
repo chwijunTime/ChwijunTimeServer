@@ -93,3 +93,6 @@ NotFoundTipsStorageException:
 DuplicateTagNameException:
   code: "-30"
   msg: "태그가 중복 되었습니다."
+DataException:
+  code: "-31"
+  msg: "입력 가능한 글자 수를 넘었습니다."
