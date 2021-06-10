@@ -28,7 +28,7 @@ public class CompanyReview {
     @Column(nullable = false)
     private String companyAddress;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String companyReviews;
 
     @Column(nullable = false)

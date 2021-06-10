@@ -20,8 +20,10 @@ public class Correction {
 
     private String classNumber;
 
+    @Column(length = 1000)
     private String correctionContent;
 
+    @Column(length = 1000)
     private String reasonForRejection;
 
     @ManyToOne(fetch = FetchType.EAGER)

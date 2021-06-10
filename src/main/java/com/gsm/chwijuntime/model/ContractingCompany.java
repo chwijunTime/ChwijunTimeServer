@@ -28,7 +28,7 @@ public class ContractingCompany {
     @Column(nullable = false)
     private String contractingCompanyAddress;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String contractingCompanyAboutUs;
 
     private String contractingCompanyAverageAnnualSalary;

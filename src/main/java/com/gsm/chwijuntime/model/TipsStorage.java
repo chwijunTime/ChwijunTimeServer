@@ -25,7 +25,7 @@ public class TipsStorage {
     @Column(nullable = false)
     private String workCompanyAddress;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String tipsInfo;
 
     // ============== 외래키(연관관계 주인) ================= //
