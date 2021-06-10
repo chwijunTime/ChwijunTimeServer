@@ -13,6 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+import static com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS;
+
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
@@ -39,6 +41,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public HttpMessageConverter htmlEscapingConverter() {
         ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(ALLOW_UNQUOTED_CONTROL_CHARS, true);
         objectMapper.getFactory().setCharacterEscapes(new HTMLCharacterEscapes()); //  xss 처리 문자 세팅
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
