@@ -196,11 +196,11 @@ public class ExceptionAdvice {
     }
 
     // 시간 타입 에러
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    @ExceptionHandler(HttpMessageNotReadableException.class)
-//    public CommonResult HttpMessageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException e) {
-//        return responseService.getFailResult(Integer.parseInt(getMessage("HttpMessageNotReadableException.code")), getMessage("HttpMessageNotReadableException.msg"));
-//    }
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public CommonResult HttpMessageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("HttpMessageNotReadableException.code")), getMessage("HttpMessageNotReadableException.msg"));
+    }
 
     // 토큰 만료 에러
     @ResponseStatus(HttpStatus.ACCEPTED)
