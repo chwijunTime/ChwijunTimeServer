@@ -1,11 +1,13 @@
 package com.gsm.chwijuntime.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,7 +20,8 @@ public class ConsultingAdmin {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long consultingIdx;
 
-    private String applicationDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    private LocalDateTime applicationDate;
 
     @Enumerated(EnumType.STRING)
     private ConsultingStatus consultingStatus;
