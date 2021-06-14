@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,7 +59,8 @@ public class ConsultingAdminServiceImpl implements ConsultingAdminService {
     @Transactional
     public void changeDeadline(List<ConsultingAdminResDto> consultingAdminResDtos) {
         for (ConsultingAdminResDto consultingAdminResDto : consultingAdminResDtos) {
-            LocalDateTime now = LocalDateTime.now();
+//          LocalDateTime now = LocalDateTime.now();
+            ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
             System.out.println("now = " + now);
             boolean after = consultingAdminResDto.getApplicationDate().isAfter(now);
             System.out.println("after = " + after);
