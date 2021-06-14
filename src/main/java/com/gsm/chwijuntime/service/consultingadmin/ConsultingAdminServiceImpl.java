@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,7 +63,7 @@ public class ConsultingAdminServiceImpl implements ConsultingAdminService {
 //          LocalDateTime now = LocalDateTime.now();
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
             System.out.println("now = " + now);
-            boolean after = consultingAdminResDto.getApplicationDate().isAfter(now);
+            boolean after = consultingAdminResDto.getApplicationDate().isAfter(ChronoLocalDateTime.from(now));
             System.out.println("after = " + after);
             if(!after) {
                 ConsultingAdmin admin = consultingAdminRepository.findById(consultingAdminResDto.getConsultingIdx()).orElseThrow(NotFoundConsultingAdminException::new);
