@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class NoticeSaveDto {
 
-    @NotBlank(message = "제목을 입력s해주세요.")
+    @NotBlank(message = "제목을 입력해주세요.")
     private String title;
 
     @NotBlank(message = "내용을 입력해주세요.")
