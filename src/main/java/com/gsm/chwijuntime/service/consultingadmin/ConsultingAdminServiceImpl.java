@@ -60,11 +60,8 @@ public class ConsultingAdminServiceImpl implements ConsultingAdminService {
     @Transactional
     public void changeDeadline(List<ConsultingAdminResDto> consultingAdminResDtos) {
         for (ConsultingAdminResDto consultingAdminResDto : consultingAdminResDtos) {
-//          LocalDateTime now = LocalDateTime.now();
             ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
-            System.out.println("now = " + now);
             boolean after = consultingAdminResDto.getApplicationDate().isAfter(ChronoLocalDateTime.from(now));
-            System.out.println("after = " + after);
             if(!after) {
                 ConsultingAdmin admin = consultingAdminRepository.findById(consultingAdminResDto.getConsultingIdx()).orElseThrow(NotFoundConsultingAdminException::new);
                 admin.changeConsultingStatus();
