@@ -8,6 +8,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.DataException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -181,17 +183,24 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.parseInt(getMessage("ConstraintViolationException.code")), getMessage("ConstraintViolationException.msg"));
     }
 
+    // 태그 삭제 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public CommonResult DataIntegrityViolationException(HttpServletRequest request, DataIntegrityViolationException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("ConstraintViolationException.code")), getMessage("ConstraintViolationException.msg"));
+    }
+
     // 신청 날짜 만료
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(ApplicationDateExpirationException.class)
-    public CommonResult IntegrationException(HttpServletRequest request, ApplicationDateExpirationException e) {
+    public CommonResult ApplicationDateExpirationException(HttpServletRequest request, ApplicationDateExpirationException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("ApplicationDateExpirationException.code")), getMessage("ApplicationDateExpirationException.msg"));
     }
 
     // URL 유효성 검사 에러
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(URLValidationException.class)
-    public CommonResult IntegrationException(HttpServletRequest request, URLValidationException e) {
+    public CommonResult URLValidationException(HttpServletRequest request, URLValidationException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("URLValidationException.code")), getMessage("URLValidationException.msg"));
     }
 
