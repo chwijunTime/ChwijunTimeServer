@@ -30,7 +30,6 @@ public class ContractingCompanySaveDto {
     @NotBlank(message = "기타 정보를 입력해주세요.")
     private String contractingCompanyAboutUs;
 
-    @NotBlank(message = "평균 연봉을 입력해주세요.")
     private String contractingCompanyAverageAnnualSalary;
 
     private List<String> tagName;

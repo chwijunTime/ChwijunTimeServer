@@ -22,9 +22,7 @@ public class MemberProfileSaveDto {
     @NotEmpty(message = "태그를 1개 이상 등록해주세요.")
     private List<String> tagName;
 
-    @NotBlank(message = "전화번호를 입력해주세요.")
     private String memberPhoneNumber;
-
     private String memberETC;
 
     @JsonIgnore

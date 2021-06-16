@@ -37,7 +37,6 @@ public class CompanyReviewSaveDto {
     @NotBlank(message = "자주 물어본 질문을 입력해주세요.")
     private String companyFrequentlyAskedQuestions;
 
-    @Positive(message = "비용을 입력해주세요.")
     private int companyCost; // 면접 과정중 사용된 비용
 
     @NotEmpty(message = "태그를 1개 이상 등록해주세요.")
