@@ -84,6 +84,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
             Member member = applicationEmployment.getMember();
             EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();
             FindAllApplicationResDto build = FindAllApplicationResDto.builder()
+                    .localDate(applicationEmployment.getApplicationDate())
                     .applicationEmploymentIdx(applicationEmployment.getApplicationEmploymentIdx())
                     .applicationEmploymentStatus(applicationEmployment.getApplicationEmploymentStatus())
                     .memberClassNumber(member.getMemberClassNumber())

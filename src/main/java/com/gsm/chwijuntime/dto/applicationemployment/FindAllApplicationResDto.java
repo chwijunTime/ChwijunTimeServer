@@ -3,6 +3,8 @@ package com.gsm.chwijuntime.dto.applicationemployment;
 import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,5 +19,7 @@ public class FindAllApplicationResDto {
     private String employmentAnnouncementName;
     private String recruitmentField;
     private ApplicationEmploymentStatus applicationEmploymentStatus;
+    private LocalDate localDate;
+
 
 }

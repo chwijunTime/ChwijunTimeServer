@@ -20,21 +20,20 @@ public class CompanyReview {
     private Long companyReviewIdx;
 
     @Column(nullable = false)
-    private String companyName;
+    private String companyName;  //회사 이름
+
+    private LocalDate companyDateofApplication;  //지원 날짜
 
     @Column(nullable = false)
-    private LocalDate companyDateofApplication;
+    private String companyAddress;  //회사 주소
 
-    @Column(nullable = false)
-    private String companyAddress;
+    @Column(nullable = false, length = 50000)
+    private String companyReviews; //회사 리뷰
 
-    @Column(nullable = false, length = 1000)
-    private String companyReviews;
+    @Column(nullable = false, length = 50000)
+    private String companyFrequentlyAskedQuestions;  //자주 나온 질문
 
-    @Column(nullable = false)
-    private String companyFrequentlyAskedQuestions;
-
-    private int companyCost;
+    private int companyCost;  //사용한 비용
 
     // =============== 외래키(연관관계 주인) ================= //
     @ManyToOne(fetch = FetchType.LAZY)

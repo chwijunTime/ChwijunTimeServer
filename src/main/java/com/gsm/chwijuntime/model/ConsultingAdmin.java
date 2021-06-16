@@ -21,10 +21,10 @@ public class ConsultingAdmin {
     private Long consultingIdx;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime applicationDate;
+    private LocalDateTime applicationDate;   // 상담 날짜
 
     @Enumerated(EnumType.STRING)
-    private ConsultingStatus consultingStatus;
+    private ConsultingStatus consultingStatus;  //상담 상태
 
     // ================ 외래키(연관관계 주인) ================= //
     @ManyToOne(fetch = FetchType.LAZY)

@@ -25,23 +25,25 @@ public class EmploymentAnnouncement {
     private LocalDate announcementDate;    //공고 등록 날짜
 
     @Column(nullable = false)
-    private String employmentAnnouncementName;
+    private String employmentAnnouncementName;  //회사명
 
     @Column(nullable = false)
-    private String recruitmentField;
+    private String recruitmentField;   //채용 분야
+
+    @Column(length = 30000)
+    private String employmentAnnouncementExplanation; //회사 설명
 
     @Column(length = 10000)
-    private String employmentAnnouncementExplanation;
-
-    private String preferentialConditions;
+    private String preferentialConditions;   //우대 조건
 
     @Column(nullable = false)
-    private String employmentAnnouncementAddress;
+    private String employmentAnnouncementAddress;   // 회사 위치
 
     @Column(nullable = false)
     private LocalDate deadLine;
 
-    private String employmentAnnouncementEtc;
+    @Column(length = 10000)
+    private String employmentAnnouncementEtc;   //기타
 
     // ================== 외래키(연관관계 주인) ================== //
     @ManyToOne(fetch = FetchType.LAZY)

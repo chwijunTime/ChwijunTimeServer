@@ -18,7 +18,7 @@ public class MemberPortfolio {
     private Long memberPortfolioIdx;
 
     @Column(nullable = false)
-    private String notionPortfolioURL;
+    private String notionPortfolioURL;   //포트폴리오 URL (Notion)
 
     // ============= 외래키(연관관계 주인) ============== //
     @ManyToOne(fetch = FetchType.LAZY)
