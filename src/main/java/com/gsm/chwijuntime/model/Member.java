@@ -8,10 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -25,23 +22,23 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberIdx;
 
-    @Column(nullable = false)
-    private String memberEmail;
+    @Column(nullable = false, length = 100)
+    private String memberEmail;   //이메일
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false, length = 100)
-    private String memberPassword;
+    private String memberPassword;   //비밀번호
 
     @Column(nullable = false, length = 4)
-    private String memberClassNumber;
+    private String memberClassNumber;   //학번
 
     @Column(length = 13)
-    private String memberPhoneNumber;
+    private String memberPhoneNumber;  //전화번호
 
-    @Column
-    private String memberETC;
+    @Column(length = 500)
+    private String memberETC;  //기타 정보
 
-    private LocalDateTime memberCreated;
+    private LocalDateTime memberCreated;  //생성 날짜
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -107,5 +104,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     public void change_password(String password){
         this.memberPassword = password;
+    }
+
+    public void change_roles() {
+        this.roles = Collections.singletonList("ROLE_Admin");
     }
 }

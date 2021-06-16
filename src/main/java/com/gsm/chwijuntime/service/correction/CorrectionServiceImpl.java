@@ -1,9 +1,6 @@
 package com.gsm.chwijuntime.service.correction;
 
-import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
-import com.gsm.chwijuntime.advice.exception.NotFoundCorrectionApply;
-import com.gsm.chwijuntime.advice.exception.NotFoundPortfolioException;
-import com.gsm.chwijuntime.advice.exception.NotFoundResumeException;
+import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.correction.CorrectionApplySaveDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionApprovalSaveDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionRejectionSaveDto;
@@ -33,7 +30,6 @@ public class CorrectionServiceImpl implements CorrectionService {
     @Transactional
     @Override
     public void saveCorrectionApply(Long idx, CorrectionType correctionType) throws Exception {
-        checkCorrectionApply(idx);
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         if (correctionType.equals(CorrectionType.Resume)) {
             MemberResume memberResume = memberResumeRepository.findById(idx).orElseThrow(NotFoundResumeException::new);
@@ -41,21 +37,6 @@ public class CorrectionServiceImpl implements CorrectionService {
         } else {
             MemberPortfolio memberPortfolio = memberPortfolioRepository.findById(idx).orElseThrow(NotFoundPortfolioException::new);
             correctionApplyRepository.save(correctionApplySaveDto.toEntityByCorrectionApplyMemberPortfolio(correctionType, memberPortfolio, member));
-        }
-    }
-
-    private void checkCorrectionApply(Long idx) throws Exception {
-        Optional<CorrectionApply> byId = correctionApplyRepository.findById(idx);
-        if (byId.isEmpty()){
-            return;
-        } else {
-            if(byId.get().getCorrectionStatus().equals(CorrectionStatus.Correction_Applying)){
-                throw new Exception("이미 신청 중입니다.");
-            } else if(byId.get().getCorrectionStatus().equals(CorrectionStatus.Correction_Rejection)) {
-                throw new Exception("이미 거절 되었습니다.");
-            } else if(byId.get().getCorrectionStatus().equals(CorrectionStatus.Correction_Successful)) {
-                throw new Exception("이미 첨삭 되었습니다.");
-            }
         }
     }
 
@@ -95,15 +76,15 @@ public class CorrectionServiceImpl implements CorrectionService {
         return byClassNumber;
     }
 
-    private void checkAdmin(Long idx) throws Exception {
+    private void checkAdmin(Long idx) {
         Optional<CorrectionApply> byId = correctionApplyRepository.findById(idx);
         if (byId.isEmpty()){
             return;
         } else {
             if(byId.get().getCorrectionStatus().equals(CorrectionStatus.Correction_Rejection)) {
-                throw new Exception("이미 거절 되었습니다.");
+                throw new RequestAlreadyRejectedException();
             } else if(byId.get().getCorrectionStatus().equals(CorrectionStatus.Correction_Successful)) {
-                throw new Exception("이미 첨삭 되었습니다.");
+                throw new RequestAlreadyApprovedException();
             }
         }
     }

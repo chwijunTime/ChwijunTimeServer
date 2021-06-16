@@ -17,10 +17,10 @@ public class CorrectionApply {
     private Long correctionApplyIdx;
 
     @Enumerated(EnumType.STRING)
-    private CorrectionStatus correctionStatus;
+    private CorrectionStatus correctionStatus;  // 첨삭 상태
 
     @Enumerated(EnumType.STRING)
-    private CorrectionType correctionType;
+    private CorrectionType correctionType;  //첨삭 타입
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "memberPortfolioIdx")

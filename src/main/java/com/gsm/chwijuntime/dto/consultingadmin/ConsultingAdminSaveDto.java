@@ -6,6 +6,7 @@ import com.gsm.chwijuntime.model.Member;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 public class ConsultingAdminSaveDto {
 
     @NotBlank(message = "가능한 상담 일자를 입력해주세요.")
-    private String applicationDate;
+    private LocalDateTime applicationDate;
 
     public ConsultingAdmin toEntityByConsultingAdmin(Member member) {
         return ConsultingAdmin.builder()

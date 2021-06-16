@@ -19,12 +19,12 @@ public class Notice {
     private Long noticeIdx;
 
     @Column(nullable = false)
-    private String title;
+    private String title;  //제목
 
-    @Column(nullable = false)
-    private String content;
+    @Column(nullable = false, length = 40000)
+    private String content;  //내용
 
-    private LocalDateTime createDated;
+    private LocalDateTime createDated;  // 작성 날짜
 
     // =================== 외래키(연관관계 주인) ================== //
     @ManyToOne(fetch = FetchType.EAGER)

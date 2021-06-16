@@ -35,7 +35,7 @@ public class EmploymentConfirmationController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PostMapping("/employment-confirmation")
+    @PostMapping("/admin/employment-confirmation")
     public CommonResult save(@Valid @RequestBody EmploymentConfirmationSaveDto employmentConfirmationSaveDto) {
         employmentConfirmationService.EmploymentConfirmationServiceSave(employmentConfirmationSaveDto);
         return responseService.getSuccessResult();
@@ -68,7 +68,7 @@ public class EmploymentConfirmationController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PutMapping("/employment-confirmation/{employmentConfirmationIdx}")
+    @PutMapping("/admin/employment-confirmation/{employmentConfirmationIdx}")
     public CommonResult updateByIdx(@PathVariable Long employmentConfirmationIdx, @Valid @RequestBody EmploymentConfirmationUpdateDto employmentConfirmationUpdateDto) {
         employmentConfirmationService.updateEmploymentConfirmation(employmentConfirmationIdx, employmentConfirmationUpdateDto);
         return responseService.getSuccessResult();
@@ -79,7 +79,7 @@ public class EmploymentConfirmationController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @DeleteMapping("/employment-confirmation/{employmentConfirmationIdx}")
+    @DeleteMapping("/admin/employment-confirmation/{employmentConfirmationIdx}")
     public CommonResult deleteByIdx(@PathVariable Long employmentConfirmationIdx) {
         employmentConfirmationService.deleteEmploymentConfirmation(employmentConfirmationIdx);
         return responseService.getSuccessResult();

@@ -76,7 +76,6 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
         } else if(status.equals(ApplicationEmploymentStatus.All)){
             applicationEmploymentStatus = applicationEmploymentRepository.findAll();
         }
-
         return getFindAllApplicationResDtos(findAllApplicationResDtos, applicationEmploymentStatus);
     }
 
@@ -85,6 +84,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
             Member member = applicationEmployment.getMember();
             EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();
             FindAllApplicationResDto build = FindAllApplicationResDto.builder()
+                    .localDate(applicationEmployment.getApplicationDate())
                     .applicationEmploymentIdx(applicationEmployment.getApplicationEmploymentIdx())
                     .applicationEmploymentStatus(applicationEmployment.getApplicationEmploymentStatus())
                     .memberClassNumber(member.getMemberClassNumber())

@@ -36,7 +36,7 @@ public class ContractingCompanyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PostMapping("/contracting-company")
+    @PostMapping("/admin/contracting-company")
     public CommonResult join(@Valid @RequestBody ContractingCompanySaveDto contractingCompanySaveDto) {
         contractingCompanyService.insertContractingCompany(contractingCompanySaveDto);
         return responseService.getSuccessResult();
@@ -69,7 +69,7 @@ public class ContractingCompanyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @DeleteMapping("/contracting-company/{companyidx}")
+    @DeleteMapping("/admin/contracting-company/{companyidx}")
     public CommonResult deleteById(@PathVariable Long companyidx) {
         contractingCompanyService.deleteContractingCompanyIdx(companyidx);
         return responseService.getSuccessResult();
@@ -80,7 +80,7 @@ public class ContractingCompanyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
     @ResponseBody
-    @PutMapping("/contracting-company/{companyidx}")
+    @PutMapping("/admin/contracting-company/{companyidx}")
     public CommonResult updateByIdx(@PathVariable Long companyidx, @Valid @RequestBody ContractionCompanyUpdateDto contractionCompanyUpdateDto) {
         contractingCompanyService.updateContractingCompany(companyidx, contractionCompanyUpdateDto);
         return responseService.getSuccessResult();

@@ -1,6 +1,7 @@
 package com.gsm.chwijuntime.service.requesttag;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.DuplicateTagNameException;
 import com.gsm.chwijuntime.advice.exception.NotFoundRequestTagException;
 import com.gsm.chwijuntime.dto.requesttag.RequestTagResDto;
 import com.gsm.chwijuntime.dto.requesttag.RequestTagSaveDto;
@@ -38,8 +39,7 @@ public class RequestTagServiceImpl implements RequestTagService {
         if(byRTagName == null) {
             requestTagRepository.save(requestTagSaveDto.toEntityRequestTag(member));
         } else {
-            System.out.println("태그 중복");
-            return;
+            throw new DuplicateTagNameException();
         }
     }
 

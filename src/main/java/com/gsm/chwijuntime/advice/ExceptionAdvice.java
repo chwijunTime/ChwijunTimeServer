@@ -5,8 +5,10 @@ import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.DataException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,6 +35,12 @@ public class ExceptionAdvice {
     // Code정보, 추가 Argument로 현재 Locale에 맞는 메시지를 조회합니다
     private String getMessage(String code, Object[] args) {
         return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(Exception.class)
+    protected CommonResult defaultException(HttpServletRequest request, Exception e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("unKnown.code")), e.getMessage());
     }
 
     // 로그인이 안됬을 경우
@@ -174,17 +183,24 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.parseInt(getMessage("ConstraintViolationException.code")), getMessage("ConstraintViolationException.msg"));
     }
 
+    // 태그 삭제 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public CommonResult DataIntegrityViolationException(HttpServletRequest request, DataIntegrityViolationException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("ConstraintViolationException.code")), getMessage("ConstraintViolationException.msg"));
+    }
+
     // 신청 날짜 만료
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(ApplicationDateExpirationException.class)
-    public CommonResult IntegrationException(HttpServletRequest request, ApplicationDateExpirationException e) {
+    public CommonResult ApplicationDateExpirationException(HttpServletRequest request, ApplicationDateExpirationException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("ApplicationDateExpirationException.code")), getMessage("ApplicationDateExpirationException.msg"));
     }
 
     // URL 유효성 검사 에러
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ExceptionHandler(URLValidationException.class)
-    public CommonResult IntegrationException(HttpServletRequest request, URLValidationException e) {
+    public CommonResult URLValidationException(HttpServletRequest request, URLValidationException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("URLValidationException.code")), getMessage("URLValidationException.msg"));
     }
 
@@ -235,5 +251,19 @@ public class ExceptionAdvice {
     @ExceptionHandler(NotFoundRequestTagException.class)
     public CommonResult NotFoundRequestTagException(HttpServletRequest request, NotFoundRequestTagException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("NotFoundRequestTagException.code")), getMessage("NotFoundRequestTagException.msg"));
+    }
+
+    // 태그 중복
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(DuplicateTagNameException.class)
+    public CommonResult DuplicateTagNameException(HttpServletRequest request, DuplicateTagNameException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("DuplicateTagNameException.code")), getMessage("DuplicateTagNameException.msg"));
+    }
+
+    // 글자 수 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(DataException.class)
+    public CommonResult DataException(HttpServletRequest request, DataException dataException) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("DataException.code")), getMessage("DataException.msg"));
     }
 }

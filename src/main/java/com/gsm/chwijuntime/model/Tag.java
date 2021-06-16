@@ -18,7 +18,7 @@ public class Tag {
     private Long tagIdx;
 
     @Column(nullable = false)
-    private String tagName;
+    private String tagName;   // 태그 이름
 
     public void changeTagName(String tagName) {
         this.tagName = tagName;

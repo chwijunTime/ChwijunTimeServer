@@ -20,18 +20,19 @@ public class ContractingCompany {
     private Long contractingCompanyIdx;
 
     @Column(nullable = false)
-    private String contractingCompanyName;
+    private String contractingCompanyName;  //회사 이름
+
+    @Column(nullable = false, length = 400)
+    private String contractingBusinessAreas;  //사업 분야
 
     @Column(nullable = false)
-    private String contractingBusinessAreas;
+    private String contractingCompanyAddress;  //회사 주소
 
-    @Column(nullable = false)
-    private String contractingCompanyAddress;
+    @Column(nullable = false, length = 10000)
+    private String contractingCompanyAboutUs;  //회사 소개
 
-    @Column(nullable = false)
-    private String contractingCompanyAboutUs;
-
-    private String contractingCompanyAverageAnnualSalary;
+    @Column(length = 2000)
+    private String contractingCompanyAverageAnnualSalary; //연봉
 
     // ================== 외래키(연관관계 주인) ================== //
     @ManyToOne(fetch = FetchType.LAZY)

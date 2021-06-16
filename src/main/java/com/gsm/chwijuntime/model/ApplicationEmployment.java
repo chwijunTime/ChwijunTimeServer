@@ -21,16 +21,16 @@ public class ApplicationEmployment {
     private Long applicationEmploymentIdx;
 
     @Column(nullable = false)
-    private String gitHubURL;
+    private String gitHubURL;  // 깃허브 URL
 
     @Column(nullable = false)
-    private String applicationEmploymentResumeURL;
+    private String applicationEmploymentResumeURL; // 이력서 URL (Notion)
 
     @Column(nullable = false)
-    private String applicationEmploymentPortfolioURL;
+    private String applicationEmploymentPortfolioURL;  // 포트폴리오 URL (Notion)
 
     @Enumerated(EnumType.STRING)
-    private ApplicationEmploymentStatus applicationEmploymentStatus;
+    private ApplicationEmploymentStatus applicationEmploymentStatus;  //신청 상태
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate applicationDate;  //지원 날짜

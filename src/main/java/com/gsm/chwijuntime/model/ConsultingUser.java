@@ -17,10 +17,10 @@ public class ConsultingUser {
     private Long consultingUserIdx;
 
     @Column(nullable = false)
-    private String consultingUserName;
+    private String consultingUserName;   // 신청자 이름
 
     @Column(nullable = false)
-    private String consultingUserClassNumber;
+    private String consultingUserClassNumber;  //신청자 학번
 
     // ================== 외래키(연관관계 주인) ==================== //
     @OneToOne(fetch = FetchType.LAZY)

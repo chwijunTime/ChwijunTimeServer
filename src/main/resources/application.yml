@@ -11,12 +11,12 @@ spring:
   profiles:
     active: dev
 
-#  # 데이터 베이스 설정
+# 데이터 베이스 설정
 #  datasource:
-#    url: jdbc:mysql://192.168.0.9:3306/chwijuntime
+#    url: jdbc:mysql://10.120.71.242:3306/chwijuntime
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-#    username: userId
-#    password: pwd12345
+#    username: root
+#    password: ksh03050621
 #  jpa:
 #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 #    show-sql: true
@@ -29,7 +29,7 @@ spring:
 #        hbm2ddl:
 #          auto: none
 
-  # 데이터 베이스 설정
+# 데이터 베이스 설정
   h2:
     console:
       enabled: true
@@ -45,10 +45,13 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
+        format_sql: true
         temp:
           use_jdbc_metadata_defaults: false
         hbm2ddl:
           auto: create
+    show-sql: true
+    open-in-view: false
 
   #Redis
   cache:
@@ -100,7 +103,7 @@ spring:
   cache:
     type: redis
   redis:
-    host: 10.120.71.242
+    host: 10.120.72.245
     port: 6379
   data:
     redis:

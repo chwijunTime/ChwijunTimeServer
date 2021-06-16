@@ -4,6 +4,7 @@ import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.advice.exception.NotFoundConsultingAdminException;
 import com.gsm.chwijuntime.dto.consultingadmin.ConsultingAdminResDto;
 import com.gsm.chwijuntime.dto.consultingadmin.ConsultingAdminSaveDto;
+import com.gsm.chwijuntime.model.ConsultingAdmin;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.repository.ConsultingAdminRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
@@ -13,6 +14,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.chrono.ChronoLocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,14 +47,26 @@ public class ConsultingAdminServiceImpl implements ConsultingAdminService {
     }
 
     @Override
+    @Transactional
     public List<ConsultingAdminResDto> findAll() {
         List<ConsultingAdminResDto> collect = consultingAdminRepository.findAll().stream()
                 .map(m -> mapper.map(m, ConsultingAdminResDto.class))
                 .collect(Collectors.toList());
         //날짜가 지난 상담은 걸러주기
-
-
+        changeDeadline(collect);
         return collect;
+    }
+
+    @Transactional
+    public void changeDeadline(List<ConsultingAdminResDto> consultingAdminResDtos) {
+        for (ConsultingAdminResDto consultingAdminResDto : consultingAdminResDtos) {
+            ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+            boolean after = consultingAdminResDto.getApplicationDate().isAfter(ChronoLocalDateTime.from(now));
+            if(!after) {
+                ConsultingAdmin admin = consultingAdminRepository.findById(consultingAdminResDto.getConsultingIdx()).orElseThrow(NotFoundConsultingAdminException::new);
+                admin.changeConsultingStatus();
+            }
+        }
     }
 
     @Transactional

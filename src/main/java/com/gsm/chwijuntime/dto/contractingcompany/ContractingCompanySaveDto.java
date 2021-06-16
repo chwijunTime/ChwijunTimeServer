@@ -33,7 +33,6 @@ public class ContractingCompanySaveDto {
     @NotBlank(message = "평균 연봉을 입력해주세요.")
     private String contractingCompanyAverageAnnualSalary;
 
-    @NotEmpty(message = "태그를 1개 이상 등록해주세요.")
     private List<String> tagName;
 
     @JsonIgnore

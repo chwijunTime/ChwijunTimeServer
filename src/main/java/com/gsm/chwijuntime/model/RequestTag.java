@@ -18,7 +18,7 @@ public class RequestTag {
     private Long tagIdx;
 
     @Column(nullable = false)
-    private String tagName;
+    private String tagName;   //요청 태그 이름
 
     // =================== 외래키(연관관계 주인) ================== //
     @ManyToOne(fetch = FetchType.EAGER)

@@ -20,25 +20,24 @@ public class EmploymentConfirmation {
     private Long employmentConfirmationIdx;
 
     @Column(nullable = false)
-    private String employmentConfirmationName;
+    private String employmentConfirmationName;  //회사 이름
 
     @Column(nullable = false)
-    private String employmentConfirmationAreas;
+    private String employmentConfirmationAreas;  //회사 지역
 
     @Column(nullable = false)
-    private String studentName;
+    private String studentName;  //학생 이름 김OO
 
     @Column(nullable = false)
-    private String employmentConfirmationJockey;
+    private String employmentConfirmationJockey;  //기수
 
     @Column(nullable = false)
-    private String employmentConfirmationAddress;
+    private String employmentConfirmationAddress;  //회사 위치
 
-    @Column(nullable = false)
-    private String employmentConfirmationSite;
+    private String employmentConfirmationSite; //회사 사이트
 
-    @Column(nullable = false)
-    private String employmentConfirmationEtc;
+    @Column(nullable = false, length = 2000)
+    private String employmentConfirmationEtc;  //기타 정보
 
     // =============== 외래키(연관관계 주인) ================= //
     @ManyToOne(fetch = FetchType.LAZY)

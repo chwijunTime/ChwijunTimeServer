@@ -34,7 +34,7 @@ public class NoticeController {
     })
     @ResponseBody
     @ApiOperation(value = "공지사항 저장", notes = "관리자가 공지사항를 저장한다.")
-    @PostMapping("/notice")
+    @PostMapping("/admin/notice")
     public CommonResult noticeSave(@Valid @RequestBody NoticeSaveDto noticeSaveDto){
         noticeService.save(noticeSaveDto);
         return responseService.getSuccessResult();
@@ -68,7 +68,7 @@ public class NoticeController {
     })
     @ResponseBody
     @ApiOperation(value = "공지사항 삭제", notes = "관리자가 공지사항을 삭제한다.")
-    @DeleteMapping("/notice/{noticeidx}")
+    @DeleteMapping("/admin/notice/{noticeidx}")
     public CommonResult delelteByIdx(@PathVariable Long noticeidx){
         noticeService.deleteById(noticeidx);
         return responseService.getSuccessResult();
@@ -79,7 +79,7 @@ public class NoticeController {
     })
     @ResponseBody
     @ApiOperation(value = "공지사항 업데이트", notes = "관리자가 공지사항을 업데이트 한다.")
-    @PutMapping("/notice/{noticeidx}")
+    @PutMapping("/admin/notice/{noticeidx}")
     public CommonResult updateByIdx(@PathVariable Long noticeidx, @Valid @RequestBody NoticeSaveDto noticeSaveDto){
         noticeService.updateId(noticeidx, noticeSaveDto);
         return responseService.getSuccessResult();

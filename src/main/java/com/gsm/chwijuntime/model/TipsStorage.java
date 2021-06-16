@@ -20,13 +20,13 @@ public class TipsStorage {
     private Long tipsStorageIdx;
 
     @Column(nullable = false)
-    private String workCompanyName;
+    private String workCompanyName;   // 자신이 다니는 회사 이름
 
     @Column(nullable = false)
-    private String workCompanyAddress;
+    private String workCompanyAddress; // 자신이 다니는 회사 위치
 
-    @Column(nullable = false)
-    private String tipsInfo;
+    @Column(nullable = false, length = 40000)
+    private String tipsInfo;   //꿀팁 정보
 
     // ============== 외래키(연관관계 주인) ================= //
     @ManyToOne(fetch = FetchType.EAGER)

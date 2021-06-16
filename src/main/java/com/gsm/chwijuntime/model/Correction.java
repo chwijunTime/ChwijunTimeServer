@@ -18,13 +18,16 @@ public class Correction {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long correctionIdx;
 
-    private String classNumber;
+    @Column(nullable = false)
+    private String classNumber;  //첨삭 학번
 
-    private String correctionContent;
+    @Column(length = 65000)
+    private String correctionContent;  //첨삭 내용
 
-    private String reasonForRejection;
+    @Column(length = 65000)
+    private String reasonForRejection;  //거절 이유
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "correctionApplyIdx")
     private CorrectionApply correctionApply;
 }

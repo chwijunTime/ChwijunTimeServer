@@ -18,7 +18,7 @@ public class MemberResume {
     private Long memberResumeIdx;
 
     @Column(nullable = false)
-    private String resumeFileURL;
+    private String resumeFileURL;   // 이력서 URL (Notion)
 
     // =============== 외래키(연관관계 주인) =============== //
     @ManyToOne(fetch = FetchType.LAZY)

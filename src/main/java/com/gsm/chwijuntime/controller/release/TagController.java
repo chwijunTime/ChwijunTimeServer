@@ -38,8 +38,8 @@ public class TagController {
     })
     @ResponseBody
     @ApiOperation(value = "태그 저장", notes = "관리자가 태그를 저장한다.")
-    @PostMapping("/tag")
-    public CommonResult tagSave(@Valid @RequestBody TagSaveDto tagSaveDto){
+    @PostMapping("/admin/tag")
+    public CommonResult tagSave(@Valid @RequestBody TagSaveDto tagSaveDto) {
         tagService.insertTag(tagSaveDto);
         return responseService.getSuccessResult();
     }
@@ -70,7 +70,7 @@ public class TagController {
     })
     @ResponseBody
     @ApiOperation(value = "태그 삭제", notes = "관리자가 태그를 전체 삭제한다.")
-    @DeleteMapping("/tag/{tagIdx}")
+    @DeleteMapping("/admin/tag/{tagIdx}")
     public CommonResult deleteByTagIdx(@PathVariable Long tagIdx){
         tagService.deleteTag(tagIdx);
         return responseService.getSuccessResult();
@@ -81,7 +81,7 @@ public class TagController {
     })
     @ResponseBody
     @ApiOperation(value = "태그 이름 수정", notes = "관리자가 태그의 이름을 수정한다.")
-    @PutMapping("/tag/{tagIdx}")
+    @PutMapping("/admin/tag/{tagIdx}")
     public SingleResult<Tag> updateByTagIdx(@PathVariable Long tagIdx, @Valid @RequestBody TagSaveDto tagSaveDto){
         Tag tag = tagService.updateTag(tagIdx, tagSaveDto.getTagName());
         return responseService.getSingleResult(tag);
@@ -93,7 +93,7 @@ public class TagController {
     @ResponseBody
     @ApiOperation(value = "요청 태그 저장", notes = "사용자가 태그를 요청한다.")
     @PostMapping("/request-tag")
-    public CommonResult saveRTag(@Valid @RequestBody RequestTagSaveDto requestTagSaveDto){
+    public CommonResult saveRTag(@Valid @RequestBody RequestTagSaveDto requestTagSaveDto) {
         requestTagService.saveTag(requestTagSaveDto);
         return responseService.getSuccessResult();
     }
@@ -103,7 +103,7 @@ public class TagController {
     })
     @ResponseBody
     @ApiOperation(value = "관리자 요청 태그 전체 조회", notes = "관리자가 요청을 전체 조회한다.")
-    @GetMapping("/request-tag")
+    @GetMapping("/admin/request-tag")
     public ListResult<RequestTagResDto> findAllRTag(){
         List<RequestTagResDto> all = requestTagService.findAll();
         return responseService.getListResult(all);
@@ -114,7 +114,7 @@ public class TagController {
     })
     @ResponseBody
     @ApiOperation(value = "관리자 요청 태그 단일 조회", notes = "관리자가 요청을 단일 조회한다.")
-    @GetMapping("/request-tag/{rtagidx}")
+    @GetMapping("/admin/request-tag/{rtagidx}")
     public SingleResult<RequestTagResDto> findByIdxRTag(@PathVariable Long rtagidx){
         RequestTagResDto byIdx = requestTagService.findByIdx(rtagidx);
         return responseService.getSingleResult(byIdx);
@@ -125,7 +125,7 @@ public class TagController {
     })
     @ResponseBody
     @ApiOperation(value = "관리자 요청 삭제 ", notes = "관리자가 요청을 삭제한다.")
-    @DeleteMapping("/request-tag/{rtagidx}")
+    @DeleteMapping("/admin/request-tag/{rtagidx}")
     public CommonResult deleteByIdxRTag(@PathVariable Long rtagidx){
         requestTagService.deleteTag(rtagidx);
         return responseService.getSuccessResult();
