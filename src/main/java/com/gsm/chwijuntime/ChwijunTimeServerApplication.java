@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableCaching
 public class ChwijunTimeServerApplication {
     public static void main(String[] args) {
-        String PROPERTIES = "spring.config.location=classpath:/application.yml"
-                +",classpath:/key.yml";
+        String PROPERTIES = "spring.config.location=classpath:/application.yml";
+
         new SpringApplicationBuilder(ChwijunTimeServerApplication.class)
                 .properties(PROPERTIES)
                 .run(args);
