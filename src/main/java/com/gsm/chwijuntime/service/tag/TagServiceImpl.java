@@ -5,12 +5,15 @@ import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.dto.tag.TagSaveDto;
 import com.gsm.chwijuntime.model.Tag;
 import com.gsm.chwijuntime.repository.TagRepository;
+import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Service
@@ -22,13 +25,29 @@ public class TagServiceImpl implements TagService {
     @Transactional
     @Override
     public void insertTag(TagSaveDto tagSaveDto) {
-        tagSaveDto.setTagName(tagSaveDto.getTagName().toLowerCase(Locale.ROOT));
-        Tag byTagName = tagRepository.findByTagName(tagSaveDto.getTagName());
-        if(byTagName == null) {
-            tagRepository.save(tagSaveDto.toEntity());
+        if(isKorean(tagSaveDto.getTagName())) {
+            //한국어
+            Tag byTagName = tagRepository.findByTagName(tagSaveDto.getTagName());
+            if(byTagName == null) {
+                tagRepository.save(tagSaveDto.toEntity());
+            } else {
+                throw new DuplicateTagNameException();
+            }
         } else {
-            throw new DuplicateTagNameException();
+            //영어
+            tagSaveDto.setTagName(tagSaveDto.getTagName().toLowerCase(Locale.ROOT));
+            Tag byTagName = tagRepository.findByTagName(tagSaveDto.getTagName());
+            if(byTagName == null) {
+                tagRepository.save(tagSaveDto.toEntity());
+            } else {
+                throw new DuplicateTagNameException();
+            }
         }
+    }
+
+    // 한국어 검사기
+    public boolean isKorean(String str) {
+        return Pattern.matches("[가-힣]*$", str);
     }
 
     @Override
