@@ -30,7 +30,7 @@ public class EmploymentAnnouncement {
     @Column(nullable = false)
     private String recruitmentField;
 
-    @Column(nullable = false, length = 500)
+    @Column(length = 10000)
     private String employmentAnnouncementExplanation;
 
     private String preferentialConditions;

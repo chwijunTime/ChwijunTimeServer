@@ -25,10 +25,7 @@ public class EmploymentAnnouncementUpdateDto {
     @NotBlank(message = "채용 분야를 입력해주세요.")
     private String recruitmentField;
 
-    @NotBlank(message = "회사 설명을 간단하게 입력해주세요.")
     private String employmentAnnouncementExplanation;
-
-    @NotBlank(message = "우대 조건을 입력해주세요.")
     private String preferentialConditions;
 
     @NotBlank(message = "회사 위치를 입력해주세요.")
@@ -36,7 +33,6 @@ public class EmploymentAnnouncementUpdateDto {
 
     private String employmentAnnouncementEtc;
 
-    @NotEmpty(message = "태그를 1개 이상 등록해주세요.")
     private List<String> tagName;
 
     @JsonIgnore
