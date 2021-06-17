@@ -21,8 +21,11 @@ public class ContractingCompanySaveDto {
     @NotBlank(message = "회사 이름을 입력해주세요.")
     private String contractingCompanyName;
 
-    @NotBlank(message = "회사 위치를 입력해주세요.")
+    @NotBlank(message = "사업 분야를 입력해주세요.")
     private String contractingBusinessAreas;
+
+    @NotBlank(message = "회사 위치를 입력해주세요.")
+    private String location;
 
     @NotBlank(message = "회사의 정확한 주소를 입력해주세요.")
     private String contractingCompanyAddress;
@@ -40,6 +43,7 @@ public class ContractingCompanySaveDto {
 
     public ContractingCompany ToEntityByContractingCompany(Member member) {
         return ContractingCompany.builder()
+                .location(this.location)
                 .contractingCompanyName(this.contractingCompanyName)
                 .contractingBusinessAreas(this.contractingBusinessAreas)
                 .contractingCompanyAddress(this.contractingCompanyAddress)

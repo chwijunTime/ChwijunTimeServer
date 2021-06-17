@@ -28,6 +28,9 @@ public class ContractingCompany {
     @Column(nullable = false)
     private String contractingCompanyAddress;  //회사 주소
 
+    @Column(nullable = false)
+    private String location;
+
     @Column(nullable = false, length = 10000)
     private String contractingCompanyAboutUs;  //회사 소개
 
