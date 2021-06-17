@@ -30,7 +30,6 @@ public class ContractingCompanySaveDto {
     @NotBlank(message = "회사의 정확한 주소를 입력해주세요.")
     private String contractingCompanyAddress;
 
-
     private String contractingCompanyAboutUs;
     private String contractingCompanyAverageAnnualSalary;
 
