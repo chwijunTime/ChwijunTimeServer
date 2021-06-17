@@ -24,12 +24,10 @@ public class ContractingCompanySaveDto {
     @NotBlank(message = "사업 분야를 입력해주세요.")
     private String contractingBusinessAreas;
 
-    @NotBlank(message = "회사 위치를 입력해주세요.")
-    private String contractingArea;
-
     @NotBlank(message = "회사의 정확한 주소를 입력해주세요.")
     private String contractingCompanyAddress;
 
+    private String contractingArea;
     private String contractingCompanyAboutUs;
     private String contractingCompanyAverageAnnualSalary;
 
