@@ -17,6 +17,7 @@ import com.gsm.chwijuntime.repository.TagRepository;
 import com.gsm.chwijuntime.repository.tag.CompanyReviewTagRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class CompanyReviewServiceImpl implements CompanyReviewService {
 
     private final MemberRepository memberRepository;
@@ -49,6 +51,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             List<CompanyReview> allByCompanyName = companyReviewRepository.findAllByCompanyName(companyReviewSaveDto.getCompanyName());
             int size = allByCompanyName.size() - 1;
             companyReviewSaveDto.MappingTag_ContractingCompany(tag, allByCompanyName.get(size));
+            log.info(companyReviewSaveDto.getCompanyName());
             companyReviewTagRepository.save(companyReviewSaveDto.ToEntityByCompanyReviewTag());
         }
     }

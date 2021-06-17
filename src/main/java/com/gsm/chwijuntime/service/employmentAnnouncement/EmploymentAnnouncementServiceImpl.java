@@ -17,6 +17,7 @@ import com.gsm.chwijuntime.repository.TagRepository;
 import com.gsm.chwijuntime.repository.tag.EmploymentAnnouncementTagRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncementService {
 
@@ -51,6 +53,7 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
             List<EmploymentAnnouncement> allByEmploymentAnnouncementName = employmentAnnouncementRepository.findAllByEmploymentAnnouncementName(employmentAnnouncementSaveDto.getEmploymentAnnouncementName());
             int size = allByEmploymentAnnouncementName.size() - 1;
             employmentAnnouncementSaveDto.MappingTagByEmploymentAnnouncement(tag, allByEmploymentAnnouncementName.get(size));
+            log.info(employmentAnnouncementSaveDto.getEmploymentAnnouncementName());
             employmentAnnouncementTagRepository.save(employmentAnnouncementSaveDto.ToEntityByEmploymentAnnouncementTag());
         }
     }

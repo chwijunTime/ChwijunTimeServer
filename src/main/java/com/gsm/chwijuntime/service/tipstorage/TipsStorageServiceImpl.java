@@ -17,6 +17,7 @@ import com.gsm.chwijuntime.repository.TipsStorageRepository;
 import com.gsm.chwijuntime.repository.tag.TipsStorageTagRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class TipsStorageServiceImpl implements TipsStorageService {
 
     private final MemberRepository memberRepository;
@@ -49,6 +51,7 @@ public class TipsStorageServiceImpl implements TipsStorageService {
             List<TipsStorage> allByWorkCompanyName = tipsStorageRepository.findAllByWorkCompanyName(tipsStorageSaveDto.getWorkCompanyName());
             int size = allByWorkCompanyName.size() - 1;
             tipsStorageSaveDto.mappingTag_ContractingCompany(tag, allByWorkCompanyName.get(size));
+            log.info(tipsStorageSaveDto.getWorkCompanyName());
             tipsStorageTagRepository.save(tipsStorageSaveDto.toEntityByTipsStorageTag());
         }
     }

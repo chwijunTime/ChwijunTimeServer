@@ -14,6 +14,7 @@ import com.gsm.chwijuntime.repository.TagRepository;
 import com.gsm.chwijuntime.repository.tag.ContractingCompanyTagRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class ContractingCompanyServiceImpl implements ContractingCompanyService {
@@ -47,6 +49,7 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
                 }
                 ContractingCompany contractingCompany = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
                 contractingCompanySaveDto.MappingTag_ContractingCompany(tag, contractingCompany);
+                log.info(contractingCompany.getContractingCompanyName());
                 contractingCompanyTagRepository.save(contractingCompanySaveDto.ToEntityByContractingCompanyTag());
             }
         } else {

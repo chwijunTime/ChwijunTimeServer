@@ -13,6 +13,7 @@ import com.gsm.chwijuntime.repository.EmploymentAnnouncementRepository;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentService {
 
     private final MemberRepository memberRepository;
@@ -38,6 +40,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
         int compare = applicationemploymentSaveDto.getLocalDate().compareTo(findMyEmploymentAnnouncement.getDeadLine());
         compareToDate(compare);
         Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        log.info(findMyEmploymentAnnouncement.getEmploymentAnnouncementName());
         applicationEmploymentRepository.save(applicationemploymentSaveDto.toEntityByApplicationEmployment(findMember, findMyEmploymentAnnouncement));
     }
 

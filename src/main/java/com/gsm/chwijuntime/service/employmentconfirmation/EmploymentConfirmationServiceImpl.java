@@ -52,6 +52,7 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
             List<EmploymentConfirmation> allByEmploymentConfirmationName = employmentConfirmationRepository.findAllByEmploymentConfirmationName(employmentConfirmationSaveDto.getEmploymentConfirmationName());
             int size = allByEmploymentConfirmationName.size() - 1;
             employmentConfirmationSaveDto.mappingTagEmploymentConfirmation(tag, allByEmploymentConfirmationName.get(size));
+            log.info(employmentConfirmationSaveDto.getEmploymentConfirmationName());
             employmentConfirmationTagRepository.save(employmentConfirmationSaveDto.toEntityByEmploymentConfirmationTag());
         }
     }
