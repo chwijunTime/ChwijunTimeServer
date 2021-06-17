@@ -35,9 +35,7 @@ public class EmploymentConfirmationSaveDto {
     @NotBlank(message = "회사 주소를 입력해주세요.")
     private String employmentConfirmationAddress;
 
-    @NotBlank(message = "회사 사이트를 입력해주세요.")
     private String employmentConfirmationSite;
-
     private String employmentConfirmationEtc;
 
     @NotEmpty(message = "태그를 1개 이상 등록해주세요.")

@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class UpdateMemberProfileDto {
+
     private String memberPhoneNumber;
     private String memberETC;
     private List<String> tagName;

@@ -5,6 +5,7 @@ import com.gsm.chwijuntime.model.CorrectionApply;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class CorrectionApprovalSaveDto {
 
+    @Size(max = 4, min = 4, message = "학번은 4글자로 입력해주세요")
     @NotBlank(message = "학번을 입력해주세요.")
     private String classNumber;
 
