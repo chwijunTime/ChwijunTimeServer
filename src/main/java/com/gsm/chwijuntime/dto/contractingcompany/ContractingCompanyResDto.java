@@ -16,9 +16,9 @@ public class ContractingCompanyResDto {
     private String contractingCompanyName;
     private String contractingBusinessAreas;
     private String contractingCompanyAddress;
+    private String contractingArea;
     private String contractingCompanyAboutUs;
     private String contractingCompanyAverageAnnualSalary;
-    private String location;
     private List<String> contractingCompanyTags = new ArrayList<>();
 
 }

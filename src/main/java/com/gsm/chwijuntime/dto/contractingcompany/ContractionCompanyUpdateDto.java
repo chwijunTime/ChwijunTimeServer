@@ -25,7 +25,7 @@ public class ContractionCompanyUpdateDto {
     private String contractingBusinessAreas;
 
     @NotBlank(message = "회사 위치를 입력해주세요.")
-    private String location;
+    private String contractingArea;
 
     @NotBlank(message = "회사의 정확한 주소를 입력해주세요.")
     private String contractingCompanyAddress;
@@ -42,7 +42,7 @@ public class ContractionCompanyUpdateDto {
 
     public ContractingCompany ToEntityByContractingCompany(Member member) {
         return ContractingCompany.builder()
-                .location(this.location)
+                .contractingArea(this.contractingArea)
                 .contractingCompanyName(this.contractingCompanyName)
                 .contractingBusinessAreas(this.contractingBusinessAreas)
                 .contractingCompanyAddress(this.contractingCompanyAddress)
