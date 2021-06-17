@@ -58,3 +58,4 @@ alter table request_tag add constraint FKmlhpweld2nkpy05y8t1nukvhy foreign key (
 alter table tips_storage add constraint FKss33i5enubrnw6bxbbhvbf9ag foreign key (member_idx) references member (member_idx);
 alter table tips_storage_tag add constraint FKmt93npf2q6p9clm6x6e4nutxy foreign key (tag_idx) references tag (tag_idx);
 alter table tips_storage_tag add constraint FKo31o3uwx01h8s2leuo13wrb5h foreign key (tips_storage_idx) references tips_storage (tips_storage_idx);
+alter table contracting_company add contracting_area varchar(255);
