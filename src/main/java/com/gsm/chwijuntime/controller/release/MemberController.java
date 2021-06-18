@@ -153,9 +153,11 @@ public class MemberController {
     @ApiOperation(value = "새로운 토큰 요청하기", notes = "유저가 비밀번호를 변경한다.")
     @ResponseBody
     @PostMapping("/auth/refresh")
-    public CommonResult AuthRefresh(@Valid @RequestBody AuthRefreshDto authRefreshDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public SingleResult<Map<String, String>> AuthRefresh(@Valid @RequestBody AuthRefreshDto authRefreshDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String newToken = memberService.authRefresh(authRefreshDto, httpServletRequest, httpServletResponse);
         httpServletResponse.addHeader("newToekn", newToken);
-        return responseService.getSuccessResult();
+        Map<String, String> map = new HashMap<>();
+        map.put("newToekn", newToken);
+        return responseService.getSingleResult(map);
     }
 }
