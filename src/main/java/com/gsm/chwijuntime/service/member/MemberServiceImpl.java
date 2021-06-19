@@ -151,10 +151,11 @@ public class MemberServiceImpl implements MemberService {
 
         if(RedisRefreshJwt.equals(authRefreshDto.getRefreshToken())){
             UserDetails userDetails = customUserDetailService.loadUserByUsername(RefreshTokenUserEmail);
+            jwtTokenProvider.validateToken(authRefreshDto.getRefreshToken(), userDetails);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            Member member = customUserDetailService.findMember( RefreshTokenUserEmail);
+            Member member = customUserDetailService.findMember(RefreshTokenUserEmail);
             newAccessToken = jwtTokenProvider.generateToken(member);
         }
         return newAccessToken;
