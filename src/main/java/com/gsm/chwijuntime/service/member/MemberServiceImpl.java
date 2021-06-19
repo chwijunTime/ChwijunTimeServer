@@ -1,7 +1,6 @@
 package com.gsm.chwijuntime.service.member;
 
 import com.gsm.chwijuntime.advice.exception.*;
-import com.gsm.chwijuntime.security.CustomUserDetailService;
 import com.gsm.chwijuntime.dto.member.*;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
@@ -9,18 +8,16 @@ import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.repository.TagRepository;
 import com.gsm.chwijuntime.repository.tag.MemberTagRepository;
+import com.gsm.chwijuntime.security.CustomUserDetailService;
 import com.gsm.chwijuntime.security.JwtTokenProvider;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import com.gsm.chwijuntime.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
