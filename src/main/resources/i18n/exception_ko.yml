@@ -96,3 +96,6 @@ DuplicateTagNameException:
 DataException:
   code: "-31"
   msg: "입력 가능한 글자 수를 넘었습니다."
+NoTokenANDTokenWrongException:
+  code: "-32"
+  msg: "토큰의 값이 없거나 틀립니다."

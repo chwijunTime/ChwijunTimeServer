@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.config;
 
+import com.gsm.chwijuntime.advice.exception.NoTokenANDTokenWrongException;
 import com.gsm.chwijuntime.util.JwtTokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

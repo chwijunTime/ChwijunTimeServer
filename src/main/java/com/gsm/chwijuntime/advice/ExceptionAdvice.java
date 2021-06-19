@@ -266,4 +266,11 @@ public class ExceptionAdvice {
     public CommonResult DataException(HttpServletRequest request, DataException dataException) {
         return responseService.getFailResult(Integer.parseInt(getMessage("DataException.code")), getMessage("DataException.msg"));
     }
+
+    //토큰 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(NoTokenANDTokenWrongException.class)
+    public CommonResult NoTokenANDTokenWrongException(HttpServletRequest request, NoTokenANDTokenWrongException e){
+        return responseService.getFailResult(Integer.parseInt(getMessage("NoTokenANDTokenWrongException.code")), getMessage("NoTokenANDTokenWrongException.msg"));
+    }
 }
