@@ -1,6 +1,5 @@
 package com.gsm.chwijuntime.security;
 
-import com.gsm.chwijuntime.security.CustomUserDetailService;
 import com.gsm.chwijuntime.model.Member;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -16,9 +15,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +40,12 @@ public class JwtTokenProvider {
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
+
+    // Base64 encoded secret key
+    @PostConstruct
+    protected void init() {
+        SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
+    }
 
     private Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
