@@ -1,25 +1,26 @@
-package com.gsm.chwijuntime.config;
+package com.gsm.chwijuntime.security;
 
 import com.gsm.chwijuntime.handler.CustomAccessDeniedHandler;
 import com.gsm.chwijuntime.handler.CustomAuthenticationEntryPointHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -38,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPointHandler()) //로그인 에러
                 .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // jwt token 필터를 id/password 인증 필터 전에 넣음
+                .apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
     }
 
     @Override // ignore check swagger, h2 database resource
@@ -49,7 +50,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder(12);
     }
 
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManagerBean();
+    }
 }

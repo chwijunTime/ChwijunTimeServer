@@ -1,4 +1,4 @@
-package com.gsm.chwijuntime.util;
+package com.gsm.chwijuntime.security;
 
 import com.gsm.chwijuntime.model.Member;
 import io.jsonwebtoken.Claims;
@@ -9,12 +9,17 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -25,15 +30,22 @@ public class JwtTokenProvider {
 
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
+    private final CustomUserDetailService customUserDetailService;
 
 //    public final static long TOKEN_VALIDATION_SECOND = 1000L * 86400;  //하루를 accessToken 만료 기간으로 잡는다
 //    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 3600 * 24 * 210; //7개월을 refreshToken 만료 기간으로 잡는다.
 
-    public final static long TOKEN_VALIDATION_SECOND = 1000L * 60;  //하루를 accessToken 만료 기간으로 잡는다
-    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 3600; //7개월을 refreshToken 만료 기간으로 잡는다.
+    public final static long TOKEN_VALIDATION_SECOND = 1000L * 60;  //1분을 accessToken 만료 기간으로 잡는다
+    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 3600; //1시간을 refreshToken 만료 기간으로 잡는다.
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
+
+    // Base64 encoded secret key
+    @PostConstruct
+    protected void init() {
+        SECRET_KEY = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
+    }
 
     private Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
@@ -66,7 +78,6 @@ public class JwtTokenProvider {
     }
 
     public String doGenerateToken(String userEmail, List<String> roles, String classNumber, long expireTime) {
-
         Claims claims = Jwts.claims();
         claims.put("userEmail", userEmail);
         claims.put("classNumber", classNumber);
@@ -81,9 +92,13 @@ public class JwtTokenProvider {
         return jwt;
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = getUserEmail(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public Boolean validateToken(String token) {
+        try {
+            return !isTokenExpired(token);
+        } catch (Exception e) {
+            SecurityContextHolder.clearContext();
+            return false;
+        }
     }
 
     public String resolveToken(HttpServletRequest req){
@@ -92,5 +107,10 @@ public class JwtTokenProvider {
             return  bearerToken.substring(7);
         }
         return null;
+    }
+
+    public Authentication getAuthentication(String token){
+        UserDetails userDetails = customUserDetailService.loadUserByUsername(getUserEmail(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }

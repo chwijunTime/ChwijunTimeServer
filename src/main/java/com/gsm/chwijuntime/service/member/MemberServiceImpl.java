@@ -1,7 +1,7 @@
 package com.gsm.chwijuntime.service.member;
 
 import com.gsm.chwijuntime.advice.exception.*;
-import com.gsm.chwijuntime.config.CustomUserDetailService;
+import com.gsm.chwijuntime.security.CustomUserDetailService;
 import com.gsm.chwijuntime.dto.member.*;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.Tag;
@@ -9,12 +9,14 @@ import com.gsm.chwijuntime.model.tagmapping.MemberTag;
 import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.repository.TagRepository;
 import com.gsm.chwijuntime.repository.tag.MemberTagRepository;
+import com.gsm.chwijuntime.security.JwtTokenProvider;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
-import com.gsm.chwijuntime.util.JwtTokenProvider;
 import com.gsm.chwijuntime.util.RedisUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -150,11 +152,14 @@ public class MemberServiceImpl implements MemberService {
         String RedisRefreshJwt = redisUtil.getData(RefreshTokenUserEmail);  //현재 Redis에 저장되어 있는 리프레쉬 토큰
 
         if(RedisRefreshJwt.equals(authRefreshDto.getRefreshToken())){
-            UserDetails userDetails = customUserDetailService.loadUserByUsername(RefreshTokenUserEmail);
-            jwtTokenProvider.validateToken(authRefreshDto.getRefreshToken(), userDetails);
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-            usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            try{
+                if(authRefreshDto.getRefreshToken() != null && jwtTokenProvider.validateToken(authRefreshDto.getRefreshToken())){
+                    Authentication authentication = jwtTokenProvider.getAuthentication(authRefreshDto.getRefreshToken());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (ExpiredJwtException e){   // 만약 유효기간을 넘겼다면??
+                httpServletResponse.setHeader("message", e.getMessage());
+            }
             Member member = customUserDetailService.findMember(RefreshTokenUserEmail);
             newAccessToken = jwtTokenProvider.generateToken(member);
         }
