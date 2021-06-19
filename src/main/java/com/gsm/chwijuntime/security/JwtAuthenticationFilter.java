@@ -1,12 +1,13 @@
-package com.gsm.chwijuntime.config;
+package com.gsm.chwijuntime.security;
 
 import com.gsm.chwijuntime.advice.exception.NoTokenANDTokenWrongException;
-import com.gsm.chwijuntime.util.JwtTokenProvider;
+import com.gsm.chwijuntime.security.JwtTokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -26,28 +27,16 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final CustomUserDetailService customUserDetailService;
 
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String jwtToken = httpServletRequest.getHeader("Authorization");
-        String userEmail = null;
+        String JWTToken = jwtTokenProvider.resolveToken(httpServletRequest);
 
         try{
-            if(jwtToken != null && jwtToken.startsWith("Bearer ")){
-                jwtToken = jwtToken.substring(7);
-                userEmail = jwtTokenProvider.getUserEmail(jwtToken);
-            }
-
-            if(userEmail != null){
-                UserDetails userDetails = customUserDetailService.loadUserByUsername(userEmail);
-
-                if(jwtTokenProvider.validateToken(jwtToken, userDetails)){
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                }
+            if(JWTToken != null && jwtTokenProvider.validateToken(JWTToken)) {
+                Authentication authentication = jwtTokenProvider.getAuthentication(JWTToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (ExpiredJwtException e){   // 만약 유효기간을 넘겼다면??
             httpServletResponse.setHeader("message", e.getMessage());

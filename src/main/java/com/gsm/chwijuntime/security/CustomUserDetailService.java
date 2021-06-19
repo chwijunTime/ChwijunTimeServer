@@ -1,4 +1,4 @@
-package com.gsm.chwijuntime.config;
+package com.gsm.chwijuntime.security;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.model.Member;
