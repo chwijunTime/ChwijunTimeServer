@@ -35,9 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch (ExpiredJwtException e){   // 만약 유효기간을 넘겼다면??
             SecurityContextHolder.clearContext();
             httpServletResponse.setHeader("message", e.getMessage());
-            return;
         }
-
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

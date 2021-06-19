@@ -36,7 +36,7 @@ public class JwtTokenProvider {
 //    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 3600 * 24 * 210; //7개월을 refreshToken 만료 기간으로 잡는다.
 
     public final static long TOKEN_VALIDATION_SECOND = 1000L * 60;  //1분을 accessToken 만료 기간으로 잡는다
-    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 3600; //1시간을 refreshToken 만료 기간으로 잡는다.
+    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 120; //1시간을 refreshToken 만료 기간으로 잡는다.
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
@@ -93,12 +93,7 @@ public class JwtTokenProvider {
     }
 
     public Boolean validateToken(String token) {
-        try {
-            return !isTokenExpired(token);
-        } catch (Exception e) {
-            SecurityContextHolder.clearContext();
-            return false;
-        }
+        return !isTokenExpired(token);
     }
 
     public String resolveToken(HttpServletRequest req){
