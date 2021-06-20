@@ -156,9 +156,9 @@ public class MemberController {
     @PostMapping("/auth/refresh")
     public SingleResult<Map<String, String>> AuthRefresh(@Valid @RequestBody AuthRefreshDto authRefreshDto, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String newToken = memberService.authRefresh(authRefreshDto, httpServletRequest, httpServletResponse);
-        httpServletResponse.addHeader("newToekn", newToken);
+        httpServletResponse.addHeader("newToken", newToken);
         Map<String, String> map = new HashMap<>();
-        map.put("newToekn", newToken);
+        map.put("newToken", newToken);
         return responseService.getSingleResult(map);
     }
 }
