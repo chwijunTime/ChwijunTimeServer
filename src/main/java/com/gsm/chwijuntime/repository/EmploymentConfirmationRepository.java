@@ -18,6 +18,6 @@ public interface EmploymentConfirmationRepository extends JpaRepository<Employme
 
     List<EmploymentConfirmation> findAllByEmploymentConfirmationName(String name);
 
-    @Query("select e from EmploymentConfirmation e join fetch e.member where e.employmentConfirmationName like %:keyword% or e.employmentConfirmationAreas like %:keyword% or e.employmentConfirmationJockey like %:keyword% order by e.employmentConfirmationIdx desc")
+    @Query("select e from EmploymentConfirmation e join fetch e.member where e.employmentConfirmationName like %:keyword% or e.employmentConfirmationAreas like %:keyword% or e.employmentConfirmationGeneration like %:keyword% order by e.employmentConfirmationIdx desc")
     List<EmploymentConfirmation> searchByEmploymentConfirmationNameOREmploymentConfirmationAreasOREmploymentConfirmationJockey(@Param("keyword") String keyword);
 }
