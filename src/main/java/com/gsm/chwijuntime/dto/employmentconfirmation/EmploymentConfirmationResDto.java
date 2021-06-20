@@ -16,7 +16,7 @@ public class EmploymentConfirmationResDto {
     private String employmentConfirmationName;
     private String employmentConfirmationAreas;
     private String studentName;
-    private String employmentConfirmationJockey;
+    private String EmploymentConfirmationGeneration;
     private String employmentConfirmationAddress;
     private String employmentConfirmationSite;
     private String employmentConfirmationEtc;

@@ -30,7 +30,7 @@ public class EmploymentConfirmationSaveDto {
     private String studentName;
 
     @NotBlank(message = "합격한 학생의 기수을 입력해주세요.")
-    private String employmentConfirmationJockey;
+    private String employmentConfirmationGeneration;
 
     @NotBlank(message = "회사 주소를 입력해주세요.")
     private String employmentConfirmationAddress;
@@ -50,7 +50,7 @@ public class EmploymentConfirmationSaveDto {
         return EmploymentConfirmation.builder()
                 .employmentConfirmationName(this.employmentConfirmationName)
                 .employmentConfirmationAreas(this.employmentConfirmationAreas)
-                .employmentConfirmationJockey(this.employmentConfirmationJockey)
+                .employmentConfirmationGeneration(this.employmentConfirmationGeneration)
                 .employmentConfirmationAddress(this.employmentConfirmationAddress)
                 .employmentConfirmationSite(this.employmentConfirmationSite)
                 .employmentConfirmationEtc(this.employmentConfirmationEtc)

@@ -29,7 +29,7 @@ public class EmploymentConfirmation {
     private String studentName;  //학생 이름 김OO
 
     @Column(nullable = false)
-    private String employmentConfirmationJockey;  //기수
+    private String employmentConfirmationGeneration;  //기수
 
     @Column(nullable = false)
     private String employmentConfirmationAddress;  //회사 위치
