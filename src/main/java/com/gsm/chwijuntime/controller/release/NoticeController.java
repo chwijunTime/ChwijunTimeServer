@@ -69,7 +69,7 @@ public class NoticeController {
     @ResponseBody
     @ApiOperation(value = "공지사항 삭제", notes = "관리자가 공지사항을 삭제한다.")
     //@DeleteMapping("/admin/notice/{noticeidx}")
-    @RequestMapping(value = "/admin/notice/{idx}", produces = "application/json", method=RequestMethod.DELETE)
+    @RequestMapping(value = "/admin/notice/{idx}", produces = "application/json", method={RequestMethod.DELETE, RequestMethod.POST})
     public CommonResult deleteByIdx(@PathVariable("idx") Long idx){
         noticeService.deleteById(idx);
         return responseService.getSuccessResult();
