@@ -40,14 +40,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .exposedHeaders("Authorization");	//make client read header("Authorization")
     }
 
-    @Bean
-    @ConditionalOnMissingBean({HiddenHttpMethodFilter.class})
-    @ConditionalOnProperty(
-            prefix = "spring.mvc.hiddenmethod.filter",
-            name = {"enabled"},
-            matchIfMissing = false
-    )
-
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(htmlEscapingConverter());
