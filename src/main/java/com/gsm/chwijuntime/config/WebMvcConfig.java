@@ -31,6 +31,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         HttpMethod.DELETE.name(),
                         HttpMethod.OPTIONS.name()
                 )
+                .maxAge(3600)
                 .allowCredentials(true)
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization");	//make client read header("Authorization")
