@@ -17,7 +17,7 @@
      }
 
      stage('Push image') {
-        docker.withRegistry('docker-hub') {
+        docker.withRegistry('https://index.docker.io/v1', 'docker-hub') {
             app.push()
         }
      }
