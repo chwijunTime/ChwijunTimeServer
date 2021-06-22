@@ -71,11 +71,11 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
         List<FindAllApplicationResDto> findAllApplicationResDtos = new ArrayList<>();
         List<ApplicationEmployment> applicationEmploymentStatus = new ArrayList<>();
         if (status.equals(ApplicationEmploymentStatus.Approve)){
-            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Approve);
+            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(status);
         } else if(status.equals(ApplicationEmploymentStatus.Wait)) {
-            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Wait);
+            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(status);
         } else if(status.equals(ApplicationEmploymentStatus.Reject)) {
-            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(ApplicationEmploymentStatus.Reject);
+            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(status);
         } else if(status.equals(ApplicationEmploymentStatus.All)){
             applicationEmploymentStatus = applicationEmploymentRepository.findAll();
         }
