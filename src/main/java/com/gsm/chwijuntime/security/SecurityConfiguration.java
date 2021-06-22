@@ -36,8 +36,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler()) //관리자 에러
                 .and()
-                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPointHandler()) //로그인 에러
-                .and()
                 .apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
     }
 
