@@ -93,10 +93,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void memberProfileSave(MemberProfileSaveDto memberProfileSaveDto) {
         for (String i : memberProfileSaveDto.getTagName()) {
-            Tag tag = tagRepository.findByTagName(i);
-            if(tag == null) {
-                throw new NotFoundTagException();
-            }
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
             String userEmail = getUserEmailUtil.getUserEmail();
             Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(CAuthenticationEntryPointException::new);
             memberProfileSaveDto.MappingTag_Member(tag, member);
@@ -118,10 +115,7 @@ public class MemberServiceImpl implements MemberService {
         }
         //태그 저장
         for (String i : updateMemberProfileDto.getTagName()){
-            Tag tag = tagRepository.findByTagName(i);
-            if(tag == null) {
-                throw new NotFoundTagException();
-            }
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
             updateMemberProfileDto.MappingTag_Member(tag, member);
             memberTagRepository.save(updateMemberProfileDto.ToEntityByMemberTag());
         }
@@ -175,7 +169,7 @@ public class MemberServiceImpl implements MemberService {
         List<MemberTag> findMemberTag = memberTagRepository.findByMember(findMember);
         for (MemberTag memberTag : findMemberTag) {
             String Name = memberTag.getTag().getTagName();
-            Tag tag = tagRepository.findByTagName(Name);
+            Tag tag = tagRepository.findByTagName(Name).orElse(null);
             tags.add(tag.getTagName());
         }
         MemberTagResDto memberTagResDto = MemberTagResDto.mapping(findMember, tags);

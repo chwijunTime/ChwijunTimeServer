@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
@@ -27,8 +28,8 @@ public class TagServiceImpl implements TagService {
     public void insertTag(TagSaveDto tagSaveDto) {
         if(isKorean(tagSaveDto.getTagName())) {
             //한국어
-            Tag byTagName = tagRepository.findByTagName(tagSaveDto.getTagName());
-            if(byTagName == null) {
+            Optional<Tag> byTagName = tagRepository.findByTagName(tagSaveDto.getTagName());
+            if(byTagName.isEmpty()) {
                 tagRepository.save(tagSaveDto.toEntity());
             } else {
                 throw new DuplicateTagNameException();
@@ -36,8 +37,8 @@ public class TagServiceImpl implements TagService {
         } else {
             //영어
             tagSaveDto.setTagName(tagSaveDto.getTagName().toLowerCase(Locale.ROOT));
-            Tag byTagName = tagRepository.findByTagName(tagSaveDto.getTagName());
-            if(byTagName == null) {
+            Optional<Tag> byTagName = tagRepository.findByTagName(tagSaveDto.getTagName());
+            if(byTagName.isEmpty()) {
                 tagRepository.save(tagSaveDto.toEntity());
             } else {
                 throw new DuplicateTagNameException();

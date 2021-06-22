@@ -44,10 +44,7 @@ public class TipsStorageServiceImpl implements TipsStorageService {
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         tipsStorageRepository.save(tipsStorageSaveDto.toEntityByTipsStorage(member));
         for(String i : tipsStorageSaveDto.getTagName()) {
-            Tag tag = tagRepository.findByTagName(i);
-            if(tag == null) {
-                throw new NotFoundTagException();
-            }
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
             List<TipsStorage> allByWorkCompanyName = tipsStorageRepository.findAllByWorkCompanyName(tipsStorageSaveDto.getWorkCompanyName());
             int size = allByWorkCompanyName.size() - 1;
             tipsStorageSaveDto.mappingTag_ContractingCompany(tag, allByWorkCompanyName.get(size));
@@ -101,10 +98,7 @@ public class TipsStorageServiceImpl implements TipsStorageService {
         }
         // 태그 저장
         for(String i : tipsStorageUpdateDto.getTagName()) {
-            Tag tag = tagRepository.findByTagName(i);
-            if(tag == null) {
-                throw new NotFoundTagException();
-            }
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
             tipsStorageUpdateDto.mappingTag_ContractingCompany(tag, tipsStorage);
             tipsStorageTagRepository.save(tipsStorageUpdateDto.toEntityByTipsStorageTag());
         }

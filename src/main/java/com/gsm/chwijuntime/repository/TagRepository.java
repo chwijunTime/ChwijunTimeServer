@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
-    Tag findByTagName(String tagName);
+    Optional<Tag> findByTagName(String tagName);
 
     @Query("select t from Tag t order by t.tagIdx desc")
     List<Tag> findAll();

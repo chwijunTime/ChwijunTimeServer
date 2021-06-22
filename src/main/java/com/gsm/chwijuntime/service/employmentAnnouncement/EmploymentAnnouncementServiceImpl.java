@@ -46,10 +46,7 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow();
         employmentAnnouncementRepository.save(employmentAnnouncementSaveDto.toEntityByEmploymentAnnouncement(member));
         for(String i : employmentAnnouncementSaveDto.getTagName()){
-            Tag tag = tagRepository.findByTagName(i);
-            if(tag == null) {
-                throw new NotFoundTagException();
-            }
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
             List<EmploymentAnnouncement> allByEmploymentAnnouncementName = employmentAnnouncementRepository.findAllByEmploymentAnnouncementName(employmentAnnouncementSaveDto.getEmploymentAnnouncementName());
             int size = allByEmploymentAnnouncementName.size() - 1;
             employmentAnnouncementSaveDto.MappingTagByEmploymentAnnouncement(tag, allByEmploymentAnnouncementName.get(size));
@@ -102,10 +99,7 @@ public class EmploymentAnnouncementServiceImpl implements EmploymentAnnouncement
         }
         //태그 저장
         for(String i : employmentAnnouncementUpdateDto.getTagName()){
-            Tag tag = tagRepository.findByTagName(i);
-            if(tag == null) {
-                throw new NotFoundTagException();
-            }
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
             employmentAnnouncementUpdateDto.MappingTagByEmploymentAnnouncement(tag, employmentAnnouncement);
             employmentAnnouncementTagRepository.save(employmentAnnouncementUpdateDto.ToEntityByEmploymentAnnouncementTag());
         }

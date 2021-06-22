@@ -44,10 +44,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         companyReviewRepository.save(companyReviewSaveDto.ToEntityByContractingCompany(member));
         for (String i: companyReviewSaveDto.getTagName()) {
-            Tag tag = tagRepository.findByTagName(i);
-            if(tag == null) {
-                throw new NotFoundTagException();
-            }
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
             List<CompanyReview> allByCompanyName = companyReviewRepository.findAllByCompanyName(companyReviewSaveDto.getCompanyName());
             int size = allByCompanyName.size() - 1;
             companyReviewSaveDto.MappingTag_ContractingCompany(tag, allByCompanyName.get(size));
@@ -90,10 +87,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         }
         // 태그 저장
         for (String i: companyUpdateDto.getTagName()) {
-            Tag tag = tagRepository.findByTagName(i);
-            if(tag == null) {
-                throw new NotFoundTagException();
-            }
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
             companyUpdateDto.MappingTag_ContractingCompany(tag, companyReview);
             companyReviewTagRepository.save(companyUpdateDto.ToEntityByCompanyReviewTag());
         }

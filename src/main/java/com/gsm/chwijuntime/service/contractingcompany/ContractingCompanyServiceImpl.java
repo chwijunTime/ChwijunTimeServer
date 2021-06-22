@@ -43,10 +43,7 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
         if(findBy == null) {
             contractingCompanyRepository.save(contractingCompanySaveDto.ToEntityByContractingCompany(member));
             for (String i : contractingCompanySaveDto.getTagName()) {
-                Tag tag = tagRepository.findByTagName(i);
-                if(tag == null) {
-                    throw new NotFoundTagException();
-                }
+                Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
                 ContractingCompany contractingCompany = contractingCompanyRepository.findByContractingCompanyName(contractingCompanySaveDto.getContractingCompanyName());
                 contractingCompanySaveDto.MappingTag_ContractingCompany(tag, contractingCompany);
                 log.info(contractingCompany.getContractingCompanyName());
@@ -100,10 +97,7 @@ public class ContractingCompanyServiceImpl implements ContractingCompanyService 
         }
         // 태그 저장
         for (String i : contractionCompanyUpdateDto.getTagName()) {
-            Tag tag = tagRepository.findByTagName(i);
-            if(tag == null) {
-                throw new NotFoundTagException();
-            }
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
             contractionCompanyUpdateDto.MappingTag_ContractingCompany(tag, contractingCompany);
             contractingCompanyTagRepository.save(contractionCompanyUpdateDto.ToEntityByContractingCompanyTag());
         }

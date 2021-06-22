@@ -45,10 +45,7 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
         log.info(employmentConfirmationSaveDto.getEmploymentConfirmationName());
         employmentConfirmationRepository.save(employmentConfirmationSaveDto.toEntityByEmploymentConfirmation(member));
         for(String i : employmentConfirmationSaveDto.getTagName()) {
-            Tag tag = tagRepository.findByTagName(i);
-            if(tag == null) {
-                throw new NotFoundTagException();
-            }
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
             List<EmploymentConfirmation> allByEmploymentConfirmationName = employmentConfirmationRepository.findAllByEmploymentConfirmationName(employmentConfirmationSaveDto.getEmploymentConfirmationName());
             int size = allByEmploymentConfirmationName.size() - 1;
             employmentConfirmationSaveDto.mappingTagEmploymentConfirmation(tag, allByEmploymentConfirmationName.get(size));
@@ -92,10 +89,7 @@ public class EmploymentConfirmationServiceImpl implements EmploymentConfirmation
         }
         // 태그 저장
         for(String i : employmentConfirmationUpdateDto.getTagName()) {
-            Tag tag = tagRepository.findByTagName(i);
-            if(tag == null) {
-                throw new NotFoundTagException();
-            }
+            Tag tag = tagRepository.findByTagName(i).orElseThrow(NotFoundTagException::new);
             employmentConfirmationUpdateDto.mappingTagEmploymentConfirmation(tag, employmentConfirmation);
             employmentConfirmationTagRepository.save(employmentConfirmationUpdateDto.toEntityByEmploymentConfirmationTag());
         }
