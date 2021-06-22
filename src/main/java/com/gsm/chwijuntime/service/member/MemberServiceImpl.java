@@ -15,6 +15,7 @@ import com.gsm.chwijuntime.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -156,6 +157,7 @@ public class MemberServiceImpl implements MemberService {
                 }
             } catch (ExpiredJwtException e){   // 만약 유효기간을 넘겼다면??
                 httpServletResponse.setHeader("message", e.getMessage());
+                httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
             }
             Member member = customUserDetailService.findMember(RefreshTokenUserEmail);
             newAccessToken = jwtTokenProvider.generateToken(member);
