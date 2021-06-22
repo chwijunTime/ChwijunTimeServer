@@ -17,7 +17,7 @@
      }
 
      stage('Push image') {
-        docker.withRegistry('https://index/v1', 'docker-hub') {
+        docker.withRegistry('https://hub.docker.com/repository/docker/ksh030506/chwijuntime', 'docker-hub') {
             app.push()
         }
      }
