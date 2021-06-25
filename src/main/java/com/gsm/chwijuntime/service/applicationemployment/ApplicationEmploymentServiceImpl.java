@@ -4,6 +4,7 @@ import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
+import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
 import com.gsm.chwijuntime.model.ApplicationEmployment;
 import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
@@ -14,6 +15,7 @@ import com.gsm.chwijuntime.repository.MemberRepository;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,7 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
     private final GetUserEmailUtil getUserEmailUtil;
     private final ApplicationEmploymentRepository applicationEmploymentRepository;
     private final EmploymentAnnouncementRepository employmentAnnouncementRepository;
+    private final ModelMapper mapper;
 
     @Transactional
     @Override
@@ -60,10 +63,12 @@ public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentSe
 
     @Override
     public FindAllApplicationDetailResDto applicationDetail(Long idx) {
-        ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findByApplicationEmploymentIdx(idx);
-        return FindAllApplicationDetailResDto.builder()
-                .applicationEmployment(applicationEmployment)
-                .build();
+        ApplicationEmployment byApplicationEmploymentIdx = applicationEmploymentRepository.findByApplicationEmploymentIdx(idx);
+        Member member = byApplicationEmploymentIdx.getMember();
+        EmploymentAnnouncement employmentAnnouncement = byApplicationEmploymentIdx.getEmploymentAnnouncement();
+        FindAllApplicationDetailResDto findAllApplicationDetailResDto = new FindAllApplicationDetailResDto();
+        findAllApplicationDetailResDto.mapping(byApplicationEmploymentIdx, member, employmentAnnouncement);
+        return findAllApplicationDetailResDto;
     }
 
     @Override
