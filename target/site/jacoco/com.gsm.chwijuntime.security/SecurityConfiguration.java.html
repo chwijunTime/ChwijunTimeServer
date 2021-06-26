@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecurityConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.security</a> &gt; <span class="el_source">SecurityConfiguration.java</span></div><h1>SecurityConfiguration.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.security;
+
+import com.gsm.chwijuntime.handler.CustomAccessDeniedHandler;
+import com.gsm.chwijuntime.handler.CustomAuthenticationEntryPointHandler;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@Configuration
+@EnableWebSecurity
+<span class="nc" id="L21">@RequiredArgsConstructor</span>
+@Order(1)
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+<span class="nc" id="L29">        http</span>
+<span class="nc" id="L30">                .cors().and()</span>
+<span class="nc" id="L31">                .httpBasic().disable() // rest api 이므로 기본설정 사용안함. 기본설정은 비인증시 로그인폼 화면으로 리다이렉트 된다.</span>
+<span class="nc" id="L32">                .csrf().disable() // rest api이므로 csrf 보안이 필요없으므로 disable처리.</span>
+<span class="nc" id="L33">                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt token으로 인증할것이므로 세션필요없으므로 생성안함.</span>
+<span class="nc" id="L34">                .and()</span>
+<span class="nc" id="L35">                .authorizeRequests() // 다음 리퀘스트에 대한 사용권한 체크</span>
+<span class="nc" id="L36">                .antMatchers(&quot;/*/hello&quot; ,&quot;/*/login&quot;, &quot;/*/join&quot;,&quot;/exception/**&quot;, &quot;/*/member/**&quot;, &quot;/*/email-check&quot;, &quot;/*/check/findPw&quot;, &quot;/*/check/findPw/sendEmail&quot;, &quot;/*/auth/refresh&quot;, &quot;/*/abdodn/check/permissions&quot;, &quot;/*/duene/change/permissions&quot;, &quot;/actuator/**&quot;).permitAll() // 가입 및 인증 주소, 오류, 이메일 인증은 누구나 접근가능</span>
+<span class="nc" id="L37">                .antMatchers(&quot;/*/admin/**&quot;).hasRole(&quot;Admin&quot;) // admin으로 시작하는 요청은 관리자만 접근 가능</span>
+<span class="nc" id="L38">                .anyRequest().authenticated() // 그외 나머지 요청은 인증된 사용자만 접근 가능</span>
+<span class="nc" id="L39">                .and()</span>
+<span class="nc" id="L40">                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler()) //관리자 에러</span>
+<span class="nc" id="L41">                .and()</span>
+<span class="nc" id="L42">                .apply(new JwtTokenFilterConfigurer(jwtTokenProvider));</span>
+<span class="nc" id="L43">    }</span>
+
+    @Override // ignore check swagger, h2 database resource
+    public void configure(WebSecurity web) {
+<span class="nc" id="L47">        web.ignoring().antMatchers(&quot;/**/api-docs&quot;, &quot;/swagger-resources/**&quot;,</span>
+                &quot;/swagger-ui.html&quot;, &quot;/webjars/**&quot;, &quot;/swagger/**&quot;, &quot;/h2-console/**&quot;, &quot;/configuration/ui&quot;);
+<span class="nc" id="L49">    }</span>
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+<span class="nc" id="L53">        return new BCryptPasswordEncoder(12);</span>
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManager() throws Exception {
+<span class="nc" id="L59">        return super.authenticationManagerBean();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

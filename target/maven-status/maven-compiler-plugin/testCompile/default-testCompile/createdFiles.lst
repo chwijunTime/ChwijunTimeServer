@@ -1,0 +1,6 @@
+com/gsm/chwijuntime/OperatorTest.class
+com/gsm/chwijuntime/service/TagServiceTest.class
+com/gsm/chwijuntime/service/MemberServiceTest.class
+com/gsm/chwijuntime/service/NoticeServiceTest.class
+com/gsm/chwijuntime/controller/NoticeControllerTest.class
+com/gsm/chwijuntime/service/TipStorageServiceTest.class

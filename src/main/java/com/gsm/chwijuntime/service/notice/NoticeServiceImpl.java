@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.service.notice;
 
+import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.advice.exception.NotFoundNoticeException;
 import com.gsm.chwijuntime.dto.notice.NoticeSaveDto;
 import com.gsm.chwijuntime.model.Member;
@@ -25,7 +26,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Transactional
     @Override
     public void save(NoticeSaveDto noticeSaveDto) {
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(NotFoundNoticeException::new);
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         noticeRepository.save(noticeSaveDto.ToEntityByNotice(member));
     }
 

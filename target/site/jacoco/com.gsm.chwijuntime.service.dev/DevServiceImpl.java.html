@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DevServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.service.dev</a> &gt; <span class="el_source">DevServiceImpl.java</span></div><h1>DevServiceImpl.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.service.dev;
+
+import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+@Service
+<span class="nc" id="L14">@RequiredArgsConstructor</span>
+@Transactional(readOnly = true)
+public class DevServiceImpl implements DevService {
+
+    private final MemberRepository memberRepository;
+
+    @Override
+    public Map&lt;String, String&gt; PermissionCheck(String email) {
+<span class="nc" id="L22">        Map&lt;String, String&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L23">        Optional&lt;Member&gt; byMemberEmail = memberRepository.findByMemberEmail(email);</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (byMemberEmail.isEmpty()) {</span>
+<span class="nc" id="L25">            throw new IndexOutOfBoundsException(&quot;찾으시는 이메일을 칮지 못했습니다.&quot;);</span>
+        }
+<span class="nc" id="L27">        String s = byMemberEmail.get().getRoles().get(0);</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        if(s.equals(&quot;ROLE_User&quot;)) {</span>
+<span class="nc" id="L29">            map.put(&quot;msg&quot;, &quot;이 계정은 유저 계정 입니다.&quot;);</span>
+        } else {
+<span class="nc" id="L31">            map.put(&quot;msg&quot;, &quot;이 계정은 관리자 계정 입니다.&quot;);</span>
+        }
+<span class="nc" id="L33">        return map;</span>
+    }
+
+    @Transactional
+    @Override
+    public void ChangePermissions(String email) {
+<span class="nc" id="L39">        Optional&lt;Member&gt; byMemberEmail = memberRepository.findByMemberEmail(email);</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        if (byMemberEmail.isEmpty()) {</span>
+<span class="nc" id="L41">            throw new IndexOutOfBoundsException(&quot;찾으시는 이메일을 칮지 못했습니다.&quot;);</span>
+        }
+<span class="nc" id="L43">        String s = byMemberEmail.get().getRoles().get(0);</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if(s.equals(&quot;ROLE_User&quot;)) {</span>
+<span class="nc" id="L45">            byMemberEmail.get().change_roles();</span>
+        } else {
+<span class="nc" id="L47">            throw new IndexOutOfBoundsException(&quot;이 계정은 이미 관리자 계정입니다.&quot;);</span>
+        }
+<span class="nc" id="L49">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

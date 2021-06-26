@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExceptionAdvice.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.advice</a> &gt; <span class="el_source">ExceptionAdvice.java</span></div><h1>ExceptionAdvice.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.advice;
+
+import com.gsm.chwijuntime.advice.exception.*;
+import com.gsm.chwijuntime.model.response.CommonResult;
+import com.gsm.chwijuntime.model.response.ResponseService;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.DataException;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.servlet.http.HttpServletRequest;
+
+<span class="nc" id="L22">@RequiredArgsConstructor</span>
+@RestControllerAdvice
+public class ExceptionAdvice {
+
+    private final ResponseService responseService;
+    private final MessageSource messageSource;
+
+    // Code정보에 해당하는 메시지를 조회합니다
+    private String getMessage(String code) {
+<span class="nc" id="L31">        return getMessage(code, null);</span>
+    }
+
+    // Code정보, 추가 Argument로 현재 Locale에 맞는 메시지를 조회합니다
+    private String getMessage(String code, Object[] args) {
+<span class="nc" id="L36">        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());</span>
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(Exception.class)
+    protected CommonResult defaultException(HttpServletRequest request, Exception e) {
+<span class="nc" id="L42">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;unKnown.code&quot;)), e.getMessage());</span>
+    }
+
+    // 로그인이 안됬을 경우
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(CAuthenticationEntryPointException.class)
+    public CommonResult authenticationEntryPointException(HttpServletRequest request, CAuthenticationEntryPointException e) {
+<span class="nc" id="L49">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;entryPointException.code&quot;)), getMessage(&quot;entryPointException.msg&quot;));</span>
+    }
+
+    // 리소스 접근 권한이 없을 경우
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    public CommonResult AccessDeniedException(HttpServletRequest request, AccessDeniedException e) {
+<span class="nc" id="L56">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;accessDenied.code&quot;)), getMessage(&quot;accessDenied.msg&quot;));</span>
+    }
+
+    //유저가 중복될 경우
+    @ExceptionHandler(UserDuplicationException.class)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public CommonResult UserDuplicationException(HttpServletRequest request, UserDuplicationException e) {
+<span class="nc" id="L63">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;UserDuplicationException.code&quot;)), getMessage(&quot;UserDuplicationException.msg&quot;));</span>
+    }
+
+    //유저 이메일을 찾지 못할 경우
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(EmailNotFoundException.class)
+    public CommonResult EmailNotFoundException(HttpServletRequest request, EmailNotFoundException e) {
+<span class="nc" id="L70">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;EmailNotFoundException.code&quot;)), getMessage(&quot;EmailNotFoundException.msg&quot;));</span>
+    }
+
+    // 태그를 찾지 못할 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundTagException.class)
+    public CommonResult NotFoundTagException(HttpServletRequest request, NotFoundTagException e) {
+<span class="nc" id="L77">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundTagException.code&quot;)), getMessage(&quot;NotFoundTagException.msg&quot;));</span>
+    }
+
+    // 협약 업체을 찾지 못한 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundContractingCompanyException.class)
+    public CommonResult NotFoundTagException(HttpServletRequest request, NotFoundContractingCompanyException e) {
+<span class="nc" id="L84">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundContractingCompanyException.code&quot;)), getMessage(&quot;NotFoundContractingCompanyException.msg&quot;));</span>
+    }
+
+    // 작성자 권한이 아닌 경우
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AuthorNotCertifiedException.class)
+    public CommonResult AuthorNotCertifiedException(HttpServletRequest request, AuthorNotCertifiedException e) {
+<span class="nc" id="L91">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;AuthorNotCertifiedException.code&quot;)), getMessage(&quot;AuthorNotCertifiedException.msg&quot;));</span>
+    }
+
+    // 리뷰를 찾지 못한 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundCompanyReviewException.class)
+    public CommonResult NotFoundCompanyReview(HttpServletRequest request, NotFoundCompanyReviewException e) {
+<span class="nc" id="L98">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundCompanyReviewException.code&quot;)), getMessage(&quot;NotFoundCompanyReviewException.msg&quot;));</span>
+    }
+
+    // 협약 업체가 중복된 경우
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(DuplicateContractingCompanyException.class)
+    public CommonResult NotFoundCompanyReview(HttpServletRequest request, DuplicateContractingCompanyException e) {
+<span class="nc" id="L105">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;DuplicateContractingCompanyException.code&quot;)), getMessage(&quot;DuplicateContractingCompanyException.msg&quot;));</span>
+    }
+
+    // 공지사항을 못 찾을 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundNoticeException.class)
+    public CommonResult NotFoundNoticeException(HttpServletRequest request, NotFoundNoticeException e) {
+<span class="nc" id="L112">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundNoticeException.code&quot;)), getMessage(&quot;NotFoundNoticeException.msg&quot;));</span>
+    }
+
+    // 이미 요청이 승인된 경우
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(RequestAlreadyApprovedException.class)
+    public CommonResult RequestAlreadyApprovedException(HttpServletRequest request, RequestAlreadyApprovedException e) {
+<span class="nc" id="L119">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;RequestAlreadyApprovedException.code&quot;)), getMessage(&quot;RequestAlreadyApprovedException.msg&quot;));</span>
+    }
+
+    // 이미 요청이 거절된 경우
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(RequestAlreadyRejectedException.class)
+    public CommonResult RequestAlreadyRejectedException(HttpServletRequest request, RequestAlreadyRejectedException e) {
+<span class="nc" id="L126">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;RequestAlreadyRejectedException.code&quot;)), getMessage(&quot;RequestAlreadyRejectedException.msg&quot;));</span>
+    }
+
+    // 취업 공고를 못 찾을 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundEmploymentAnnouncementException.class)
+    public CommonResult NotFoundEmploymentAnnouncementException(HttpServletRequest request, NotFoundEmploymentAnnouncementException e) {
+<span class="nc" id="L133">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundEmploymentAnnouncementException.code&quot;)), getMessage(&quot;NotFoundEmploymentAnnouncementException.msg&quot;));</span>
+    }
+
+    // 취업 공고 요청을 못 찾을 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundApplicationEmploymentException.class)
+    public CommonResult NotFoundApplicationEmploymentException(HttpServletRequest request, NotFoundApplicationEmploymentException e) {
+<span class="nc" id="L140">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundApplicationEmploymentException.code&quot;)), getMessage(&quot;NotFoundApplicationEmploymentException.msg&quot;));</span>
+    }
+
+    // DTO Valid를 할 경우
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public CommonResult processValidationError(MethodArgumentNotValidException e) {
+<span class="nc" id="L147">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;MethodArgumentNotValidException.code&quot;)), e.getAllErrors().get(0).getDefaultMessage());</span>
+    }
+
+    // 패스워드를 틀릴 경우
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(IncorrectPasswordException.class)
+    public CommonResult IncorrectPasswordException(HttpServletRequest request, IncorrectPasswordException e) {
+<span class="nc" id="L154">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;IncorrectPasswordException.code&quot;)), getMessage(&quot;IncorrectPasswordException.msg&quot;));</span>
+    }
+
+    // 채용 확정 정보를 찾을 수 없을 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundEmploymentConfirmationException.class)
+    public CommonResult NotFoundEmploymentConfirmationException(HttpServletRequest request, NotFoundEmploymentConfirmationException e) {
+<span class="nc" id="L161">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundEmploymentConfirmationException.code&quot;)), getMessage(&quot;NotFoundEmploymentConfirmationException.msg&quot;));</span>
+    }
+
+    // 포트폴리오 정보를 찾을 수 없을 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundPortfolioException.class)
+    public CommonResult NotFoundPortfolioException(HttpServletRequest request, NotFoundPortfolioException e) {
+<span class="nc" id="L168">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundPortfolioException.code&quot;)), getMessage(&quot;NotFoundPortfolioException.msg&quot;));</span>
+    }
+
+    // 이력서 정보를 찾을 수 없는 경우
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundResumeException.class)
+    public CommonResult NotFoundResumeException(HttpServletRequest request, NotFoundResumeException e) {
+<span class="nc" id="L175">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundResumeException.code&quot;)), getMessage(&quot;NotFoundResumeException.msg&quot;));</span>
+    }
+
+    // 태그 삭제 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public CommonResult IntegrationException(HttpServletRequest request, ConstraintViolationException e) {
+<span class="nc" id="L182">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;ConstraintViolationException.code&quot;)), getMessage(&quot;ConstraintViolationException.msg&quot;));</span>
+    }
+
+    // 태그 삭제 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public CommonResult DataIntegrityViolationException(HttpServletRequest request, DataIntegrityViolationException e) {
+<span class="nc" id="L189">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;ConstraintViolationException.code&quot;)), getMessage(&quot;ConstraintViolationException.msg&quot;));</span>
+    }
+
+    // 신청 날짜 만료
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(ApplicationDateExpirationException.class)
+    public CommonResult ApplicationDateExpirationException(HttpServletRequest request, ApplicationDateExpirationException e) {
+<span class="nc" id="L196">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;ApplicationDateExpirationException.code&quot;)), getMessage(&quot;ApplicationDateExpirationException.msg&quot;));</span>
+    }
+
+    // URL 유효성 검사 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(URLValidationException.class)
+    public CommonResult URLValidationException(HttpServletRequest request, URLValidationException e) {
+<span class="nc" id="L203">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;URLValidationException.code&quot;)), getMessage(&quot;URLValidationException.msg&quot;));</span>
+    }
+
+    // 시간 타입 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public CommonResult HttpMessageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException e) {
+<span class="nc" id="L210">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;HttpMessageNotReadableException.code&quot;)), getMessage(&quot;HttpMessageNotReadableException.msg&quot;));</span>
+    }
+
+    // 토큰 만료 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(CExpiredJwtException.class)
+    public CommonResult CExpiredJwtException(HttpServletRequest request, CExpiredJwtException e) {
+<span class="nc" id="L217">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;CExpiredJwtException.code&quot;)), getMessage(&quot;CExpiredJwtException.msg&quot;));</span>
+    }
+
+    // Bearer 토큰을 찾지 못함
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(NotFoundBearer.class)
+    public CommonResult NotFoundBearer(HttpServletRequest request, NotFoundBearer e) {
+<span class="nc" id="L224">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundBearer.code&quot;)), getMessage(&quot;NotFoundBearer.msg&quot;));</span>
+    }
+
+    // 중복 신청
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(RedundantApplicationException.class)
+    public CommonResult RedundantApplicationException(HttpServletRequest request, RedundantApplicationException e) {
+<span class="nc" id="L231">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;RedundantApplicationException.code&quot;)), getMessage(&quot;RedundantApplicationException.msg&quot;));</span>
+    }
+
+    // 어드민 신청을 찾지 못함
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundConsultingAdminException.class)
+    public CommonResult NotFoundConsultingAdminException(HttpServletRequest request, NotFoundConsultingAdminException e) {
+<span class="nc" id="L238">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundConsultingAdminException.code&quot;)), getMessage(&quot;NotFoundConsultingAdminException.msg&quot;));</span>
+    }
+
+    // 첨삭 신청을 찾지 못함
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundCorrectionApply.class)
+    public CommonResult NotFoundCorrectionApply(HttpServletRequest request, NotFoundCorrectionApply e) {
+<span class="nc" id="L245">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundCorrectionApply.code&quot;)), getMessage(&quot;NotFoundCorrectionApply.msg&quot;));</span>
+    }
+
+    // 요청 태그를 찾지 못함
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundRequestTagException.class)
+    public CommonResult NotFoundRequestTagException(HttpServletRequest request, NotFoundRequestTagException e) {
+<span class="nc" id="L252">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NotFoundRequestTagException.code&quot;)), getMessage(&quot;NotFoundRequestTagException.msg&quot;));</span>
+    }
+
+    // 태그 중복
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(DuplicateTagNameException.class)
+    public CommonResult DuplicateTagNameException(HttpServletRequest request, DuplicateTagNameException e) {
+<span class="nc" id="L259">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;DuplicateTagNameException.code&quot;)), getMessage(&quot;DuplicateTagNameException.msg&quot;));</span>
+    }
+
+    // 글자 수 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(DataException.class)
+    public CommonResult DataException(HttpServletRequest request, DataException dataException) {
+<span class="nc" id="L266">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;DataException.code&quot;)), getMessage(&quot;DataException.msg&quot;));</span>
+    }
+
+    //토큰 에러
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ExceptionHandler(NoTokenANDTokenWrongException.class)
+    public CommonResult NoTokenANDTokenWrongException(HttpServletRequest request, NoTokenANDTokenWrongException e){
+<span class="nc" id="L273">        return responseService.getFailResult(Integer.parseInt(getMessage(&quot;NoTokenANDTokenWrongException.code&quot;)), getMessage(&quot;NoTokenANDTokenWrongException.msg&quot;));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

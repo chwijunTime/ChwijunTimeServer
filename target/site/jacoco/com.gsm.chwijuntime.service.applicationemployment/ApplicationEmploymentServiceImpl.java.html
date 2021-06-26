@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApplicationEmploymentServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.service.applicationemployment</a> &gt; <span class="el_source">ApplicationEmploymentServiceImpl.java</span></div><h1>ApplicationEmploymentServiceImpl.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.service.applicationemployment;
+
+import com.gsm.chwijuntime.advice.exception.*;
+import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
+import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
+import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
+import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
+import com.gsm.chwijuntime.model.ApplicationEmployment;
+import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
+import com.gsm.chwijuntime.model.EmploymentAnnouncement;
+import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.repository.ApplicationEmploymentRepository;
+import com.gsm.chwijuntime.repository.EmploymentAnnouncementRepository;
+import com.gsm.chwijuntime.repository.MemberRepository;
+import com.gsm.chwijuntime.util.GetUserEmailUtil;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="nc" id="L27">@RequiredArgsConstructor</span>
+@Transactional(readOnly = true)
+<span class="nc" id="L29">@Slf4j</span>
+public class ApplicationEmploymentServiceImpl implements ApplicationEmploymentService {
+
+    private final MemberRepository memberRepository;
+    private final GetUserEmailUtil getUserEmailUtil;
+    private final ApplicationEmploymentRepository applicationEmploymentRepository;
+    private final EmploymentAnnouncementRepository employmentAnnouncementRepository;
+    private final ModelMapper mapper;
+
+    @Transactional
+    @Override
+    public void application(Long employmentAnnouncementIdx, ApplicationEmploymentSaveDto applicationemploymentSaveDto) {
+<span class="nc" id="L41">        EmploymentAnnouncement findMyEmploymentAnnouncement = employmentAnnouncementRepository.findById(employmentAnnouncementIdx).orElseThrow(NotFoundEmploymentAnnouncementException::new);</span>
+        //공고 날짜/신청 날짜 비교
+<span class="nc" id="L43">        int compare = applicationemploymentSaveDto.getLocalDate().compareTo(findMyEmploymentAnnouncement.getDeadLine());</span>
+<span class="nc" id="L44">        compareToDate(compare);</span>
+<span class="nc" id="L45">        Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);</span>
+<span class="nc" id="L46">        log.info(findMyEmploymentAnnouncement.getEmploymentAnnouncementName());</span>
+<span class="nc" id="L47">        applicationEmploymentRepository.save(applicationemploymentSaveDto.toEntityByApplicationEmployment(findMember, findMyEmploymentAnnouncement));</span>
+<span class="nc" id="L48">    }</span>
+
+    @Override
+    public List&lt;FindAllApplicationResDto&gt; findByMember() {
+<span class="nc" id="L52">        List&lt;FindAllApplicationResDto&gt; findAllApplicationResDtos = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L53">        Member findMember = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);</span>
+<span class="nc" id="L54">        List&lt;ApplicationEmployment&gt; applicationEmploymentStatus = applicationEmploymentRepository.findByMember(findMember);</span>
+<span class="nc" id="L55">        return getFindAllApplicationResDtos(findAllApplicationResDtos, applicationEmploymentStatus);</span>
+    }
+
+    private void compareToDate(int compare) {
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if(compare &gt;= 0) {</span>
+<span class="nc" id="L60">            throw new ApplicationDateExpirationException();</span>
+        }
+<span class="nc" id="L62">    }</span>
+
+    @Override
+    public FindAllApplicationDetailResDto applicationDetail(Long idx) {
+<span class="nc" id="L66">        ApplicationEmployment byApplicationEmploymentIdx = applicationEmploymentRepository.findByApplicationEmploymentIdx(idx);</span>
+<span class="nc" id="L67">        Member member = byApplicationEmploymentIdx.getMember();</span>
+<span class="nc" id="L68">        EmploymentAnnouncement employmentAnnouncement = byApplicationEmploymentIdx.getEmploymentAnnouncement();</span>
+<span class="nc" id="L69">        FindAllApplicationDetailResDto findAllApplicationDetailResDto = new FindAllApplicationDetailResDto();</span>
+<span class="nc" id="L70">        findAllApplicationDetailResDto.mapping(byApplicationEmploymentIdx, member, employmentAnnouncement);</span>
+<span class="nc" id="L71">        return findAllApplicationDetailResDto;</span>
+    }
+
+    @Override
+    public List&lt;FindAllApplicationResDto&gt; findByStatus(ApplicationEmploymentStatus status) {
+<span class="nc" id="L76">        List&lt;FindAllApplicationResDto&gt; findAllApplicationResDtos = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L77">        List&lt;ApplicationEmployment&gt; applicationEmploymentStatus = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (status.equals(ApplicationEmploymentStatus.Approve)){</span>
+<span class="nc" id="L79">            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(status);</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        } else if(status.equals(ApplicationEmploymentStatus.Wait)) {</span>
+<span class="nc" id="L81">            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(status);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        } else if(status.equals(ApplicationEmploymentStatus.Reject)) {</span>
+<span class="nc" id="L83">            applicationEmploymentStatus = applicationEmploymentRepository.findByApplicationEmploymentStatus(status);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        } else if(status.equals(ApplicationEmploymentStatus.All)){</span>
+<span class="nc" id="L85">            applicationEmploymentStatus = applicationEmploymentRepository.findAll();</span>
+        }
+<span class="nc" id="L87">        return getFindAllApplicationResDtos(findAllApplicationResDtos, applicationEmploymentStatus);</span>
+    }
+
+    private List&lt;FindAllApplicationResDto&gt; getFindAllApplicationResDtos(List&lt;FindAllApplicationResDto&gt; findAllApplicationResDtos, List&lt;ApplicationEmployment&gt; applicationEmploymentStatus) {
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        for (ApplicationEmployment applicationEmployment : applicationEmploymentStatus) {</span>
+<span class="nc" id="L92">            Member member = applicationEmployment.getMember();</span>
+<span class="nc" id="L93">            EmploymentAnnouncement employmentAnnouncement = applicationEmployment.getEmploymentAnnouncement();</span>
+<span class="nc" id="L94">            FindAllApplicationResDto build = FindAllApplicationResDto.builder()</span>
+<span class="nc" id="L95">                    .localDate(applicationEmployment.getApplicationDate())</span>
+<span class="nc" id="L96">                    .applicationEmploymentIdx(applicationEmployment.getApplicationEmploymentIdx())</span>
+<span class="nc" id="L97">                    .applicationEmploymentStatus(applicationEmployment.getApplicationEmploymentStatus())</span>
+<span class="nc" id="L98">                    .memberClassNumber(member.getMemberClassNumber())</span>
+<span class="nc" id="L99">                    .gitHubURL(applicationEmployment.getGitHubURL())</span>
+<span class="nc" id="L100">                    .employmentAnnouncementName(employmentAnnouncement.getEmploymentAnnouncementName())</span>
+<span class="nc" id="L101">                    .recruitmentField(employmentAnnouncement.getRecruitmentField())</span>
+<span class="nc" id="L102">                    .build();</span>
+<span class="nc" id="L103">            findAllApplicationResDtos.add(build);</span>
+<span class="nc" id="L104">        }</span>
+<span class="nc" id="L105">        return findAllApplicationResDtos;</span>
+    }
+
+    @Transactional
+    @Override
+    public void acceptApplication(Long idx) {
+<span class="nc" id="L111">        ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(NotFoundApplicationEmploymentException::new);</span>
+<span class="nc" id="L112">        requestCheck(applicationEmployment);</span>
+<span class="nc" id="L113">        applicationEmployment.changeApplicationEmploymentStatusApprove();</span>
+<span class="nc" id="L114">    }</span>
+
+    @Transactional
+    @Override
+    public void rejectApplication(Long idx) {
+<span class="nc" id="L119">        ApplicationEmployment applicationEmployment = applicationEmploymentRepository.findById(idx).orElseThrow(NotFoundApplicationEmploymentException::new);</span>
+<span class="nc" id="L120">        requestCheck(applicationEmployment);</span>
+<span class="nc" id="L121">        applicationEmployment.changeApplicationEmploymentStatusApproveReject();</span>
+<span class="nc" id="L122">    }</span>
+
+    private void requestCheck(ApplicationEmployment applicationEmployment){
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Approve)){</span>
+<span class="nc" id="L126">            throw new RequestAlreadyApprovedException(&quot;이미 승인된 요청입니다.&quot;);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        } else if(applicationEmployment.getApplicationEmploymentStatus().equals(ApplicationEmploymentStatus.Reject)){</span>
+<span class="nc" id="L128">            throw new RequestAlreadyRejectedException(&quot;이미 거절된 요청입니다.&quot;);</span>
+        }
+<span class="nc" id="L130">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

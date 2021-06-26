@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MemoryCheckAop.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.aop.memorycheck</a> &gt; <span class="el_source">MemoryCheckAop.java</span></div><h1>MemoryCheckAop.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.aop.memorycheck;
+
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.springframework.stereotype.Component;
+
+@Aspect
+@Component
+<span class="nc" id="L11">@Slf4j</span>
+<span class="nc" id="L12">public class MemoryCheckAop {</span>
+
+    @Pointcut(&quot;@annotation(com.gsm.chwijuntime.aop.memorycheck.MemoryCheck)&quot;)
+<span class="nc" id="L15">    public void MemoryCheck() {}</span>
+
+    @Around(&quot;MemoryCheck()&quot;)
+    public Object Around(ProceedingJoinPoint joinPoint) throws Throwable {
+        try {
+<span class="nc" id="L20">            Object result = joinPoint.proceed();</span>
+<span class="nc" id="L21">            Runtime.getRuntime().gc();</span>
+<span class="nc" id="L22">            long used = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();</span>
+<span class="nc" id="L23">            log.info(&quot;used memory is &quot; + used + &quot; bytes&quot;);</span>
+<span class="nc" id="L24">            return result;</span>
+<span class="nc" id="L25">        } catch (Exception e) {</span>
+<span class="nc" id="L26">            log.error(e.toString());</span>
+<span class="nc" id="L27">            return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

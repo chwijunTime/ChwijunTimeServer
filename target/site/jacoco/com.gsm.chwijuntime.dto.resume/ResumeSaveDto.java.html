@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResumeSaveDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.dto.resume</a> &gt; <span class="el_source">ResumeSaveDto.java</span></div><h1>ResumeSaveDto.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.dto.resume;
+
+import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.MemberResume;
+import lombok.*;
+
+import javax.validation.constraints.NotBlank;
+
+@Getter
+<span class="nc" id="L10">@Setter</span>
+<span class="nc" id="L11">@AllArgsConstructor</span>
+<span class="nc" id="L12">@NoArgsConstructor</span>
+<span class="nc" id="L13">@Builder</span>
+public class ResumeSaveDto {
+
+    @NotBlank(message = &quot;이력서 URL을 입력해주세요.&quot;)
+<span class="nc" id="L17">    private String resumeFileURL;</span>
+
+    public MemberResume toEntityByMember(Member member) {
+<span class="nc" id="L20">        return MemberResume.builder()</span>
+<span class="nc" id="L21">                .member(member)</span>
+<span class="nc" id="L22">                .resumeFileURL(this.resumeFileURL)</span>
+<span class="nc" id="L23">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

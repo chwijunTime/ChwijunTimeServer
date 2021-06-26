@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SendEmailService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.service.email</a> &gt; <span class="el_source">SendEmailService.java</span></div><h1>SendEmailService.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.service.email;
+
+import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.dto.email.MailDto;
+import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+<span class="nc" id="L16">@RequiredArgsConstructor</span>
+public class SendEmailService {
+
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender mailSender;
+    private static final String FROM_ADDRESS = &quot;s19066@gsm.hs.kr&quot;;
+
+    @Transactional
+    public MailDto createMailAndChangePassword(String userEmail){
+<span class="nc" id="L26">        String str = getTempPassword();</span>
+<span class="nc" id="L27">        MailDto dto = new MailDto();</span>
+<span class="nc" id="L28">        dto.setAddress(userEmail);</span>
+<span class="nc" id="L29">        dto.setTitle(userEmail+&quot;님의 취준타임 임시비밀번호 안내 이메일 입니다.&quot;);</span>
+<span class="nc" id="L30">        dto.setMessage(&quot;안녕하세요. 취준타임 임시비밀번호 안내 관련 이메일 입니다.&quot; + &quot;[&quot; + userEmail + &quot;]&quot; +&quot;님의 임시 비밀번호는 &quot;</span>
+                + str + &quot; 입니다.&quot;);
+<span class="nc" id="L32">        updatePassword(str,userEmail);</span>
+<span class="nc" id="L33">        return dto;</span>
+    }
+
+    @Async
+    @Transactional
+    public void mailSend(MailDto mailDto){
+<span class="nc" id="L39">        SimpleMailMessage message = new SimpleMailMessage();</span>
+<span class="nc" id="L40">        message.setTo(mailDto.getAddress());</span>
+<span class="nc" id="L41">        message.setFrom(SendEmailService.FROM_ADDRESS);</span>
+<span class="nc" id="L42">        message.setSubject(mailDto.getTitle());</span>
+<span class="nc" id="L43">        message.setText(mailDto.getMessage());</span>
+<span class="nc" id="L44">        mailSender.send(message);</span>
+<span class="nc" id="L45">    }</span>
+
+    @Transactional
+    public void updatePassword(String str,String userEmail){
+<span class="nc" id="L49">        String pw = passwordEncoder.encode(str);</span>
+<span class="nc" id="L50">        Member member = memberRepository.findByMemberEmail(userEmail).orElseThrow(CAuthenticationEntryPointException::new);</span>
+<span class="nc" id="L51">        member.change_password(pw);</span>
+<span class="nc" id="L52">    }</span>
+
+    @Transactional
+    public String getTempPassword(){
+<span class="nc" id="L56">        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',</span>
+                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+<span class="nc" id="L59">        String str = &quot;&quot;;</span>
+
+<span class="nc" id="L61">        int idx = 0;</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        for (int i = 0; i &lt; 10; i++) {</span>
+<span class="nc" id="L63">            idx = (int) (charSet.length * Math.random());</span>
+<span class="nc" id="L64">            str += charSet[idx];</span>
+        }
+<span class="nc" id="L66">        return str;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,101 @@
+# exception_ko.yml
+unKnown:
+  code: "-9999"
+MethodArgumentNotValidException:
+  code: "-8888"
+entryPointException:
+  code: "-1"
+  msg: "로그인이 필요합니다."
+accessDenied:
+  code: "-2"
+  msg: "관리자 권한이 없습니다."
+UserDuplicationException:
+  code: "-3"
+  msg: "이메일이 중복 되었습니다."
+EmailNotFoundException:
+  code: "-4"
+  msg: "이메일을 다시 입력해주세요."
+NotFoundTagException:
+  code: "-5"
+  msg: "선택하신 태그가 없습니다."
+NotFoundContractingCompanyException:
+  code: "-6"
+  msg: "선택하신 협약 업체는 없습니다."
+NotFoundCompanyReviewException:
+  code: "-7"
+  msg: "선택하신 회사 리뷰는 없습니다."
+AuthorNotCertifiedException:
+  code: "-8"
+  msg: "작성자의 권한이 필요합니다."
+DuplicateContractingCompanyException:
+  code: "-9"
+  msg: "이미 등록된 기업입니다."
+NotFoundNoticeException:
+  code: "-10"
+  msg: "선택하신 공지사항은 없습니다."
+RequestAlreadyApprovedException:
+  code: "-11"
+  msg: "이미 승인된 요청입니다."
+RequestAlreadyRejectedException:
+  code: "-12"
+  msg: "이미 거절된 요청입니다."
+NotFoundEmploymentAnnouncementException:
+  code: "-13"
+  msg: "취업 공고를 찾을 수 없습니다."
+NotFoundApplicationEmploymentException:
+  code: "-14"
+  msg: "취업 공고 신청을 찾을 수 없습니다."
+IncorrectPasswordException:
+  code: "-15"
+  msg: "비밀번호가 틀렸습니다."
+NotFoundEmploymentConfirmationException:
+  code: "-16"
+  msg: "선택 하신 채용 확정 정보를 찾을 수 없습니다."
+NotFoundPortfolioException:
+  code: "-17"
+  msg: "선책 하신 포트폴리오를 찾을 수 없습니다."
+NotFoundResumeException:
+  code: "-18"
+  msg: "선택하신 이력서를 찾을 수 없습니다."
+ConstraintViolationException:
+  code: "-19"
+  msg: "관련된 데이터가 남아 있으므로 삭제할 수 없습니다."
+ApplicationDateExpirationException:
+  code: "-20"
+  msg: "신청이 만료되었습니다."
+URLValidationException:
+  code: "-21"
+  msg: "URL 형식으로 입력해주세요."
+HttpMessageNotReadableException:
+  code: "-22"
+  msg: "시간 타입을 입력해주세요"
+CExpiredJwtException:
+  code: "-23"
+  msg: "토큰이 만료되었습니다."
+NotFoundBearer:
+  code: "-24"
+  msg: "Bearer 토큰을 찾을 수 없습니다."
+RedundantApplicationException:
+  code: "-25"
+  msg: "중복 신청입니다."
+NotFoundConsultingAdminException:
+  code: "-26"
+  msg: "어드민 신청을 찾을 수 없습니다."
+NotFoundCorrectionApply:
+  code: "-27"
+  msg: "첨삭 신청을 찾을 수 없습니다."
+NotFoundRequestTagException:
+  code: "-28"
+  msg: "요청하신 태그를 찾을 수 없습니다."
+NotFoundTipsStorageException:
+  sode: "-29"
+  msg: "요청하신 팁을 찾을 수 없습니다."
+DuplicateTagNameException:
+  code: "-30"
+  msg: "태그가 중복 되었습니다."
+DataException:
+  code: "-31"
+  msg: "입력 가능한 글자 수를 넘었습니다."
+NoTokenANDTokenWrongException:
+  code: "-32"
+  msg: "토큰의 값이 없거나 틀립니다."

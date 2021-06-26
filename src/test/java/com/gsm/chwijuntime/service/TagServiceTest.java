@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 
@@ -20,9 +21,9 @@ import static org.junit.Assert.fail;
 
 @Slf4j
 @RunWith(SpringRunner.class)
+@WebAppConfiguration
 @SpringBootTest(properties = "spring.config.location=" +
-        "classpath:/application.yml" +
-        ",classpath:/key.yml"
+        "classpath:/application.yml"
 )
 @Transactional
 public class TagServiceTest {

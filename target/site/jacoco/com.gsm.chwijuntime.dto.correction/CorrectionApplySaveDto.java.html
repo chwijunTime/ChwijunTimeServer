@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CorrectionApplySaveDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.dto.correction</a> &gt; <span class="el_source">CorrectionApplySaveDto.java</span></div><h1>CorrectionApplySaveDto.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.dto.correction;
+
+import com.gsm.chwijuntime.model.*;
+import org.springframework.stereotype.Component;
+
+
+@Component
+<span class="nc" id="L8">public class CorrectionApplySaveDto {</span>
+
+    public CorrectionApply toEntityByCorrectionApplyMemberPortfolio(CorrectionType correctionType, MemberPortfolio memberPortfolio, Member member){
+<span class="nc" id="L11">        return CorrectionApply.builder()</span>
+<span class="nc" id="L12">                .correctionStatus(CorrectionStatus.Correction_Applying)</span>
+<span class="nc" id="L13">                .memberPortfolio(memberPortfolio)</span>
+<span class="nc" id="L14">                .member(member)</span>
+<span class="nc" id="L15">                .correctionType(correctionType)</span>
+<span class="nc" id="L16">                .build();</span>
+    }
+
+    public CorrectionApply toEntityByCorrectionApplyMemberMemberResume(CorrectionType correctionType, MemberResume memberResume, Member member){
+<span class="nc" id="L20">        return CorrectionApply.builder()</span>
+<span class="nc" id="L21">                .correctionStatus(CorrectionStatus.Correction_Applying)</span>
+<span class="nc" id="L22">                .memberResume(memberResume)</span>
+<span class="nc" id="L23">                .correctionType(correctionType)</span>
+<span class="nc" id="L24">                .member(member)</span>
+<span class="nc" id="L25">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
