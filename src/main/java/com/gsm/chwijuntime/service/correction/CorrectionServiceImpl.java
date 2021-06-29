@@ -1,9 +1,7 @@
 package com.gsm.chwijuntime.service.correction;
 
 import com.gsm.chwijuntime.advice.exception.*;
-import com.gsm.chwijuntime.dto.correction.CorrectionApplySaveDto;
-import com.gsm.chwijuntime.dto.correction.CorrectionApprovalSaveDto;
-import com.gsm.chwijuntime.dto.correction.CorrectionRejectionSaveDto;
+import com.gsm.chwijuntime.dto.correction.*;
 import com.gsm.chwijuntime.model.*;
 import com.gsm.chwijuntime.repository.*;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
@@ -11,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,11 +61,48 @@ public class CorrectionServiceImpl implements CorrectionService {
 
     // 내가 신청한 리스트 보기
     @Override
-    public List<CorrectionApply> findByMyApply() {
+    public List<CorrectionApplyResDto> findByMyApply() {
+        List<CorrectionApplyResDto> correctionApplyResDtos = new ArrayList<>();
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
         List<CorrectionApply> byMember = correctionApplyRepository.findByMember(member);
-        return byMember;
+        for (CorrectionApply correctionApply : byMember) {
+            if(correctionApply.getCorrectionType().equals(CorrectionType.Portfolio)){
+                CorrectionApplyResDto correctionApplyResDto = mappingPortfolioRes(correctionApply, correctionApply.getMemberPortfolio(), correctionApply.getMember());
+                correctionApplyResDtos.add(correctionApplyResDto);
+            } else {   // 이력서 이면
+                CorrectionApplyResDto correctionApplyResDto = mappingMemberResumeRes(correctionApply, correctionApply.getMemberResume(), correctionApply.getMember());
+                correctionApplyResDtos.add(correctionApplyResDto);
+            }
+        }
+        return correctionApplyResDtos;
     }
+
+    private CorrectionApplyResDto mappingPortfolioRes(CorrectionApply correctionApply, MemberPortfolio memberPortfolio, Member member){
+            CorrectionApplyResDto correctionApplyResDto = CorrectionApplyResDto.builder()
+                    .correctionApplyIdx(correctionApply.getCorrectionApplyIdx())
+                    .correctionStatus(correctionApply.getCorrectionStatus())
+                    .correctionType(correctionApply.getCorrectionType())
+                    .memberPortfolioIdx(memberPortfolio.getMemberPortfolioIdx())
+                    .notionPortfolioURL(memberPortfolio.getNotionPortfolioURL())
+                    .memberEmail(member.getMemberEmail())
+                    .memberClassNumber(member.getMemberClassNumber())
+                    .build();
+            return correctionApplyResDto;
+    }
+
+    private CorrectionApplyResDto mappingMemberResumeRes(CorrectionApply correctionApply, MemberResume memberResume, Member member){
+            CorrectionApplyResDto correctionApplyResDto = CorrectionApplyResDto.builder()
+                    .correctionApplyIdx(correctionApply.getCorrectionApplyIdx())
+                    .correctionStatus(correctionApply.getCorrectionStatus())
+                    .correctionType(correctionApply.getCorrectionType())
+                    .memberResumeIdx(memberResume.getMemberResumeIdx())
+                    .notionPortfolioURL(memberResume.getResumeFileURL())
+                    .memberEmail(member.getMemberEmail())
+                    .memberClassNumber(member.getMemberClassNumber())
+                    .build();
+            return correctionApplyResDto;
+    }
+
 
     @Override
     public List<Correction> findMyCorrection() {

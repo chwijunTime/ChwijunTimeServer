@@ -3,6 +3,7 @@ package com.gsm.chwijuntime.controller.release;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
 import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
 import com.gsm.chwijuntime.dto.consultinguser.ConsultingUserResDto;
+import com.gsm.chwijuntime.dto.correction.CorrectionApplyResDto;
 import com.gsm.chwijuntime.dto.tipstorage.TipsStorageResDto;
 import com.gsm.chwijuntime.model.Correction;
 import com.gsm.chwijuntime.model.CorrectionApply;
@@ -99,8 +100,8 @@ public class MyPageController {
     @ResponseBody
     @ApiOperation(value = "첨삭 신청 보기(마이페이지)", notes = "사용자의 첨삭 신청을 전체 조회한다.")
     @GetMapping("/mypage-correction-apply")
-    public ListResult<CorrectionApply> myPageCorrectionApply() {
-        List<CorrectionApply> byMyApply = correctionService.findByMyApply();
+    public ListResult<CorrectionApplyResDto> myPageCorrectionApply() {
+        List<CorrectionApplyResDto> byMyApply = correctionService.findByMyApply();
         return responseService.getListResult(byMyApply);
     }
 
