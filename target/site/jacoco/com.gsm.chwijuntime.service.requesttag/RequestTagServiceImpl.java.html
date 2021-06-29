@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RequestTagServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.service.requesttag</a> &gt; <span class="el_source">RequestTagServiceImpl.java</span></div><h1>RequestTagServiceImpl.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.service.requesttag;
+
+import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.DuplicateTagNameException;
+import com.gsm.chwijuntime.advice.exception.NotFoundRequestTagException;
+import com.gsm.chwijuntime.dto.requesttag.RequestTagResDto;
+import com.gsm.chwijuntime.dto.requesttag.RequestTagSaveDto;
+import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.RequestTag;
+import com.gsm.chwijuntime.repository.MemberRepository;
+import com.gsm.chwijuntime.repository.RequestTagRepository;
+import com.gsm.chwijuntime.util.GetUserEmailUtil;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
+@Service
+<span class="nc" id="L23">@RequiredArgsConstructor</span>
+@Transactional(readOnly = true)
+public class RequestTagServiceImpl implements RequestTagService {
+
+    private final MemberRepository memberRepository;
+    private final RequestTagRepository requestTagRepository;
+    private final GetUserEmailUtil getUserEmailUtil;
+    private final ModelMapper mapper;
+
+    @Transactional
+    @Override
+    public void saveTag(RequestTagSaveDto requestTagSaveDto) {
+<span class="nc" id="L35">        requestTagSaveDto.setTagName(requestTagSaveDto.getTagName().toLowerCase(Locale.ROOT));</span>
+<span class="nc" id="L36">        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);</span>
+        // 중복 처리
+<span class="nc" id="L38">        RequestTag byRTagName = requestTagRepository.findByTagName(requestTagSaveDto.getTagName());</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if(byRTagName == null) {</span>
+<span class="nc" id="L40">            requestTagRepository.save(requestTagSaveDto.toEntityRequestTag(member));</span>
+        } else {
+<span class="nc" id="L42">            throw new DuplicateTagNameException();</span>
+        }
+<span class="nc" id="L44">    }</span>
+
+    @Transactional
+    @Override
+    public void deleteTag(Long idx) {
+<span class="nc" id="L49">        requestTagRepository.deleteById(idx);</span>
+<span class="nc" id="L50">    }</span>
+
+    @Override
+    public List&lt;RequestTagResDto&gt; findAll() {
+<span class="nc" id="L54">        List&lt;RequestTagResDto&gt; collect = requestTagRepository.searchAll()</span>
+<span class="nc" id="L55">                .stream().map(m -&gt; mapper.map(m, RequestTagResDto.class))</span>
+<span class="nc" id="L56">                .collect(Collectors.toList());</span>
+<span class="nc" id="L57">        return collect;</span>
+    }
+
+    @Override
+    public RequestTagResDto findByIdx(Long idx) {
+<span class="nc" id="L62">        RequestTagResDto requestTagResDto = requestTagRepository.findById(idx).map(m -&gt; mapper.map(m, RequestTagResDto.class)).orElseThrow(NotFoundRequestTagException::new);</span>
+<span class="nc" id="L63">        return requestTagResDto;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

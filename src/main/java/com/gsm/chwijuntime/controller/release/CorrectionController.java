@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.controller.release;
 
+import com.gsm.chwijuntime.dto.correction.CorrectionApplyResDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionApprovalSaveDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionRejectionSaveDto;
 import com.gsm.chwijuntime.model.CorrectionApply;
@@ -91,8 +92,8 @@ public class CorrectionController {
     })
     @ResponseBody
     @GetMapping("/my-correction")
-    public ListResult<CorrectionApply> findByMember() {
-        List<CorrectionApply> all = correctionService.findByMyApply();
+    public ListResult<CorrectionApplyResDto> findByMember() {
+        List<CorrectionApplyResDto> all = correctionService.findByMyApply();
         return responseService.getListResult(all);
     }
 }

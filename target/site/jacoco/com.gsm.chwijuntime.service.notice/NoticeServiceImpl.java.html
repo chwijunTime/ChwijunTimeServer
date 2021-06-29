@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NoticeServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.service.notice</a> &gt; <span class="el_source">NoticeServiceImpl.java</span></div><h1>NoticeServiceImpl.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.service.notice;
+
+import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
+import com.gsm.chwijuntime.advice.exception.NotFoundNoticeException;
+import com.gsm.chwijuntime.dto.notice.NoticeSaveDto;
+import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.Notice;
+import com.gsm.chwijuntime.repository.MemberRepository;
+import com.gsm.chwijuntime.repository.NoticeRepository;
+import com.gsm.chwijuntime.util.GetUserEmailUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+<span class="nc" id="L18">@RequiredArgsConstructor</span>
+@Transactional(readOnly = true)
+public class NoticeServiceImpl implements NoticeService {
+
+    private final NoticeRepository noticeRepository;
+    private final GetUserEmailUtil getUserEmailUtil;
+    private final MemberRepository memberRepository;
+
+    @Transactional
+    @Override
+    public void save(NoticeSaveDto noticeSaveDto) {
+<span class="nc" id="L29">        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);</span>
+<span class="nc" id="L30">        noticeRepository.save(noticeSaveDto.ToEntityByNotice(member));</span>
+<span class="nc" id="L31">    }</span>
+
+    @Override
+    public Notice findById(Long idx) {
+<span class="nc" id="L35">        Notice notice = noticeRepository.findById(idx).orElseThrow(NotFoundNoticeException::new);</span>
+<span class="nc" id="L36">        return notice;</span>
+    }
+
+    @Override
+    public List&lt;Notice&gt; findAll() {
+<span class="nc" id="L41">        List&lt;Notice&gt; notices = noticeRepository.findAll();</span>
+<span class="nc" id="L42">        return notices;</span>
+    }
+
+    @Transactional
+    @Override
+    public void deleteById(Long idx) {
+<span class="nc" id="L48">        noticeRepository.deleteById(idx);</span>
+<span class="nc" id="L49">    }</span>
+
+    @Transactional
+    @Override
+    public void updateId(Long idx, NoticeSaveDto noticeSaveDto) {
+<span class="nc" id="L54">        Notice notice = noticeRepository.findById(idx).orElseThrow(NotFoundNoticeException::new);</span>
+<span class="nc" id="L55">        notice.update(noticeSaveDto.getTitle(), noticeSaveDto.getContent());</span>
+<span class="nc" id="L56">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApplicationEmploymentSaveDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.dto.applicationemployment</a> &gt; <span class="el_source">ApplicationEmploymentSaveDto.java</span></div><h1>ApplicationEmploymentSaveDto.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.dto.applicationemployment;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gsm.chwijuntime.model.ApplicationEmployment;
+import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
+import com.gsm.chwijuntime.model.EmploymentAnnouncement;
+import com.gsm.chwijuntime.model.Member;
+import lombok.*;
+
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
+
+@Getter
+<span class="nc" id="L14">@Setter</span>
+<span class="nc" id="L15">@AllArgsConstructor</span>
+<span class="nc" id="L16">@NoArgsConstructor</span>
+<span class="nc" id="L17">@Builder</span>
+public class ApplicationEmploymentSaveDto {
+
+    @NotBlank(message = &quot;깃허브 URL을 입력해주세요.&quot;)
+<span class="nc" id="L21">    private String gitHubURL;</span>
+
+    @NotBlank(message = &quot;이력서 URL을 입력해주세요.&quot;)
+<span class="nc" id="L24">    private String applicationEmploymentResumeURL;</span>
+
+    @NotBlank(message = &quot;포트폴리오 URL을 입력해주세요.&quot;)
+<span class="nc" id="L27">    private String applicationEmploymentPortfolioURL;</span>
+
+<span class="nc" id="L29">    @JsonIgnore</span>
+<span class="nc" id="L30">    private LocalDate localDate = LocalDate.now();</span>
+
+    public ApplicationEmployment toEntityByApplicationEmployment(Member member, EmploymentAnnouncement employmentAnnouncement) {
+<span class="nc" id="L33">        return ApplicationEmployment.builder()</span>
+<span class="nc" id="L34">                .applicationDate(localDate)</span>
+<span class="nc" id="L35">                .gitHubURL(this.gitHubURL)</span>
+<span class="nc" id="L36">                .applicationEmploymentResumeURL(this.applicationEmploymentResumeURL)</span>
+<span class="nc" id="L37">                .applicationEmploymentPortfolioURL(this.applicationEmploymentPortfolioURL)</span>
+<span class="nc" id="L38">                .applicationEmploymentStatus(ApplicationEmploymentStatus.Wait)</span>
+<span class="nc" id="L39">                .member(member)</span>
+<span class="nc" id="L40">                .employmentAnnouncement(employmentAnnouncement)</span>
+<span class="nc" id="L41">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

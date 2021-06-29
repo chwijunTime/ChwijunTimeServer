@@ -1,7 +1,9 @@
 package com.gsm.chwijuntime.service.correction;
 
+import com.gsm.chwijuntime.dto.correction.CorrectionApplyResDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionApprovalSaveDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionRejectionSaveDto;
+import com.gsm.chwijuntime.dto.correction.CorrectionResDto;
 import com.gsm.chwijuntime.model.Correction;
 import com.gsm.chwijuntime.model.CorrectionApply;
 import com.gsm.chwijuntime.model.CorrectionType;
@@ -16,6 +18,6 @@ public interface CorrectionService {
     void requestApproval(Long idx, CorrectionApprovalSaveDto correctionApprovalSaveDto) throws Exception;
     void requestRejection(Long idx, CorrectionRejectionSaveDto correctionRejectionSaveDto) throws Exception;
 
-    List<CorrectionApply> findByMyApply();
-    List<Correction> findMyCorrection();
+    List<CorrectionApplyResDto> findByMyApply();
+    List<CorrectionResDto> findMyCorrection();
 }

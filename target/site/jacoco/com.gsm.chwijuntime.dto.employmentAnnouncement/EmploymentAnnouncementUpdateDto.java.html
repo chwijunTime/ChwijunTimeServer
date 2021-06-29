@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmploymentAnnouncementUpdateDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.dto.employmentAnnouncement</a> &gt; <span class="el_source">EmploymentAnnouncementUpdateDto.java</span></div><h1>EmploymentAnnouncementUpdateDto.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.dto.employmentAnnouncement;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gsm.chwijuntime.model.EmploymentAnnouncement;
+import com.gsm.chwijuntime.model.Tag;
+import com.gsm.chwijuntime.model.tagmapping.EmploymentAnnouncementTag;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
+
+@Getter
+<span class="nc" id="L17">@Builder</span>
+<span class="nc" id="L18">@NoArgsConstructor</span>
+<span class="nc" id="L19">@AllArgsConstructor</span>
+public class EmploymentAnnouncementUpdateDto {
+
+    @NotBlank(message = &quot;공고 회사 이름을 입력해주세요.&quot;)
+<span class="nc" id="L23">    private String employmentAnnouncementName;</span>
+
+    @NotBlank(message = &quot;채용 분야를 입력해주세요.&quot;)
+<span class="nc" id="L26">    private String recruitmentField;</span>
+
+<span class="nc" id="L28">    private String employmentAnnouncementExplanation;</span>
+<span class="nc" id="L29">    private String preferentialConditions;</span>
+
+    @NotBlank(message = &quot;회사 위치를 입력해주세요.&quot;)
+<span class="nc" id="L32">    private String employmentAnnouncementAddress;</span>
+
+<span class="nc" id="L34">    private String employmentAnnouncementEtc;</span>
+
+<span class="nc" id="L36">    private List&lt;String&gt; tagName;</span>
+
+    @JsonIgnore
+<span class="nc" id="L39">    private Tag tag;</span>
+    @JsonIgnore
+<span class="nc" id="L41">    private EmploymentAnnouncement employmentAnnouncement;</span>
+
+    public void MappingTagByEmploymentAnnouncement(Tag tag, EmploymentAnnouncement employmentAnnouncement){
+<span class="nc" id="L44">        this.tag = tag;</span>
+<span class="nc" id="L45">        this.employmentAnnouncement = employmentAnnouncement;</span>
+<span class="nc" id="L46">    }</span>
+
+    public EmploymentAnnouncementTag ToEntityByEmploymentAnnouncementTag(){
+<span class="nc" id="L49">        return EmploymentAnnouncementTag.builder()</span>
+<span class="nc" id="L50">                .employmentAnnouncement(this.employmentAnnouncement)</span>
+<span class="nc" id="L51">                .tag(this.tag)</span>
+<span class="nc" id="L52">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

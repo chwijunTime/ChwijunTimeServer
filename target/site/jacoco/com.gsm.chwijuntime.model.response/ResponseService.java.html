@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResponseService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.model.response</a> &gt; <span class="el_source">ResponseService.java</span></div><h1>ResponseService.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.model.response;
+
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service // 해당 Class가 Service임을 명시합니다.
+<span class="nc" id="L8">public class ResponseService {</span>
+
+    // enum으로 api 요청 결과에 대한 code, message를 정의합니다.
+<span class="nc" id="L11">    public enum CommonResponse {</span>
+<span class="nc" id="L12">        SUCCESS(0, &quot;성공하였습니다.&quot;),</span>
+<span class="nc" id="L13">        FAIL(-1, &quot;실패하였습니다.&quot;);</span>
+
+        int code;
+        String msg;
+
+<span class="nc" id="L18">        CommonResponse(int code, String msg) {</span>
+<span class="nc" id="L19">            this.code = code;</span>
+<span class="nc" id="L20">            this.msg = msg;</span>
+<span class="nc" id="L21">        }</span>
+
+        public int getCode() {
+<span class="nc" id="L24">            return code;</span>
+        }
+
+        public String getMsg() {
+<span class="nc" id="L28">            return msg;</span>
+        }
+    }
+    // 단일건 결과를 처리하는 메소드
+    public &lt;T&gt; SingleResult&lt;T&gt; getSingleResult(T data) {
+<span class="nc" id="L33">        SingleResult&lt;T&gt; result = new SingleResult&lt;&gt;();</span>
+<span class="nc" id="L34">        result.setData(data);</span>
+<span class="nc" id="L35">        setSuccessResult(result);</span>
+<span class="nc" id="L36">        return result;</span>
+    }
+    // 다중건 결과를 처리하는 메소드
+    public &lt;T&gt; ListResult&lt;T&gt; getListResult(List&lt;T&gt; list) {
+<span class="nc" id="L40">        ListResult&lt;T&gt; result = new ListResult&lt;&gt;();</span>
+<span class="nc" id="L41">        result.setList(list);</span>
+<span class="nc" id="L42">        setSuccessResult(result);</span>
+<span class="nc" id="L43">        return result;</span>
+    }
+    // 성공 결과만 처리하는 메소드
+    public CommonResult getSuccessResult() {
+<span class="nc" id="L47">        CommonResult result = new CommonResult();</span>
+<span class="nc" id="L48">        setSuccessResult(result);</span>
+<span class="nc" id="L49">        return result;</span>
+    }
+    // 실패 결과만 처리하는 메소드
+    public CommonResult getFailResult() {
+<span class="nc" id="L53">        CommonResult result = new CommonResult();</span>
+<span class="nc" id="L54">        result.setSuccess(false);</span>
+<span class="nc" id="L55">        result.setCode(CommonResponse.FAIL.getCode());</span>
+<span class="nc" id="L56">        result.setMsg(CommonResponse.FAIL.getMsg());</span>
+<span class="nc" id="L57">        return result;</span>
+    }
+    // 결과 모델에 api 요청 성공 데이터를 세팅해주는 메소드
+    private void setSuccessResult(CommonResult result) {
+<span class="nc" id="L61">        result.setSuccess(true);</span>
+<span class="nc" id="L62">        result.setCode(CommonResponse.SUCCESS.getCode());</span>
+<span class="nc" id="L63">        result.setMsg(CommonResponse.SUCCESS.getMsg());</span>
+<span class="nc" id="L64">    }</span>
+    //getFailResult 메소드가 code, msg를 받을수 있도록 수정
+    public CommonResult getFailResult(int code, String msg) {
+<span class="nc" id="L67">        CommonResult result = new CommonResult();</span>
+<span class="nc" id="L68">        result.setSuccess(false);</span>
+<span class="nc" id="L69">        result.setCode(code);</span>
+<span class="nc" id="L70">        result.setMsg(msg);</span>
+<span class="nc" id="L71">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

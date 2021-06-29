@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TipsStorage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.model</a> &gt; <span class="el_source">TipsStorage.java</span></div><h1>TipsStorage.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.model;
+
+import com.gsm.chwijuntime.dto.tipstorage.TipsStorageUpdateDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity
+@Getter
+<span class="nc" id="L13">@NoArgsConstructor</span>
+<span class="nc" id="L14">@AllArgsConstructor</span>
+<span class="nc" id="L15">@Builder</span>
+// 꿀팁 테이블
+public class TipsStorage {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+<span class="nc" id="L20">    private Long tipsStorageIdx;</span>
+
+    @Column(nullable = false)
+<span class="nc" id="L23">    private String workCompanyName;   // 자신이 다니는 회사 이름</span>
+
+    @Column(nullable = false)
+<span class="nc" id="L26">    private String workCompanyAddress; // 자신이 다니는 회사 위치</span>
+
+    @Column(nullable = false, length = 40000)
+<span class="nc" id="L29">    private String tipsInfo;   //꿀팁 정보</span>
+
+    // ============== 외래키(연관관계 주인) ================= //
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = &quot;MemberIdx&quot;)
+<span class="nc" id="L34">    private Member member;</span>
+
+    public void update(TipsStorageUpdateDto tipsStorageUpdateDto) {
+<span class="nc" id="L37">        this.workCompanyName = tipsStorageUpdateDto.getWorkCompanyName();</span>
+<span class="nc" id="L38">        this.workCompanyAddress = tipsStorageUpdateDto.getWorkCompanyAddress();</span>
+<span class="nc" id="L39">        this.tipsInfo = tipsStorageUpdateDto.getTipsInfo();</span>
+<span class="nc" id="L40">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SwaggerConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.config</a> &gt; <span class="el_source">SwaggerConfiguration.java</span></div><h1>SwaggerConfiguration.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.ArrayList;
+
+@Configuration
+@EnableSwagger2
+<span class="nc" id="L19">public class SwaggerConfiguration implements WebMvcConfigurer {</span>
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+<span class="nc" id="L23">        registry.addResourceHandler(&quot;swagger-ui.html&quot;)</span>
+<span class="nc" id="L24">                .addResourceLocations(&quot;classpath:/META-INF/resources/&quot;);</span>
+<span class="nc" id="L25">        registry.addResourceHandler(&quot;/webjars/**&quot;)</span>
+<span class="nc" id="L26">                .addResourceLocations(&quot;classpath:/META-INF/resources/webjars/&quot;);</span>
+<span class="nc" id="L27">    }</span>
+
+    private String version;
+    private String title;
+
+    private ApiInfo apiInfo(String title, String version) {
+<span class="nc" id="L33">        return new ApiInfo(</span>
+                title,
+                &quot;Swagger로 생성한 API Docs&quot;,
+                version,
+                &quot;www.example.com&quot;,
+                new Contact(&quot;Contact Me&quot;, &quot;www.example.com&quot;, &quot;foo@example.com&quot;),
+                &quot;Licenses&quot;,
+                &quot;www.example.com&quot;,
+                new ArrayList&lt;&gt;());
+    }
+
+    @Bean
+    public Docket apiTest() {
+<span class="nc" id="L46">        version = &quot;v1&quot;;</span>
+<span class="nc" id="L47">        title = &quot;ChwijunTime API&quot; + version;</span>
+
+<span class="nc" id="L49">        return new Docket(DocumentationType.SWAGGER_2)</span>
+<span class="nc" id="L50">                .useDefaultResponseMessages(false)</span>
+<span class="nc" id="L51">                .groupName(version)</span>
+<span class="nc" id="L52">                .select()</span>
+<span class="nc" id="L53">                .apis(RequestHandlerSelectors.basePackage(&quot;com.gsm.chwijuntime.controller&quot;))</span>
+<span class="nc" id="L54">                .paths(PathSelectors.ant(&quot;/**&quot;))</span>
+<span class="nc" id="L55">                .build()</span>
+<span class="nc" id="L56">                .apiInfo(apiInfo(title, version))</span>
+<span class="nc" id="L57">                .useDefaultResponseMessages(false);</span>
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

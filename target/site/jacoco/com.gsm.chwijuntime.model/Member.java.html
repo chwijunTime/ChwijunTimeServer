@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Member.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.model</a> &gt; <span class="el_source">Member.java</span></div><h1>Member.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
+@Entity
+@Getter
+<span class="nc bnc" id="L16" title="All 2 branches missed.">@Builder</span>
+<span class="nc" id="L17">@NoArgsConstructor</span>
+<span class="nc" id="L18">@AllArgsConstructor</span>
+<span class="nc" id="L19">@ToString</span>
+public class Member extends BaseTimeEntity implements UserDetails {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+<span class="nc" id="L23">    private Long memberIdx;</span>
+
+    @Column(nullable = false, length = 100)
+<span class="nc" id="L26">    private String memberEmail;   //이메일</span>
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false, length = 100)
+<span class="nc" id="L30">    private String memberPassword;   //비밀번호</span>
+
+    @Column(nullable = false, length = 4)
+<span class="nc" id="L33">    private String memberClassNumber;   //학번</span>
+
+    @Column(length = 13)
+<span class="nc" id="L36">    private String memberPhoneNumber;  //전화번호</span>
+
+    @Column(length = 500)
+<span class="nc" id="L39">    private String memberETC;  //기타 정보</span>
+
+<span class="nc" id="L41">    private LocalDateTime memberCreated;  //생성 날짜</span>
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+<span class="nc" id="L45">    private List&lt;String&gt; roles = new ArrayList&lt;&gt;();</span>
+
+    // ===================== UserDetails ========================== //
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
+<span class="nc" id="L51">        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());</span>
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public String getPassword() {
+<span class="nc" id="L57">        return this.memberPassword;</span>
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public String getUsername() {
+<span class="nc" id="L63">        return this.memberEmail;</span>
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonExpired() {
+<span class="nc" id="L69">        return true;</span>
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonLocked() {
+<span class="nc" id="L75">        return true;</span>
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isCredentialsNonExpired() {
+<span class="nc" id="L81">        return true;</span>
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isEnabled() {
+<span class="nc" id="L87">        return true;</span>
+    }
+
+    // ==================== 비즈니스 로직 ==================== //
+    public void Change_Email(String email){
+<span class="nc" id="L92">        this.memberEmail = email;</span>
+<span class="nc" id="L93">    }</span>
+
+    public String String_Role(Member member){
+<span class="nc" id="L96">        Iterator&lt;? extends GrantedAuthority&gt; authorityIterator = member.getAuthorities().iterator();</span>
+<span class="nc" id="L97">        return authorityIterator.next().toString();</span>
+    }
+
+    public void change_profile(String memberPhoneNumber, String memberETC){
+<span class="nc" id="L101">        this.memberPhoneNumber = memberPhoneNumber;</span>
+<span class="nc" id="L102">        this.memberETC = memberETC;</span>
+<span class="nc" id="L103">    }</span>
+
+    public void change_password(String password){
+<span class="nc" id="L106">        this.memberPassword = password;</span>
+<span class="nc" id="L107">    }</span>
+
+    public void change_roles() {
+<span class="nc" id="L110">        this.roles = Collections.singletonList(&quot;ROLE_Admin&quot;);</span>
+<span class="nc" id="L111">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TipsStorageSaveDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.dto.tipstorage</a> &gt; <span class="el_source">TipsStorageSaveDto.java</span></div><h1>TipsStorageSaveDto.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.dto.tipstorage;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gsm.chwijuntime.model.Member;
+import com.gsm.chwijuntime.model.Tag;
+import com.gsm.chwijuntime.model.TipsStorage;
+import com.gsm.chwijuntime.model.tagmapping.TipsStorageTag;
+import lombok.*;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+<span class="nc" id="L16">@Setter</span>
+<span class="nc" id="L17">@AllArgsConstructor</span>
+<span class="nc" id="L18">@NoArgsConstructor</span>
+<span class="nc" id="L19">@Builder</span>
+public class TipsStorageSaveDto {
+
+    @NotBlank(message = &quot;회사 이름을 입력해주세요.&quot;)
+<span class="nc" id="L23">    private String workCompanyName;</span>
+
+    @NotBlank(message = &quot;회사 주소을 입력해주세요.&quot;)
+<span class="nc" id="L26">    private String workCompanyAddress;</span>
+
+    @NotBlank(message = &quot;꿀팁을 적어주세요.&quot;)
+<span class="nc" id="L29">    private String tipsInfo;</span>
+
+<span class="nc" id="L31">    @NotEmpty(message = &quot;태그를 1개 이상 등록해주세요.&quot;)</span>
+<span class="nc" id="L32">    private List&lt;String&gt; tagName = new ArrayList&lt;&gt;();</span>
+
+    @JsonIgnore
+<span class="nc" id="L35">    private Tag tag;</span>
+    @JsonIgnore
+<span class="nc" id="L37">    private TipsStorage tipsStorage;</span>
+
+    public TipsStorage toEntityByTipsStorage(Member member) {
+<span class="nc" id="L40">        return TipsStorage.builder()</span>
+<span class="nc" id="L41">                .workCompanyName(this.workCompanyName)</span>
+<span class="nc" id="L42">                .workCompanyAddress(this.workCompanyAddress)</span>
+<span class="nc" id="L43">                .tipsInfo(this.tipsInfo)</span>
+<span class="nc" id="L44">                .member(member)</span>
+<span class="nc" id="L45">                .build();</span>
+    }
+
+    public void mappingTag_ContractingCompany(Tag tag, TipsStorage tipsStorage){
+<span class="nc" id="L49">        this.tag = tag;</span>
+<span class="nc" id="L50">        this.tipsStorage = tipsStorage;</span>
+<span class="nc" id="L51">    }</span>
+
+    public TipsStorageTag toEntityByTipsStorageTag() {
+<span class="nc" id="L54">        return TipsStorageTag.builder()</span>
+<span class="nc" id="L55">                .tag(this.tag)</span>
+<span class="nc" id="L56">                .tipsStorage(this.tipsStorage)</span>
+<span class="nc" id="L57">                .build();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

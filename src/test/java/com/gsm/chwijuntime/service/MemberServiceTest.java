@@ -23,8 +23,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
 @SpringBootTest(properties = "spring.config.location=" +
-        "classpath:/application.yml" +
-        ",classpath:/key.yml"
+        "classpath:/application.yml"
 )
 @Transactional
 public class MemberServiceTest {

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CompanyReview.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.model</a> &gt; <span class="el_source">CompanyReview.java</span></div><h1>CompanyReview.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.model;
+
+import com.gsm.chwijuntime.dto.companyreview.CompanyUpdateDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+
+@Entity
+<span class="nc" id="L13">@Builder</span>
+@Getter
+<span class="nc" id="L15">@NoArgsConstructor</span>
+<span class="nc" id="L16">@AllArgsConstructor</span>
+public class CompanyReview {
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+<span class="nc" id="L20">    private Long companyReviewIdx;</span>
+
+    @Column(nullable = false)
+<span class="nc" id="L23">    private String companyName;  //회사 이름</span>
+
+<span class="nc" id="L25">    private LocalDate companyDateofApplication;  //지원 날짜</span>
+
+    @Column(nullable = false)
+<span class="nc" id="L28">    private String companyAddress;  //회사 주소</span>
+
+    @Column(nullable = false, length = 50000)
+<span class="nc" id="L31">    private String companyReviews; //회사 리뷰</span>
+
+    @Column(nullable = false, length = 50000)
+<span class="nc" id="L34">    private String companyFrequentlyAskedQuestions;  //자주 나온 질문</span>
+
+<span class="nc" id="L36">    private int companyCost;  //사용한 비용</span>
+
+    // =============== 외래키(연관관계 주인) ================= //
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;MemberIdx&quot;)
+<span class="nc" id="L41">    private Member member;</span>
+
+
+    // ============== 비즈니스 로직 ==================== //
+    public void changeCompanyReview(CompanyUpdateDto companyUpdateDto){
+<span class="nc" id="L46">        this.companyName = companyUpdateDto.getCompanyName();</span>
+<span class="nc" id="L47">        this.companyDateofApplication = companyUpdateDto.getCompanyDateofApplication();</span>
+<span class="nc" id="L48">        this.companyAddress = companyUpdateDto.getCompanyAddress();</span>
+<span class="nc" id="L49">        this.companyReviews = companyUpdateDto.getCompanyReviews();</span>
+<span class="nc" id="L50">        this.companyFrequentlyAskedQuestions = companyUpdateDto.getCompanyFrequentlyAskedQuestions();</span>
+<span class="nc" id="L51">        this.companyCost = companyUpdateDto.getCompanyCost();</span>
+<span class="nc" id="L52">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

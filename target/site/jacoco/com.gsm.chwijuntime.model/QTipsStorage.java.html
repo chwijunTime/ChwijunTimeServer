@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QTipsStorage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ChwijunTime_Server</a> &gt; <a href="index.source.html" class="el_package">com.gsm.chwijuntime.model</a> &gt; <span class="el_source">QTipsStorage.java</span></div><h1>QTipsStorage.java</h1><pre class="source lang-java linenums">package com.gsm.chwijuntime.model;
+
+import static com.querydsl.core.types.PathMetadataFactory.*;
+
+import com.querydsl.core.types.dsl.*;
+
+import com.querydsl.core.types.PathMetadata;
+import javax.annotation.Generated;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
+
+
+/**
+ * QTipsStorage is a Querydsl query type for TipsStorage
+ */
+@Generated(&quot;com.querydsl.codegen.EntitySerializer&quot;)
+public class QTipsStorage extends EntityPathBase&lt;TipsStorage&gt; {
+
+    private static final long serialVersionUID = -1201181521L;
+
+<span class="nc" id="L21">    private static final PathInits INITS = PathInits.DIRECT2;</span>
+
+<span class="nc" id="L23">    public static final QTipsStorage tipsStorage = new QTipsStorage(&quot;tipsStorage&quot;);</span>
+
+    public final QMember member;
+
+<span class="nc" id="L27">    public final StringPath tipsInfo = createString(&quot;tipsInfo&quot;);</span>
+
+<span class="nc" id="L29">    public final NumberPath&lt;Long&gt; tipsStorageIdx = createNumber(&quot;tipsStorageIdx&quot;, Long.class);</span>
+
+<span class="nc" id="L31">    public final StringPath workCompanyAddress = createString(&quot;workCompanyAddress&quot;);</span>
+
+<span class="nc" id="L33">    public final StringPath workCompanyName = createString(&quot;workCompanyName&quot;);</span>
+
+    public QTipsStorage(String variable) {
+<span class="nc" id="L36">        this(TipsStorage.class, forVariable(variable), INITS);</span>
+<span class="nc" id="L37">    }</span>
+
+    public QTipsStorage(Path&lt;? extends TipsStorage&gt; path) {
+<span class="nc" id="L40">        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));</span>
+<span class="nc" id="L41">    }</span>
+
+    public QTipsStorage(PathMetadata metadata) {
+<span class="nc" id="L44">        this(metadata, PathInits.getFor(metadata, INITS));</span>
+<span class="nc" id="L45">    }</span>
+
+    public QTipsStorage(PathMetadata metadata, PathInits inits) {
+<span class="nc" id="L48">        this(TipsStorage.class, metadata, inits);</span>
+<span class="nc" id="L49">    }</span>
+
+    public QTipsStorage(Class&lt;? extends TipsStorage&gt; type, PathMetadata metadata, PathInits inits) {
+<span class="nc" id="L52">        super(type, metadata, inits);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        this.member = inits.isInitialized(&quot;member&quot;) ? new QMember(forProperty(&quot;member&quot;)) : null;</span>
+<span class="nc" id="L54">    }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
