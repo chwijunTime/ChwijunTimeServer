@@ -105,12 +105,57 @@ public class CorrectionServiceImpl implements CorrectionService {
 
 
     @Override
-    public List<Correction> findMyCorrection() {
+    public List<CorrectionResDto> findMyCorrection() {
+        List<CorrectionResDto> correctionResDtos = new ArrayList<>();
         Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new); // 현재 사용자
         String classNumber = member.getMemberClassNumber();
         List<Correction> byClassNumber = correctionRepository.findByClassNumber(classNumber);
-        return byClassNumber;
+        for (Correction correction : byClassNumber) {
+            if (correction.getCorrectionApply().getCorrectionType().equals(CorrectionType.Portfolio)){
+                CorrectionResDto correctionResDto = mappingCorrectionPortfolio(correction, correction.getCorrectionApply(), correction.getCorrectionApply().getMemberPortfolio(), member);
+                correctionResDtos.add(correctionResDto);
+            } else {   //이력서 이면
+                CorrectionResDto correctionResDto = mappingCorrectionMemberResume(correction, correction.getCorrectionApply(), correction.getCorrectionApply().getMemberResume(), member);
+                correctionResDtos.add(correctionResDto);
+            }
+        }
+        return correctionResDtos;
     }
+
+    private CorrectionResDto mappingCorrectionPortfolio(Correction correction, CorrectionApply correctionApply, MemberPortfolio memberPortfolio, Member member){
+        CorrectionResDto correctionResDto = CorrectionResDto.builder()
+                .correctionIdx(correction.getCorrectionIdx())
+                .classNumber(correction.getClassNumber())
+                .correctionContent(correction.getCorrectionContent())
+                .reasonForRejection(correction.getReasonForRejection())
+                .correctionApplyIdx(correctionApply.getCorrectionApplyIdx())
+                .correctionStatus(correctionApply.getCorrectionStatus())
+                .correctionType(correctionApply.getCorrectionType())
+                .memberPortfolioIdx(memberPortfolio.getMemberPortfolioIdx())
+                .notionPortfolioURL(memberPortfolio.getNotionPortfolioURL())
+                .memberEmail(member.getMemberEmail())
+                .memberClassNumber(member.getMemberClassNumber())
+                .build();
+        return correctionResDto;
+    }
+
+    private CorrectionResDto mappingCorrectionMemberResume(Correction correction, CorrectionApply correctionApply, MemberResume memberResume, Member member){
+        CorrectionResDto correctionResDto = CorrectionResDto.builder()
+                .correctionIdx(correction.getCorrectionIdx())
+                .classNumber(correction.getClassNumber())
+                .correctionContent(correction.getCorrectionContent())
+                .reasonForRejection(correction.getReasonForRejection())
+                .correctionApplyIdx(correctionApply.getCorrectionApplyIdx())
+                .correctionStatus(correctionApply.getCorrectionStatus())
+                .correctionType(correctionApply.getCorrectionType())
+                .memberResumeIdx(memberResume.getMemberResumeIdx())
+                .resumeFileURL(memberResume.getResumeFileURL())
+                .memberEmail(member.getMemberEmail())
+                .memberClassNumber(member.getMemberClassNumber())
+                .build();
+        return correctionResDto;
+    }
+
 
     private void checkAdmin(Long idx) {
         Optional<CorrectionApply> byId = correctionApplyRepository.findById(idx);
