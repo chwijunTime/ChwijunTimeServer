@@ -11,8 +11,6 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 @SpringBootApplication
 @EnableJpaAuditing
-@EnablePrometheusEndpoint
-@EnableSpringBootMetricsCollector
 @EnableCaching
 public class ChwijunTimeServerApplication {
     public static void main(String[] args) {
