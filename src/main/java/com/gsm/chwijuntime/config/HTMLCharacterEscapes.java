@@ -23,7 +23,6 @@ public class HTMLCharacterEscapes extends CharacterEscapes {
         Map<CharSequence, CharSequence> customMap = new HashMap<CharSequence, CharSequence>();
         customMap.put("<", "&#60;");
         customMap.put(">", "&#62;");
-        customMap.put("#", "&#35;");
         customMap.put("$", "&#36;");
         customMap.put(";", "&#59;");
         customMap.put("`", "&#96;");
@@ -33,7 +32,6 @@ public class HTMLCharacterEscapes extends CharacterEscapes {
         asciiEscapes = CharacterEscapes.standardAsciiEscapesForJSON();
         asciiEscapes['<'] = CharacterEscapes.ESCAPE_CUSTOM;
         asciiEscapes['>'] = CharacterEscapes.ESCAPE_CUSTOM;
-        asciiEscapes['#'] = CharacterEscapes.ESCAPE_CUSTOM;
         asciiEscapes['$'] = CharacterEscapes.ESCAPE_CUSTOM;
         asciiEscapes[';'] = CharacterEscapes.ESCAPE_CUSTOM;
         asciiEscapes['`'] = CharacterEscapes.ESCAPE_CUSTOM;
