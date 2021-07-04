@@ -36,3 +36,7 @@ target
 .gradle
 src/main/resources/application.yml
 mysql_real.mysql
+
+gradlew
+gradlew.bat
+gradle
