@@ -31,5 +31,6 @@ build/
 ### VS Code ###
 .vscode/
 
+.gradle
 src/main/resources/application.yml
 mysql_real.mysql
