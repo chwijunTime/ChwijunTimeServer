@@ -33,3 +33,5 @@ build/
 
 src/main/resources/application.yml
 mysql_real.mysql
+target
+.mvn
