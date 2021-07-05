@@ -226,8 +226,13 @@
                         <exclude>**/security/**</exclude>
                         <exclude>**/repository</exclude>
                         <exclude>**/aop/**</exclude>
-                        <exclude>**/advice</exclude>
+                        <exclude>**/advice/**</exclude>
                         <exclude>**/config/**</exclude>
+                        <exclude>**/service/dev/**</exclude>
+                        <exclude>**/model/response/**</exclude>
+                        <exclude>**/model/tagmapping/**</exclude>
+                        <exclude>**/controller/exception/**</exclude>
+                        <exclude>**/handler/**</exclude>
                         <exclude>**/chwijuntime/**/Q*</exclude>
                     </excludes>
                 </configuration>
