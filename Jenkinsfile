@@ -5,7 +5,7 @@
 
      stage('Build BackEnd') {
         sh'''
-        mvn clean compile package
+        ./mvnw clean compile package
         '''
      }
 
