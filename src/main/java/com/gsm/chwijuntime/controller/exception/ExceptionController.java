@@ -2,7 +2,6 @@ package com.gsm.chwijuntime.controller.exception;
 
 import com.gsm.chwijuntime.advice.exception.CAuthenticationEntryPointException;
 import com.gsm.chwijuntime.model.response.CommonResult;
-import com.gsm.chwijuntime.model.response.ResponseService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

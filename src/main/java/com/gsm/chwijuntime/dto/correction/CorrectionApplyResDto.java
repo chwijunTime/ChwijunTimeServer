@@ -1,6 +1,5 @@
 package com.gsm.chwijuntime.dto.correction;
 
-import com.gsm.chwijuntime.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

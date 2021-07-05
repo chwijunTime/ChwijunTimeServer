@@ -17,7 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.fail;
 
 @Slf4j
 @RunWith(SpringRunner.class)

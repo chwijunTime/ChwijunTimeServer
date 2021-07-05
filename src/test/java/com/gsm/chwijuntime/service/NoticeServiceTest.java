@@ -3,17 +3,11 @@ package com.gsm.chwijuntime.service;
 import com.gsm.chwijuntime.dto.member.MemberJoinDto;
 import com.gsm.chwijuntime.dto.notice.NoticeSaveDto;
 import com.gsm.chwijuntime.model.Member;
-import com.gsm.chwijuntime.model.Notice;
 import com.gsm.chwijuntime.repository.MemberRepository;
-import com.gsm.chwijuntime.repository.NoticeRepository;
 import com.gsm.chwijuntime.service.notice.NoticeService;
-import com.gsm.chwijuntime.service.notice.NoticeServiceImpl;
-import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,10 +19,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 import java.util.List;
-
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @Slf4j
 @RunWith(SpringRunner.class)

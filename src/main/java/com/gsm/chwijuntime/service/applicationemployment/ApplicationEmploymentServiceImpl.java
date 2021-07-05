@@ -1,10 +1,8 @@
 package com.gsm.chwijuntime.service.applicationemployment;
 
-import com.gsm.chwijuntime.advice.exception.*;
 import com.gsm.chwijuntime.dto.applicationemployment.ApplicationEmploymentSaveDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationDetailResDto;
 import com.gsm.chwijuntime.dto.applicationemployment.FindAllApplicationResDto;
-import com.gsm.chwijuntime.dto.companyreview.CompanyReviewResDto;
 import com.gsm.chwijuntime.model.ApplicationEmployment;
 import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

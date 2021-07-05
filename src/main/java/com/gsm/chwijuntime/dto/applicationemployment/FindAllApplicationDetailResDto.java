@@ -5,9 +5,7 @@ import com.gsm.chwijuntime.model.ApplicationEmploymentStatus;
 import com.gsm.chwijuntime.model.EmploymentAnnouncement;
 import com.gsm.chwijuntime.model.Member;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter

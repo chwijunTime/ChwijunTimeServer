@@ -1,7 +1,7 @@
 package com.gsm.chwijuntime.controller.release;
 
 import com.gsm.chwijuntime.dto.email.MailDto;
-import com.gsm.chwijuntime.dto.member.*;
+import com.gsm.chwijuntime.dto.member.MemberProfileSaveDto;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;
@@ -10,7 +10,6 @@ import com.gsm.chwijuntime.security.JwtTokenProvider;
 import com.gsm.chwijuntime.service.email.SendEmailService;
 import com.gsm.chwijuntime.service.email.UserService;
 import com.gsm.chwijuntime.service.member.MemberService;
-import com.gsm.chwijuntime.security.JwtTokenProvider;
 import com.gsm.chwijuntime.util.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

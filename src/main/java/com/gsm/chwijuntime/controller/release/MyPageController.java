@@ -6,8 +6,6 @@ import com.gsm.chwijuntime.dto.consultinguser.ConsultingUserResDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionApplyResDto;
 import com.gsm.chwijuntime.dto.correction.CorrectionResDto;
 import com.gsm.chwijuntime.dto.tipstorage.TipsStorageResDto;
-import com.gsm.chwijuntime.model.Correction;
-import com.gsm.chwijuntime.model.CorrectionApply;
 import com.gsm.chwijuntime.model.MemberPortfolio;
 import com.gsm.chwijuntime.model.MemberResume;
 import com.gsm.chwijuntime.model.response.ListResult;

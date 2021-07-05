@@ -1,6 +1,6 @@
 package com.gsm.chwijuntime.service.member;
 
-import com.gsm.chwijuntime.dto.member.*;
+import com.gsm.chwijuntime.dto.member.MemberProfileSaveDto;
 import com.gsm.chwijuntime.model.Member;
 
 import javax.servlet.http.HttpServletRequest;

@@ -3,7 +3,6 @@ package com.gsm.chwijuntime.service;
 import com.gsm.chwijuntime.advice.exception.NotFoundTagException;
 import com.gsm.chwijuntime.dto.tag.TagSaveDto;
 import com.gsm.chwijuntime.model.Tag;
-import com.gsm.chwijuntime.repository.TagRepository;
 import com.gsm.chwijuntime.service.tag.TagService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -16,7 +15,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 @Slf4j
