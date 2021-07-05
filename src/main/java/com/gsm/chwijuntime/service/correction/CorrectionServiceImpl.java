@@ -1,7 +1,8 @@
 package com.gsm.chwijuntime.service.correction;
 
-import com.gsm.chwijuntime.dto.correction.CorrectionApplyResDto;
-import com.gsm.chwijuntime.dto.correction.CorrectionApplySaveDto;
+import com.gsm.chwijuntime.advice.exception.*;
+import com.gsm.chwijuntime.dto.correction.*;
+import com.gsm.chwijuntime.model.*;
 import com.gsm.chwijuntime.repository.*;
 import com.gsm.chwijuntime.util.GetUserEmailUtil;
 import lombok.RequiredArgsConstructor;

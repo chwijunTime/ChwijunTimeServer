@@ -1,7 +1,7 @@
 package com.gsm.chwijuntime.controller.release;
 
 import com.gsm.chwijuntime.dto.email.MailDto;
-import com.gsm.chwijuntime.dto.member.MemberProfileSaveDto;
+import com.gsm.chwijuntime.dto.member.*;
 import com.gsm.chwijuntime.model.Member;
 import com.gsm.chwijuntime.model.response.CommonResult;
 import com.gsm.chwijuntime.model.response.ResponseService;

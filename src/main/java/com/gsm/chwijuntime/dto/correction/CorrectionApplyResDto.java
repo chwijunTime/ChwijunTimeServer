@@ -1,5 +1,6 @@
 package com.gsm.chwijuntime.dto.correction;
 
+import com.gsm.chwijuntime.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +31,7 @@ public class CorrectionApplyResDto {
 
 
 
-    public void mappingResume(CorrectionApply correctionApply, MemberResume memberResume, MemberPortfolio memberPortfolio ,Member member){
+    public void mappingResume(CorrectionApply correctionApply, MemberResume memberResume, MemberPortfolio memberPortfolio , Member member){
         this.correctionApplyIdx = correctionApply.getCorrectionApplyIdx();
         this.correctionStatus = correctionApply.getCorrectionStatus();
         this.correctionType = correctionApply.getCorrectionType();
