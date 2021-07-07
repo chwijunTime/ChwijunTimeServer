@@ -62,19 +62,7 @@ public class CorrectionServiceImpl implements CorrectionService {
     // 내가 신청한 리스트 보기
     @Override
     public List<CorrectionApplyResDto> findByMyApply() {
-        List<CorrectionApplyResDto> correctionApplyResDtos = new ArrayList<>();
-        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
-        List<CorrectionApply> byMember = correctionApplyRepository.findByMember(member);
-        for (CorrectionApply correctionApply : byMember) {
-            if(correctionApply.getCorrectionType().equals(CorrectionType.Portfolio)){
-                CorrectionApplyResDto correctionApplyResDto = mappingPortfolioRes(correctionApply, correctionApply.getMemberPortfolio(), correctionApply.getMember());
-                correctionApplyResDtos.add(correctionApplyResDto);
-            } else {   // 이력서 이면
-                CorrectionApplyResDto correctionApplyResDto = mappingMemberResumeRes(correctionApply, correctionApply.getMemberResume(), correctionApply.getMember());
-                correctionApplyResDtos.add(correctionApplyResDto);
-            }
-        }
-        return correctionApplyResDtos;
+        return getCorrectionApplyResDtos();
     }
 
     private CorrectionApplyResDto mappingPortfolioRes(CorrectionApply correctionApply, MemberPortfolio memberPortfolio, Member member){
@@ -178,8 +166,23 @@ public class CorrectionServiceImpl implements CorrectionService {
 
     // 관리자가 신청한 모든 사람 보기
     @Override
-    public List<CorrectionApply> findAll() {
-        List<CorrectionApply> all = correctionApplyRepository.findAll();
-        return all;
+    public List<CorrectionApplyResDto> findAll() {
+        return getCorrectionApplyResDtos();
+    }
+
+    private List<CorrectionApplyResDto> getCorrectionApplyResDtos() {
+        List<CorrectionApplyResDto> correctionApplyResDtos = new ArrayList<>();
+        Member member = memberRepository.findByMemberEmail(getUserEmailUtil.getUserEmail()).orElseThrow(CAuthenticationEntryPointException::new);
+        List<CorrectionApply> byMember = correctionApplyRepository.findByMember(member);
+        for (CorrectionApply correctionApply : byMember) {
+            if(correctionApply.getCorrectionType().equals(CorrectionType.Portfolio)){
+                CorrectionApplyResDto correctionApplyResDto = mappingPortfolioRes(correctionApply, correctionApply.getMemberPortfolio(), correctionApply.getMember());
+                correctionApplyResDtos.add(correctionApplyResDto);
+            } else {   // 이력서 이면
+                CorrectionApplyResDto correctionApplyResDto = mappingMemberResumeRes(correctionApply, correctionApply.getMemberResume(), correctionApply.getMember());
+                correctionApplyResDtos.add(correctionApplyResDto);
+            }
+        }
+        return correctionApplyResDtos;
     }
 }

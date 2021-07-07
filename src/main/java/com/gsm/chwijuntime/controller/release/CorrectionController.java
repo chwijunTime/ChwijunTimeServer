@@ -81,8 +81,8 @@ public class CorrectionController {
     })
     @ResponseBody
     @GetMapping("/admin/correction")
-    public ListResult<CorrectionApply> findByAll() {
-        List<CorrectionApply> all = correctionService.findAll();
+    public ListResult<CorrectionApplyResDto> findByAll() {
+        List<CorrectionApplyResDto> all = correctionService.findAll();
         return responseService.getListResult(all);
     }
 

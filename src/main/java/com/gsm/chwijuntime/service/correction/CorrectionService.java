@@ -12,7 +12,7 @@ import java.util.List;
 public interface CorrectionService {
     void saveCorrectionApply(Long idx, CorrectionType correctionType) throws Exception;
     CorrectionApply findByIdx(Long idx);
-    List<CorrectionApply> findAll();
+    List<CorrectionApplyResDto> findAll();
 
     void requestApproval(Long idx, CorrectionApprovalSaveDto correctionApprovalSaveDto) throws Exception;
     void requestRejection(Long idx, CorrectionRejectionSaveDto correctionRejectionSaveDto) throws Exception;
